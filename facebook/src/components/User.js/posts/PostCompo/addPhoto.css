@@ -1,0 +1,28 @@
+.AddPhoto{
+    width: 100%;
+    height:auto ;
+    border-radius: 5px;
+    border: solid 2px rgb(205, 204, 204);
+   padding: 5px;
+}
+
+.AddPhoto > div{
+height: 100%;
+border-radius: 5px;
+
+}
+
+.AddPhoto_body{
+    height: 167.6px;
+width: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+text-align: center;
+cursor: pointer;
+}
+
+.viewPhoto{
+
+    
+}
