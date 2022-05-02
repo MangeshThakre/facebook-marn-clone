@@ -1,0 +1,81 @@
+.profileBackground{
+    display: flex;
+    justify-content: center;
+    height: 21.75rem;
+
+}
+
+.profile{
+    width: 940Px;
+    box-shadow : inset  -1px -80px 50px -50px   rgba(0,0,0,0.5);
+    border-bottom-left-radius:10px ;
+    border-bottom-right-radius: 10px;
+    background-color: #f0f2f5;
+  border: none;
+}
+
+.profileBackground .img{
+    width:940px ;
+}
+
+.profilePic{
+    height: 168px;
+    width: 168px;
+    border-radius: 50%;
+    border: solid white 5px;
+}
+.username{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+}
+
+.username > div{
+    width: 875px;
+    height: 84px;
+    display: flex;
+    align-items: center;
+    margin-bottom: "10px";
+    display: flex;
+    justify-content: space-between;
+}
+
+.userBodyNav{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.userBodyNav > div{
+    width: 875px;
+    border-top: solid #c5c7c9 1px;
+    height: 54px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.userBodyNav > div > li{
+    margin: 3px;
+   width: 71.6px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin-left: 2px;
+   cursor: pointer;
+}
+
+.userBodyNav > div > :hover{
+    background-color: #e4e6eb24;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.__active{
+    color: #1976d2;
+    border-bottom: solid #1976d2 ;
+}
+.__active  :hover{
+    background-color: none;
+}
+

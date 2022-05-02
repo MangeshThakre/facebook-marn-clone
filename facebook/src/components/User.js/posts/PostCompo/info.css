@@ -1,0 +1,112 @@
+.Intro{
+    /* height:311.67px;
+    padding: 10px;
+    border-radius: 7px; */
+    margin: 0.938rem;
+}
+
+.InfoButtons > button{
+width: 100%;
+margin: 28px 0 0 0 ;
+height: 2.25rem;
+font-size: medium;
+font: bold;
+border: none;
+border-radius: 5px;
+}
+
+.Create_upper > img{
+    height:  40px;
+    width:  40px;
+    border-radius: 50px;
+    margin-right: 10px;
+}
+.Create_upper >  .input{
+    height: 40px;
+    width : 26.25rem;
+    border-radius: 20px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+
+.Create{
+    margin: 0.938rem;
+}
+.showPosts{
+    margin: 0.938rem;
+}
+.photo{
+    margin: 0.938rem;
+}
+
+.friend{
+    margin: 0.938rem;
+}
+
+
+.Freind_button > div{
+    border-radius: 5px;
+    padding: 7px; 
+}
+.Photo_button  :hover{
+background-color: #e4e6ebed;
+cursor: pointer;    
+}
+.Freind_button >div > p{
+    color:#0570e7;
+    height:1.75rem;
+}
+.Photo_button >div > p {
+    color:#0570e7;
+    height:1.75rem;
+}
+.Freind_button  :hover{
+    background-color: #e4e6ebed;
+cursor: pointer;  
+}
+
+.Photo_button>div{
+    border-radius: 5px;
+    padding: 7px; 
+}
+.showePosts_upper{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.info_component_upper > input{
+width: 100%;
+height: 77.6px;
+overflow-wrap: break-word;
+border-radius: 5px;
+outline: none;
+border: none;
+background-color: #f0f2f5;
+font-size: 20px;
+}
+.info_component_upper> p{
+    width: 100%;
+    font-size: 13px;
+}
+
+
+.info_component_lower{
+    display: flex;
+    justify-content: space-between;
+}
+
+.info_component_lower >div > button{
+    margin-left: 5px;
+}
+.info_component_upper{
+
+    display: flex;
+    flex-direction: column; 
+    align-items: end;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
