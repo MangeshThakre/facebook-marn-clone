@@ -2,8 +2,11 @@ import React from "react";
 import "./addPhoto.css";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { useState, useRef } from "react";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
-function AddPhoto() {
+import Button from "@mui/material/Button";
+function AddPhoto({ SetTogglePhotoVideo }) {
   const tergetInputRef = useRef(null);
   const viewPhoto = useState(null);
   const [PhotoFile, setPhotoFile] = useState(null);
@@ -25,21 +28,19 @@ function AddPhoto() {
   return (
     <div className="AddPhoto">
       <div style={{ backgroundColor: "#f7f8fa" }}>
+        <div className="photoClose">
+          <IconButton onClick={() => SetTogglePhotoVideo(false)}>
+            <CloseIcon />
+          </IconButton>
+        </div>
         {!PhotoFile ? (
           <div
             className="AddPhoto_body"
-            onClick={() => console.log(tergetInputRef.current.click())}
+            onClick={() => tergetInputRef.current.click()}
           >
             <div>
               <AddPhotoAlternateIcon />
               <p>Add Photos/Videos</p>
-              <input
-                type="file"
-                ref={tergetInputRef}
-                pattern="([^\s]+(\.(?i)(jpg|png|gif|bmp))$)"
-                onChange={(e) => handleFile(e)}
-                style={{ display: "none" }}
-              />
             </div>
           </div>
         ) : (
@@ -49,11 +50,42 @@ function AddPhoto() {
               backgroundColor: "white",
               display: "flex",
               justifyContent: "center",
+              position: "relative",
             }}
           >
-            <img src={base64Image ? base64Image : null} alt="" />
+            <div className="Add_close">
+              <div>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={() => tergetInputRef.current.click()}
+                >
+                  <AddPhotoAlternateIcon />
+                  Add photos/Videos
+                </Button>
+              </div>
+              <div></div>
+            </div>
+            <div>
+              <img
+                style={{
+                  objectFit: "cover",
+                  maxWidth: "450px",
+                  manHeight: "445px",
+                }}
+                src={base64Image ? base64Image : null}
+                alt="phpto"
+              />
+            </div>
           </div>
         )}
+        <input
+          type="file"
+          ref={tergetInputRef}
+          pattern="([^\s]+(\.(?i)(jpg|png|gif|bmp))$)"
+          onChange={(e) => handleFile(e)}
+          style={{ display: "none" }}
+        />
       </div>
     </div>
   );

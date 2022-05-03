@@ -1,4 +1,3 @@
-import React from "react";
 import "./newPost.css";
 import { toggleCreatePost } from "../../../redux/globleSplice";
 import { useDispatch } from "react-redux";
@@ -19,7 +18,7 @@ import heart from "../../../image/hart.png";
 import IconButton from "@mui/material/IconButton";
 import Picker from "emoji-picker-react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
 import AddPhoto from "../posts/PostCompo/AddPhoto.js";
 function NewPosts() {
@@ -33,17 +32,35 @@ function NewPosts() {
   const addPhoteRef = useRef(null);
   const [input_text, setInputText] = useState("");
   const [color, setColor] = useState("#45bd62");
+  const [togglePhotoVideo, SetTogglePhotoVideo] = useState(false);
+
   const onEmojiClick = (event, emojiObject) => {
     // setEmoji(emojiObject.emoji);
     setInputText(input_text + emojiObject.emoji);
   };
 
+  useEffect(() => {
+    handelPhoto();
+  }, [togglePhotoVideo]);
+
   const handelPhoto = () => {
-    bgIcon.current?.remove();
-    bgListRef.current?.remove();
-    postBody.current.style.display = "flex";
-    postBody.current.firstChild.style.height = "60px";
-    addPhoteRef.current.style.display = "block";
+    if (togglePhotoVideo) {
+      toggleBg
+        ? (bgListRef.current.style.display = "none")
+        : (bgIcon.current.style.display = "none");
+      postBody.current.style.display = "flex";
+      postBody.current.style.flexDirection = "row";
+      postBody.current.firstChild.style.height = "60px";
+      addPhoteRef.current.style.display = "block";
+    } else {
+      toggleBg
+        ? (bgListRef.current.style.display = "block")
+        : (bgIcon.current.style.display = "block");
+      postBody.current.style.display = "flex";
+      postBody.current.style.flexDirection = "column";
+      postBody.current.firstChild.style.height = "80px";
+      addPhoteRef.current.style.display = "none";
+    }
   };
 
   const bgList = (
@@ -180,14 +197,17 @@ function NewPosts() {
               </div>
             </div>
             <div ref={addPhoteRef} style={{ display: "none" }}>
-              <AddPhoto />
+              <AddPhoto SetTogglePhotoVideo={SetTogglePhotoVideo} />
             </div>
             <div className="createPosts_body_options">
               <p style={{ cursor: "pointer" }}>Add to yor post</p>
               <div>
                 <IconButton
                   disabled={Bg !== "none" && Bg !== "" ? true : false}
-                  onClick={() => handelPhoto()}
+                  onClick={() => {
+                    handelPhoto();
+                    SetTogglePhotoVideo(true);
+                  }}
                 >
                   <PhotoLibraryIcon sx={{ color: color }} />
                 </IconButton>
