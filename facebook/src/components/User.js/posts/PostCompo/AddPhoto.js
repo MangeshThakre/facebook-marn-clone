@@ -4,14 +4,13 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { useState, useRef } from "react";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-
+import { useDispatch } from "react-redux";
+import { togglePhotoVideo } from "../../../../redux/globleSplice.js";
 import Button from "@mui/material/Button";
-function AddPhoto({ SetTogglePhotoVideo }) {
+function AddPhoto({ setPhotoFile, PhotoFile, base64Image, setBase64Image }) {
+  const dispatch = useDispatch();
   const tergetInputRef = useRef(null);
   const viewPhoto = useState(null);
-  const [PhotoFile, setPhotoFile] = useState(null);
-  const [base64Image, setBase64Image] = useState("");
-
   const handleFile = async (e) => {
     const reader = new FileReader();
     setPhotoFile(e.target.files[0]);
@@ -29,7 +28,7 @@ function AddPhoto({ SetTogglePhotoVideo }) {
     <div className="AddPhoto">
       <div style={{ backgroundColor: "#f7f8fa" }}>
         <div className="photoClose">
-          <IconButton onClick={() => SetTogglePhotoVideo(false)}>
+          <IconButton onClick={() => dispatch(togglePhotoVideo(false))}>
             <CloseIcon />
           </IconButton>
         </div>

@@ -1,6 +1,9 @@
 import "./newPost.css";
-import { toggleCreatePost } from "../../../redux/globleSplice";
-import { useDispatch } from "react-redux";
+import {
+  toggleCreatePost,
+  togglePhotoVideo,
+} from "../../../redux/globleSplice";
+import { useDispatch, useSelector } from "react-redux";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import CloseIcon from "@mui/icons-material/Close";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -25,26 +28,37 @@ function NewPosts() {
   const dispatch = useDispatch();
   const [toggleIconicon, setToggleIcon] = useState(false);
   const [toggleBg, setToggleBg] = useState(false);
+  const [PhotoFile, setPhotoFile] = useState(null);
+  const [base64Image, setBase64Image] = useState("");
+  const [input_text, setInputText] = useState("");
   const [Bg, setBg] = useState("none");
   const postBody = useRef(null);
   const bgListRef = useRef(null);
   const bgIcon = useRef(null);
   const addPhoteRef = useRef(null);
-  const [input_text, setInputText] = useState("");
   const [color, setColor] = useState("#45bd62");
-  const [togglePhotoVideo, SetTogglePhotoVideo] = useState(false);
+
+  const TOGGLEPHOTOVIDEO = useSelector(
+    (state) => state.globle.togglePhotoVideo
+  );
+  const handelPost = () => {
+    console.table({
+      text: input_text,
+      Bg,
+      photo: base64Image,
+    });
+  };
 
   const onEmojiClick = (event, emojiObject) => {
-    // setEmoji(emojiObject.emoji);
     setInputText(input_text + emojiObject.emoji);
   };
 
   useEffect(() => {
     handelPhoto();
-  }, [togglePhotoVideo]);
+  }, [TOGGLEPHOTOVIDEO]);
 
   const handelPhoto = () => {
-    if (togglePhotoVideo) {
+    if (TOGGLEPHOTOVIDEO) {
       toggleBg
         ? (bgListRef.current.style.display = "none")
         : (bgIcon.current.style.display = "none");
@@ -60,6 +74,7 @@ function NewPosts() {
       postBody.current.style.flexDirection = "column";
       postBody.current.firstChild.style.height = "80px";
       addPhoteRef.current.style.display = "none";
+      setPhotoFile(null);
     }
   };
 
@@ -197,7 +212,12 @@ function NewPosts() {
               </div>
             </div>
             <div ref={addPhoteRef} style={{ display: "none" }}>
-              <AddPhoto SetTogglePhotoVideo={SetTogglePhotoVideo} />
+              <AddPhoto
+                setPhotoFile={setPhotoFile}
+                PhotoFile={PhotoFile}
+                setBase64Image={setBase64Image}
+                base64Image={base64Image}
+              />
             </div>
             <div className="createPosts_body_options">
               <p style={{ cursor: "pointer" }}>Add to yor post</p>
@@ -205,8 +225,8 @@ function NewPosts() {
                 <IconButton
                   disabled={Bg !== "none" && Bg !== "" ? true : false}
                   onClick={() => {
+                    dispatch(togglePhotoVideo(true));
                     handelPhoto();
-                    SetTogglePhotoVideo(true);
                   }}
                 >
                   <PhotoLibraryIcon sx={{ color: color }} />
@@ -219,8 +239,11 @@ function NewPosts() {
             <div className="createPosts_body_bottom">
               <Button
                 variant="contained"
-                disabled={input_text === ""}
+                disabled={input_text === "" && PhotoFile == null}
                 sx={{ width: "100%" }}
+                onClick={() => {
+                  handelPost();
+                }}
               >
                 Post
               </Button>

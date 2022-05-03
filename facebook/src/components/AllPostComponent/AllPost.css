@@ -1,0 +1,15 @@
+.AddPost{
+    margin:10px 0 5px 0;
+}
+
+.AllPost_upper{
+    width: 100%;
+    display: flex;
+}
+
+.AllPost_lower_likeShareComment{
+    display: flex;
+    align-items: center;
+   width: 100%;
+   justify-content: space-evenly;
+}
