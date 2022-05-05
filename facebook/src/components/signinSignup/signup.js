@@ -1,115 +1,232 @@
 import React from "react";
-import Grid from "@mui/material/Grid";
+import "./signup.css";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import "./sign.css";
-import { Link } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 import Divider from "@mui/material/Divider";
-import { borderRadius } from "@mui/system";
-function Signup() {
+import TextField from "@mui/material/TextField";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import DatePicker from "react-date-picker";
+import { useState } from "react";
+import { IMaskInput } from "react-imask";
+import Button from "@mui/material/Button";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import { useNavigate } from "react-router";
+import md5 from "md5";
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
+  const { onChange, ...other } = props;
+  return (
+    <IMaskInput
+      {...other}
+      mask="(#00) 000-0000"
+      definitions={{
+        "#": /[1-9]/,
+      }}
+      inputRef={ref}
+      onAccept={(value) => onChange({ target: { name: props.name, value } })}
+      overwrite
+    />
+  );
+});
+
+function Signup({ setToggleCreateAccountComponent }) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch;
+  const [firstName, setFirstName] = useState("");
+  const [firstNameErr, setFirstNameErr] = useState(false);
+
+  const [lastName, setLastName] = useState("");
+  const [lastNameErr, setLastNameErr] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [emailErr, setEmailErr] = useState(false);
+  const [emailErrText, setEmailErrText] = useState("");
+
+  const [PhoneNoerror, setPhoneNoError] = useState(false);
+  const [phoneNo, setPhoneNo] = useState("");
+  const [phoneNoErrText, setPhoneNoErrText] = useState("");
+
+  const [password, setPassword] = useState("");
+  const [passwordErr, setPasswordErr] = useState(false);
+  const [passErrText, setPasswordErrText] = useState("");
+  const [value, onChange] = useState(new Date());
+
+  const phone = Number(
+    phoneNo.replace("-", "").replace(" ", "").replace(")", "").replace("(", "")
+  );
+
+  async function signup() {
+    if (!email.includes("@gmail.com")) {
+      setEmailErr(true);
+      setEmailErrText("invalid email");
+    } else if (password.length < 6) {
+      setPasswordErr(true);
+      setPasswordErrText("password must have 6 character");
+    } else {
+      try {
+        const response = await axios({
+          method: "post",
+          url: "http://localhost:8081/api/signup",
+          data: {
+            firstName,
+            lastName,
+            phone,
+            email,
+            password: md5(password),
+            date: value,
+          },
+        });
+
+        const data = await response.data;
+        sessionStorage.setItem("TOKEN", data.Token);
+        navigate("/");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
   return (
     <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh",
-        backgroundColor: "#f0f2f5",
-      }}
+      className="signUp"
+      style={{ backgroundColor: "rgba(252, 252, 253, 0.74)" }}
     >
-      <div className="container" style={{ margin: "0 40px", width: "810px" }}>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <Grid item xs={12} sm={6} md={6}>
-            <div style={{ margin: "10px 20px 30px 0" }}>
-              <div className="facebook-Image">
-                <img
-                  src="https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg"
-                  alt="Facebook"
-                />
-              </div>
-              <div className="content">
-                <p>
-                  Facebook helps you connect and share with the people in your
-                  life.
-                </p>
-              </div>
+      <Card sx={{ width: "500px" }}>
+        <CardContent>
+          <div className="singUpHeader">
+            <div>
+              <h1>Sign Up</h1>
+              <p>It's quick and easy.</p>
             </div>
-          </Grid>
-          <Grid item xs={12} sm={6} md={6}>
-            <Card sx={{ width: "350px", borderRadius: "7px" }}>
-              <CardContent>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <TextField
-                    sx={{
-                      marginTop: "7px",
-                      input: {
-                        width: "250px",
-                        fontSize: "15px",
-                        height: "6px",
-                      },
-                    }}
-                    id="outlined-basic"
-                    placeholder="Email address or Phone number"
-                    variant="outlined"
-                  />
-                  <TextField
-                    sx={{
-                      marginTop: "7px",
-                      input: {
-                        width: "250px",
-                        fontSize: "15px",
-                        height: "6px",
-                      },
-                    }}
-                    id="outlined-basic"
-                    placeholder="Password"
-                    variant="outlined"
-                  />
+            <div>
+              <IconButton
+                onClick={() => setToggleCreateAccountComponent(false)}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div>
+          </div>
+          <Divider />
+          <div className="signUpBody">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: "10px",
+              }}
+            >
+              <TextField
+                error={firstNameErr}
+                defaulvalue={firstName}
+                id="outlined-basic"
+                label="FirstName"
+                variant="outlined"
+                onChange={(e) => {
+                  setFirstName(e.target.value);
+                }}
+              />
+              <TextField
+                error={lastNameErr}
+                defaulValue={lastName}
+                id="outlined-basic"
+                label="LastName"
+                variant="outlined"
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                }}
+              />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <InputLabel
+                sx={{ color: "#1873ce" }}
+                htmlFor="formatted-text-mask-input"
+              >
+                Phone-Number
+              </InputLabel>
+              <Input
+                error={PhoneNoerror}
+                helpertext="error"
+                variant="filled"
+                sx={{
+                  input: { color: "black" },
+                }}
+                value={phoneNo}
+                onChange={(e) => {
+                  setPhoneNo(e.target.value);
+                  setPhoneNoError(false);
+                }}
+                placeholder="(100) 000-0000"
+                name="textmask"
+                id="formatted-text-mask-input"
+                inputComponent={TextMaskCustom}
+              />
+              <TextField
+                sx={{ marginTop: "10px" }}
+                error={emailErr}
+                defaulvalue={email}
+                id="outlined-basic"
+                label="Email"
+                variant="outlined"
+                helperText={emailErrText}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setEmailErr(false);
+                }}
+              />
+              <TextField
+                sx={{ marginTop: "10px" }}
+                error={passwordErr}
+                defaulvalue={password}
+                id="outlined-basic"
+                label="New password"
+                variant="outlined"
+                helperText={passErrText}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setPasswordErr(false);
+                }}
+              />
+            </div>
+            <div style={{ marginTop: "10px" }}>
+              <p style={{ fontSize: "12px" }}>Date of birth</p>
 
-                  <Button
-                    sx={{ width: "275px", marginTop: "7px" }}
-                    variant="contained"
-                  >
-                    Log In
-                  </Button>
-                  <Link
-                    style={{
-                      fontSize: "13px",
-                      margin: "7px 0 20px 0",
-                      color: "#3588f3",
-                    }}
-                    to="/expenses"
-                  >
-                    Forgotten password?
-                  </Link>
-                  <div>
-                    <Divider variant="middle" sx={{ width: "250px" }} />
-                  </div>
-
-                  <Button
-                    sx={{
-                      width: "210px",
-                      margin: "20px 0 7px 0 ",
-                      backgroundColor: "#42b72a",
-                    }}
-                    variant="contained"
-                  >
-                    Create New Account
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </div>
+              <DatePicker onChange={onChange} value={value} />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: "30px",
+                width: "100%",
+              }}
+            >
+              <Button
+                disabled={
+                  (firstName !== "") &
+                  (lastName !== "") &
+                  (email !== "") &
+                  (phoneNo.length >= 14) &
+                  (password !== "")
+                    ? false
+                    : true
+                }
+                sx={{ width: "194px", height: "36px" }}
+                variant="contained"
+                color="success"
+                onClick={() => {
+                  signup();
+                }}
+              >
+                signUp
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
