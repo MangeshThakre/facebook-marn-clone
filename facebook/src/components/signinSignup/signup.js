@@ -74,15 +74,22 @@ function Signup({ setToggleCreateAccountComponent }) {
             firstName,
             lastName,
             phone,
-            email,
+            email: email.toLowerCase(),
             password: md5(password),
             date: value,
           },
         });
-
         const data = await response.data;
-        sessionStorage.setItem("TOKEN", data.Token);
-        navigate("/");
+        if (data?.result === "email already exist") {
+          setEmailErrText("email already exist");
+          setEmailErr(true);
+        } else if (data?.result === "phoneNo exist") {
+          setPhoneNoErrText("phoneNo exist");
+          setPhoneNoError(true);
+        } else {
+          sessionStorage.setItem("TOKEN", data.Token);
+          navigate("/");
+        }
       } catch (error) {
         console.log(error);
       }
@@ -140,29 +147,6 @@ function Signup({ setToggleCreateAccountComponent }) {
               />
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <InputLabel
-                sx={{ color: "#1873ce" }}
-                htmlFor="formatted-text-mask-input"
-              >
-                Phone-Number
-              </InputLabel>
-              <Input
-                error={PhoneNoerror}
-                helpertext="error"
-                variant="filled"
-                sx={{
-                  input: { color: "black" },
-                }}
-                value={phoneNo}
-                onChange={(e) => {
-                  setPhoneNo(e.target.value);
-                  setPhoneNoError(false);
-                }}
-                placeholder="(100) 000-0000"
-                name="textmask"
-                id="formatted-text-mask-input"
-                inputComponent={TextMaskCustom}
-              />
               <TextField
                 sx={{ marginTop: "10px" }}
                 error={emailErr}
@@ -174,8 +158,35 @@ function Signup({ setToggleCreateAccountComponent }) {
                 onChange={(e) => {
                   setEmail(e.target.value);
                   setEmailErr(false);
+                  setEmailErrText("");
                 }}
               />
+
+              <InputLabel
+                sx={{ color: "#1873ce" }}
+                htmlFor="formatted-text-mask-input"
+              >
+                Phone-Number
+              </InputLabel>
+              <Input
+                error={PhoneNoerror}
+                helperText={phoneNoErrText}
+                variant="filled"
+                sx={{
+                  input: { color: "black" },
+                }}
+                value={phoneNo}
+                onChange={(e) => {
+                  setPhoneNo(e.target.value);
+                  setPhoneNoError(false);
+                  setPhoneNoErrText("");
+                }}
+                placeholder="(100) 000-0000"
+                name="textmask"
+                id="formatted-text-mask-input"
+                inputComponent={TextMaskCustom}
+              />
+
               <TextField
                 sx={{ marginTop: "10px" }}
                 error={passwordErr}

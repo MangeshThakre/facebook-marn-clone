@@ -9,9 +9,60 @@ import { Link } from "react-router-dom";
 import Divider from "@mui/material/Divider";
 import { useState } from "react";
 import Signup from "./signup";
+import md5 from "md5";
+import axios from "axios";
+import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 function Signin() {
+  const dispatch = useDispatch();
+  const URL = process.env.REACT_APP_API_URL;
+  const navigate = useNavigate();
   const [toggleCreateAccountComponent, setToggleCreateAccountComponent] =
     useState(false);
+  const [phoneNo, setphoneNo] = useState("");
+  const [password, setPassword] = useState("");
+  const [useremail_phone, setUserEmail_phoone] = useState("");
+  const [passWarnint, setPasswarning] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [warning, setWarning] = useState(false);
+  const signin = async (useremail_phone, userpass) => {
+    var data;
+    if (useremail_phone.includes(".com")) {
+      data = {
+        email: useremail_phone.toLowerCase(),
+        password: md5(userpass),
+      };
+    } else {
+      data = {
+        email: useremail_phone.toLowerCase(),
+        password: md5(userpass),
+      };
+    }
+
+    try {
+      const response = await axios({
+        method: "post",
+        url: URL + "/api/signin",
+        headers: { "content-type": "application/json" },
+        data: data,
+      });
+      const responseData = await response.data.Token;
+      setIsLoading(false);
+      if (responseData === "invalid") {
+        setWarning(true);
+        setPasswarning(true);
+      } else {
+        localStorage.setItem("TOKEN", responseData);
+        // dispatch(TOKEN(responseData));
+        setphoneNo("");
+        setPassword("");
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       {toggleCreateAccountComponent ? (
@@ -70,9 +121,14 @@ function Signin() {
                           height: "6px",
                         },
                       }}
+                      error={warning}
                       id="outlined-basic"
                       placeholder="Email address or Phone number"
                       variant="outlined"
+                      onChange={(e) => {
+                        setphoneNo(e.target.value);
+                        setWarning(false);
+                      }}
                     />
                     <TextField
                       sx={{
@@ -83,14 +139,30 @@ function Signin() {
                           height: "6px",
                         },
                       }}
+                      error={passWarnint}
+                      defaultValue={password}
                       id="outlined-basic"
                       placeholder="Password"
                       variant="outlined"
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        setWarning(false);
+                      }}
                     />
 
                     <Button
                       sx={{ width: "275px", marginTop: "7px" }}
                       variant="contained"
+                      disabled={
+                        (phoneNo !== "") & (password !== "") ? false : true
+                      }
+                      onClick={() => {
+                        if (password.length < 6) {
+                          alert("password must have minimum 6 characters");
+                        } else {
+                          signin(phoneNo, password);
+                        }
+                      }}
                     >
                       Log In
                     </Button>

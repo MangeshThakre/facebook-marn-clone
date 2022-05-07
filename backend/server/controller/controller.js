@@ -21,7 +21,11 @@ class controller {
     try {
       const emailExist = await userModel.findOne({ email });
       if (emailExist !== null)
-        return res.send({ status: 200, result: "email already exist" });
+        return res.send({
+          status: 200,
+          phone: true,
+          result: "email already exist",
+        });
 
       const phoneNoExist = await userModel.findOne({ phoneNo });
       if (phoneNoExist !== null)

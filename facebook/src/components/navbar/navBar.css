@@ -41,7 +41,7 @@
     display: flex;
 }
 
-.navBarMiddle > div{
+.navBarMiddle > div >div{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,7 +63,7 @@
 }
 
 
- .navBarMiddle  :hover{
+ .navBarMiddle >  div :hover{
     background-color:#e4e6eb;
     border-radius: 7px;
     display: flex;
@@ -74,6 +74,22 @@
 .navBarMiddle{
     /* background-color: rgb(182, 241, 152); */
 }
+
+
+.activee  {
+    border-bottom: solid #1b74e4;
+    border-radius: 0%;
+  }
+  .activee > div > svg{
+      color: #1b74e4;
+  }
+
+ .navBarMiddle>  .activee  :hover{
+    border-radius: 0;
+    background-color:transparent;
+}
+
+
 .navBarLeft > img{
     border-radius: 50%;
     height : 39.7px; 
@@ -118,7 +134,7 @@
     margin: 0.25rem;   
 }
 
-.navBarRight >div{
+.navBarRight > div> .button{
     background-color: #e4e6eb;
     height: 2.5rem;
     width: 2.5rem;
@@ -128,8 +144,17 @@
     border-radius: 50%;
     margin: 0 5px 0 ;
     cursor: pointer;
-
 } 
+
+
+.activeButton > div > svg {
+    color: #1b74e4;
+}
+
+
+ 
+
+
 @media only screen and (max-width: 1260px) {
 .user {
     display: none;

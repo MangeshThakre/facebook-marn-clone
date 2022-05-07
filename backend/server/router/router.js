@@ -9,6 +9,7 @@ router.post("/signup", controller.signup);
 
 router.post("/signin", controller.signin);
 
+
 router.get("/verify", Authorization, controller.verify);
 
 function Authorization(req, res, next) {

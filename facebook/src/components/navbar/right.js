@@ -3,69 +3,143 @@ import contact from "../../image/contact.png";
 import "./navBar.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useRef, useState } from "react";
 function Right() {
   const navigate = useNavigate();
+  const [toggleMenu, setToggleMenu] = useState(false);
+  const [toggleMessage, setToggleMessage] = useState(false);
+  const [toggleNotification, setToggleNotification] = useState(false);
+  const [toggleMore, setToggleMore] = useState(false);
   const menu = useSelector((state) => state.icon.burgerMenu);
   const messanger = useSelector((state) => state.icon.messanger);
   const notification = useSelector((state) => state.icon.notification);
   const more = useSelector((state) => state.icon.more);
   const iconColor = useSelector((state) => state.darkLight.iconColor);
 
+  const navRight = useRef(null);
+
   return (
-    <div className="navBarRight">
-      <span
-        className="user"
-        onClick={() => {
+    <div className="navBarRight" ref={navRight}>
+      <div
+        onClick={(e) => {
           navigate("/user");
         }}
       >
-        <img src={contact} alt="" />
-        <p>name</p>
-      </span>
+        <div className="user">
+          <img src={contact} alt="" />
+          <p>name</p>
+        </div>
+      </div>
 
-      <div className="menu">
-        <svg
-          viewBox="0 0 28 28"
-          fill="currentColor"
-          height="20"
-          width="20"
-          color={iconColor}
-        >
-          <path d={menu} />
-        </svg>
+      <div
+        onClick={(e) => {
+          const allElement = navRight.current.childNodes;
+          for (const element of allElement) {
+            element.className = "";
+          }
+          setToggleNotification(false);
+          setToggleMore(false);
+          setToggleMessage(false);
+          setToggleMenu(!toggleMenu);
+          !toggleMenu
+            ? (e.currentTarget.className = "activeButton")
+            : (e.currentTarget.className = "");
+        }}
+      >
+        <div className="menu button">
+          <svg
+            viewBox="0 0 28 28"
+            fill="currentColor"
+            height="20"
+            width="20"
+            color={iconColor}
+          >
+            <path d={menu} />
+          </svg>
+        </div>
       </div>
-      <div className="messanger">
-        <svg
-          viewBox="0 0 28 28"
-          fill="currentColor"
-          height="20"
-          width="20"
-          color={iconColor}
-        >
-          <path d={messanger} />
-        </svg>
+      <div
+        onClick={(e) => {
+          const allElement = navRight.current.childNodes;
+          for (const element of allElement) {
+            element.className = "";
+          }
+          setToggleMenu(false);
+          setToggleNotification(false);
+          setToggleMore(false);
+          setToggleMessage(!toggleMessage);
+          !toggleMessage
+            ? (e.currentTarget.className = "activeButton")
+            : (e.currentTarget.className = "");
+        }}
+      >
+        <div className="messanger button">
+          <svg
+            viewBox="0 0 28 28"
+            fill="currentColor"
+            height="20"
+            width="20"
+            color={iconColor}
+          >
+            <path d={messanger} />
+          </svg>
+        </div>
       </div>
-      <div className="notification">
-        <svg
-          viewBox="0 0 28 28"
-          fill="currentColor"
-          height="20"
-          width="20"
-          color={iconColor}
-        >
-          <path d={notification} />
-        </svg>
+      <div
+        onClick={(e) => {
+          const allElement = navRight.current.childNodes;
+          for (const element of allElement) {
+            element.className = "";
+          }
+          setToggleMenu(false);
+          setToggleMore(false);
+          setToggleMessage(false);
+          setToggleNotification(!toggleNotification);
+          !toggleNotification
+            ? (e.currentTarget.className = "activeButton")
+            : (e.currentTarget.className = "");
+        }}
+      >
+        <div className="notification button">
+          <svg
+            viewBox="0 0 28 28"
+            fill="currentColor"
+            height="20"
+            width="20"
+            color={iconColor}
+          >
+            <path d={notification} />
+          </svg>
+        </div>
       </div>
-      <div className="more">
-        <svg
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          height="1rem"
-          width="1rem"
-          color={iconColor}
-        >
-          <path d={more} />
-        </svg>
+      <div
+        onClick={(e) => {
+          // popup(e);
+          const allElement = navRight.current.childNodes;
+          for (const element of allElement) {
+            element.className = "";
+          }
+          setToggleMenu(false);
+          setToggleMessage(false);
+          setToggleNotification(false);
+          setToggleMore(!toggleMore);
+
+          !toggleMore
+            ? (e.currentTarget.className = "activeButton")
+            : (e.currentTarget.className = "");
+        }}
+      >
+        <div className="more button">
+          <svg
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            height="1rem"
+            width="1rem"
+            color={iconColor}
+          >
+            <path d={more} />
+          </svg>
+        </div>
       </div>
     </div>
   );
