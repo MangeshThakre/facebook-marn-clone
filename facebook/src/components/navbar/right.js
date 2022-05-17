@@ -15,7 +15,7 @@ function Right() {
   const notification = useSelector((state) => state.icon.notification);
   const more = useSelector((state) => state.icon.more);
   const iconColor = useSelector((state) => state.darkLight.iconColor);
-
+  const USER = useSelector((state) => state.globle.user);
   const navRight = useRef(null);
 
   return (
@@ -27,7 +27,9 @@ function Right() {
       >
         <div className="user">
           <img src={contact} alt="" />
-          <p>name</p>
+          <p>
+            <b>{USER?.firstName}</b>
+          </p>
         </div>
       </div>
 

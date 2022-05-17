@@ -8,6 +8,7 @@ export const globleSplice = createSlice({
     token: null,
     toggleCreatePost: false,
     togglePhotoVideo: false,
+    posts: [],
   },
 
   reducers: {
@@ -24,10 +25,13 @@ export const globleSplice = createSlice({
     togglePhotoVideo: (state, action) => {
       state.togglePhotoVideo = action.payload;
     },
+    posts: (state, action) => {
+      state.posts = action.payload;
+    },
   },
 });
 
-export const { toggleCreatePost, togglePhotoVideo, token, user } =
+export const { toggleCreatePost, togglePhotoVideo, token, user, posts } =
   globleSplice.actions;
 
 export default globleSplice.reducer;

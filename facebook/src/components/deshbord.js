@@ -9,14 +9,14 @@ import axios from "axios";
 function Deshbord() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const TOKEN = sessionStorage.getItem("TOKEN");
+  const TOKEN = localStorage.getItem("TOKEN");
   const URL = process.env.REACT_APP_API_URL;
   const [isLoading, setIsLoading] = useState(false);
   const backgroundColor = useSelector(
     (state) => state.darkLight.backgroundColor
   );
 
-  console.log(TOKEN);
+  console.log("TOKEN", TOKEN);
 
   useEffect(() => {
     getUser();

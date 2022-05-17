@@ -13,3 +13,23 @@
    width: 100%;
    justify-content: space-evenly;
 }
+
+.AllPost_bodyBackground{
+    width: 100%;
+    height: 347px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    word-break: break-word;
+    /* max-width: 429px; */
+}
+
+.AllPost_body_photo >img {
+    height: 347px;
+    width: 100%;
+    object-fit: cover
+}
+.AllPost_body_photo > div  {
+    word-break: break-word;
+}

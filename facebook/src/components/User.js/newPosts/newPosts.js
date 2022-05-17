@@ -2,6 +2,7 @@ import "./newPost.css";
 import {
   toggleCreatePost,
   togglePhotoVideo,
+  posts,
 } from "../../../redux/globleSplice";
 import { useDispatch, useSelector } from "react-redux";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
@@ -26,12 +27,14 @@ import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt
 import AddPhoto from "../posts/PostCompo/AddPhoto.js";
 function NewPosts() {
   const dispatch = useDispatch();
+  const USER = useSelector((state) => state.globle.user);
+  const POSTS = useSelector((state) => state.globle.posts);
   const [toggleIconicon, setToggleIcon] = useState(false);
   const [toggleBg, setToggleBg] = useState(false);
   const [PhotoFile, setPhotoFile] = useState(null);
   const [base64Image, setBase64Image] = useState("");
   const [input_text, setInputText] = useState("");
-  const [Bg, setBg] = useState("none");
+  const [Bg, setBg] = useState("");
   const postBody = useRef(null);
   const bgListRef = useRef(null);
   const bgIcon = useRef(null);
@@ -42,11 +45,15 @@ function NewPosts() {
     (state) => state.globle.togglePhotoVideo
   );
   const handelPost = () => {
-    console.table({
-      text: input_text,
-      Bg,
-      photo: base64Image,
-    });
+    const post = {
+      text: input_text != "" ? input_text : null,
+      bg: Bg != "" ? Bg : null,
+      photo: base64Image != "" ? base64Image : null,
+    };
+    dispatch(posts([...POSTS, post]));
+
+    dispatch(toggleCreatePost(false));
+    dispatch(togglePhotoVideo(false));
   };
 
   const onEmojiClick = (event, emojiObject) => {
@@ -128,6 +135,7 @@ function NewPosts() {
         this.className += " active";
       });
     }
+
     if (bg == "none") {
       postBody.current.style.backgroundImage = `none`;
       postBody.current.style.height = ``;
@@ -151,7 +159,12 @@ function NewPosts() {
             <h3>Create Post</h3>
           </div>
           <div className="createPost_close">
-            <IconButton onClick={() => dispatch(toggleCreatePost(false))}>
+            <IconButton
+              onClick={() => {
+                dispatch(toggleCreatePost(false));
+                dispatch(togglePhotoVideo(false));
+              }}
+            >
               <CloseIcon />
             </IconButton>
           </div>
@@ -163,7 +176,7 @@ function NewPosts() {
               <img src={contact} alt="pic" />
             </div>
             <div>
-              <h5>Mangesh Thakre</h5>
+              <h5>{USER?.firstName + " " + USER?.lastName}</h5>
               <h4>public</h4>
             </div>
           </div>

@@ -10,12 +10,44 @@ import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutline
 import InputEmoji from "react-input-emoji";
 import Divider from "@mui/material/Divider";
 import { useState } from "react";
-function AllPost() {
+import { useSelector } from "react-redux";
+function AllPost({ text, photo, bg }) {
   const [commentText, setCommentText] = useState("");
+  const USER = useSelector((state) => state.globle.user);
 
   const send = () => {
     setCommentText("");
   };
+
+  function PostBodyFun() {
+    if (bg == null && photo == null) {
+      return (
+        <div>
+          <p>{text}</p>
+        </div>
+      );
+    }
+    if (bg != null) {
+      return (
+        <div
+          className="AllPost_bodyBackground"
+          style={{ backgroundImage: `url(${bg})`, color: "white" }}
+        >
+          <h2>{text}</h2>
+        </div>
+      );
+    }
+    if (photo != null) {
+      return (
+        <>
+          <div>{text}</div>
+          <div className="AllPost_body_photo">
+            <img src={photo} alt="" />
+          </div>
+        </>
+      );
+    }
+  }
 
   return (
     <div className="AddPost">
@@ -26,14 +58,14 @@ function AllPost() {
               <img src={contact} alt="pic" />
             </div>
             <div>
-              <h5>Mangesh Thakre</h5>
+              <h5>{USER?.firstName + " " + USER?.lastName}</h5>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <p>time ago</p>
                 <PublicOutlinedIcon sx={{ fontSize: "20px" }} />
               </div>
             </div>
           </div>
-          <div className="AllPost_body">bodu</div>
+          <div className="AllPost_body">{PostBodyFun()}</div>
 
           <div className="AllPost_lower">
             <div className="AllPost_lower_likeShareComment">

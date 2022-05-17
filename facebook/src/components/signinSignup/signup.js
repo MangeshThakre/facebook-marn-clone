@@ -87,7 +87,7 @@ function Signup({ setToggleCreateAccountComponent }) {
           setPhoneNoErrText("phoneNo exist");
           setPhoneNoError(true);
         } else {
-          sessionStorage.setItem("TOKEN", data.Token);
+          localStorage.setItem("TOKEN", data.Token);
           navigate("/");
         }
       } catch (error) {
@@ -221,7 +221,7 @@ function Signup({ setToggleCreateAccountComponent }) {
                   (lastName !== "") &
                   (email !== "") &
                   (phoneNo.length >= 14) &
-                  (password !== "")
+                  (password.length > 5)
                     ? false
                     : true
                 }

@@ -67,8 +67,8 @@ class controller {
             { id: response._id },
             process.env.ACCESS_TOKEN_SECRET
           );
-          res.json({ Token: token });
-        } else res.send({ Token: "invalid" });
+          res.send({ Token: token });
+        } else res.json({ Token: "invalid" });
       } catch (error) {
         console.log(error);
         res.send({ error });
@@ -76,7 +76,7 @@ class controller {
     } else if (req.body.email) {
       try {
         const response = await userModel.findOne({
-          emailId: req.body.phoneNo,
+          email: req.body.email,
           password: req.body.password,
         });
         if (response) {
@@ -86,10 +86,11 @@ class controller {
           );
           res.json({ Token: token });
         } else {
-          res.send({ Error: error });
+          res.json({ Token: "invalid" });
         }
       } catch (error) {
-        res.send({ Error: error });
+        console.log("error", error);
+        res.json({ error });
       }
     }
   };

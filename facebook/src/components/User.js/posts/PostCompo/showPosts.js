@@ -5,25 +5,31 @@ import CardContent from "@mui/material/CardContent";
 import "./showPost.css";
 import { useState } from "react";
 import AllPost from "../../../AllPostComponent/AllPost";
-
+import hart from "../../../../image/hart.png";
 import { dividerClasses } from "@mui/material";
+import { useSelector } from "react-redux";
 function ShowPosts() {
   const [postDetail, setPostDetails] = useState([]);
-
-  const detail = [
-    {
-      text: "hello",
-      Bg: null,
-      photo: null,
-    },
-    {
-      text: "hello",
-      Bg: null,
-      photo: null,
-    },
-  ];
+  const POSTS = useSelector((state) => state.globle.posts);
+  // const detail = [
+  //   {
+  //     text: "hello",
+  //     Bg: null,
+  //     photo: null,
+  //   },
+  //   {
+  //     text: "hello",
+  //     Bg: hart,
+  //     photo: null,
+  //   },
+  //   {
+  //     text: "hello",
+  //     Bg: null,
+  //     photo: hart,
+  //   },
+  // ];
   useEffect(() => {
-    setPostDetails(detail);
+    setPostDetails(POSTS);
   }, []);
 
   return (
@@ -36,8 +42,8 @@ function ShowPosts() {
           <div className="showPots_lower"></div>
         </CardContent>
       </Card>
-      {postDetail.length != 0 ? (
-        postDetail.map((e) => {
+      {POSTS.length != 0 ? (
+        POSTS.map((e) => {
           return (
             <div>
               <AllPost text={e.text} photo={e.photo} bg={e.Bg} />

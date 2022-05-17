@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 
 function User() {
   const [page, setPage] = useState("POST");
+  const USER = useSelector((state) => state.globle.user);
   var user;
   const navigate = useNavigate();
   const profilePic = user ? "" : "";
@@ -63,7 +64,9 @@ function User() {
 
         <div className="username">
           <div>
-            <h1 style={{ marginLeft: "200px" }}>Mange thakre</h1>
+            <h1 style={{ marginLeft: "200px" }}>
+              {USER?.firstName + " " + USER?.lastName}
+            </h1>
             <div
               className="button"
               style={{

@@ -25,17 +25,20 @@ function Signin() {
   const [passWarnint, setPasswarning] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [warning, setWarning] = useState(false);
+
+
+
   const signin = async (useremail_phone, userpass) => {
     var data;
     if (useremail_phone.includes(".com")) {
       data = {
         email: useremail_phone.toLowerCase(),
-        password: md5(userpass),
+        password: userpass,
       };
     } else {
       data = {
-        email: useremail_phone.toLowerCase(),
-        password: md5(userpass),
+        phoneNo: Number(useremail_phone.toLowerCase()),
+        password: userpass,
       };
     }
 
