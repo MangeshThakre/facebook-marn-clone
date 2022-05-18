@@ -28,7 +28,7 @@
 .AllPost_body_photo >img {
     height: 347px;
     width: 100%;
-    object-fit: cover
+    object-fit: fill
 }
 .AllPost_body_photo > div  {
     word-break: break-word;

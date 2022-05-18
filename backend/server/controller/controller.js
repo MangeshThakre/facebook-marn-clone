@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import userModel from "../schema/userSchema.js";
+import postModel from "../schema/postsSchema.js";
 import jsonwebtoken from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
@@ -112,5 +113,42 @@ class controller {
       res.send({ statu: 401, error });
     }
   };
+
+  static async insertPost(req, res) {
+    const user_id = req.user.id;
+    const text = req.body.text != "" ? req.body.text : null;
+    const bg = req.body.bg ? req.body.bg : null;
+    const photo = req.file ? req.file.path : null;
+    try {
+      const postData = {
+        user_id,
+        text,
+        bg,
+        photo,
+        posted_at: new Date(),
+      };
+      const posts = new postModel(postData);
+      const result = await posts.save();
+      console.log(result);
+      res.json(req.body);
+    } catch (error) {
+      console.log("error :", error);
+      res.json({
+        status: 500,
+      });
+    }
+  }
+
+  static async getPosts(req, res) {
+    const user_id = req.user.id;
+    try {
+      const response = await postModel.find({ user_id });
+      res.json(response);
+    } catch (error) {
+      res.json({
+        status: 500,
+      });
+    }
+  }
 }
 export default controller;

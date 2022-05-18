@@ -25,32 +25,57 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useEffect, useState, useRef } from "react";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
 import AddPhoto from "../posts/PostCompo/AddPhoto.js";
+import axios from "axios";
+
 function NewPosts() {
   const dispatch = useDispatch();
   const USER = useSelector((state) => state.globle.user);
   const POSTS = useSelector((state) => state.globle.posts);
+  const TOKEN = localStorage.getItem("TOKEN");
+  const URL = process.env.REACT_APP_API_URL;
   const [toggleIconicon, setToggleIcon] = useState(false);
   const [toggleBg, setToggleBg] = useState(false);
   const [PhotoFile, setPhotoFile] = useState(null);
   const [base64Image, setBase64Image] = useState("");
   const [input_text, setInputText] = useState("");
   const [Bg, setBg] = useState("");
+  const [bgName, setBgName] = useState("");
   const postBody = useRef(null);
   const bgListRef = useRef(null);
   const bgIcon = useRef(null);
   const addPhoteRef = useRef(null);
   const [color, setColor] = useState("#45bd62");
-
   const TOGGLEPHOTOVIDEO = useSelector(
     (state) => state.globle.togglePhotoVideo
   );
-  const handelPost = () => {
+  const handelPost = async () => {
     const post = {
       text: input_text != "" ? input_text : null,
-      bg: Bg != "" ? Bg : null,
+      bg: bgName != "" ? bgName : null,
       photo: base64Image != "" ? base64Image : null,
     };
+
     dispatch(posts([...POSTS, post]));
+
+    var formData = new FormData();
+    formData.append("text", input_text);
+    formData.append("bg", bgName);
+    formData.append("photo", PhotoFile);
+    try {
+      const response = await axios({
+        method: "post",
+        url: URL + "/api/insert_post",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        data: formData,
+      });
+      const data = await response.data;
+      console.log(data);
+    } catch (error) {
+      console.log("Error", error);
+    }
 
     dispatch(toggleCreatePost(false));
     dispatch(togglePhotoVideo(false));
@@ -95,30 +120,78 @@ function NewPosts() {
         >
           <ArrowBackIosIcon sx={{ fontSize: 20 }} />
         </li>
-        <li className="li active" onClick={() => handelBg("none")}>
+        <li
+          className="li active"
+          onClick={() => {
+            handelBg("none");
+            setBgName("");
+          }}
+        >
           <div className="img" style={{ backgroundColor: "#e4e6eb" }}></div>
         </li>
-        <li className="li" onClick={() => handelBg(purple)}>
+        <li
+          className="li"
+          onClick={() => {
+            handelBg(purple);
+            setBgName("purple");
+          }}
+        >
           <img className="img" src={purple} alt="" />
         </li>
-        <li className="li" onClick={() => handelBg(orange)}>
+        <li
+          className="li"
+          onClick={() => {
+            handelBg(orange);
+            setBgName("orange");
+          }}
+        >
           <img className="img" src={orange} alt="" />
         </li>
-        <li className="li" onClick={() => handelBg(radient)}>
+        <li
+          className="li"
+          onClick={() => {
+            handelBg(radient);
+            setBgName("radient");
+          }}
+        >
           <img className="img" src={radient} alt="" />
         </li>
-        <li className="li" onClick={() => handelBg(iceCream)}>
+        <li
+          className="li"
+          onClick={() => {
+            handelBg(iceCream);
+            setBgName("iceCream");
+          }}
+        >
           <img className="img" src={iceCream} alt="" />
         </li>
-        <li className="li" onClick={() => handelBg(nightSky)}>
+        <li
+          className="li"
+          onClick={() => {
+            handelBg(nightSky);
+            setBgName("nightSky");
+          }}
+        >
           <img className="img" src={nightSky} alt="" />
         </li>
 
-        <li className="li" onClick={() => handelBg(plain)}>
+        <li
+          className="li"
+          onClick={() => {
+            handelBg(plain);
+            setBgName("plain");
+          }}
+        >
           <img className="img" src={plain} alt="" />
         </li>
 
-        <li className="li" onClick={() => handelBg(heart)}>
+        <li
+          className="li"
+          onClick={() => {
+            handelBg(heart);
+            setBgName("heart");
+          }}
+        >
           <img className="img" src={heart} alt="" />
         </li>
       </ul>
