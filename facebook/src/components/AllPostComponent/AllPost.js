@@ -6,11 +6,13 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import InputEmoji from "react-input-emoji";
 import Divider from "@mui/material/Divider";
 import date from "date-and-time";
-import { useState } from "react";
+import like from "../../image/like.svg";
+import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import nightSky from "../../image/nightSky.png";
 import iceCream from "../../image/iceCream.png";
@@ -19,13 +21,16 @@ import purple from "../../image/purple.png";
 import radient from "../../image/radiend.png";
 import plain from "../../image/plain.png";
 import heart from "../../image/hart.png";
-
+import axios from "axios";
 function AllPost({ postData }) {
-  const [commentText, setCommentText] = useState("");
   const USER = useSelector((state) => state.globle.user);
   const URL = process.env.REACT_APP_API_URL;
+  const TOKEN = localStorage.getItem("TOKEN");
+  const [commentText, setCommentText] = useState("");
+  const [togglelike, setToggleLike] = useState(false);
   const text = postData.text;
   const photo = postData.photo;
+  const commentInput = useRef(null);
   var bg;
   if (postData.bg == "iceCream") bg = iceCream;
   if (postData.bg == "nightSky") bg = nightSky;
@@ -40,6 +45,44 @@ function AllPost({ postData }) {
   const send = () => {
     setCommentText("");
   };
+
+  useEffect(() => {
+    const user_id = USER?.id;
+    for (const user of postData.like_dislike) {
+      console.log(user);
+      user == user_id ? setToggleLike(true) : setToggleLike(false);
+    }
+  }, []);
+
+  console.log(postData.like_dislike);
+
+  async function handlelike() {
+    let likeDislike = new Set(postData.like_dislike);
+    if (!togglelike) {
+      likeDislike.add(USER?.id);
+    } else {
+      likeDislike.delete(USER.id);
+    }
+    const data = {
+      likeDislike: [...likeDislike],
+      postId: postData._id,
+    };
+
+    console.log(data);
+    try {
+      const response = await axios({
+        method: "post",
+        url: URL + "/api/like_dislike",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        data: data,
+      });
+    } catch (error) {
+      console.log("Error", error);
+    }
+  }
 
   function PostBodyFun() {
     if (bg == null && photo == null) {
@@ -71,6 +114,52 @@ function AllPost({ postData }) {
     }
   }
 
+  function LikeCommentSCounts() {
+    if (
+      postData.like_dislike.length == 0 ||
+      (togglelike && postData.like_dislike.length == 1)
+    ) {
+      return (
+        <>
+          {togglelike ? (
+            <>
+              <img src={like} alt="like" />
+              <p> {USER?.firstName + " " + USER?.lastName}</p>
+            </>
+          ) : (
+            ""
+          )}
+        </>
+      );
+      if (postData.like_dislike.length > 0) {
+        {
+          togglelike ? (
+            <>
+              <img src={like} alt="like" />
+              <p> You and {postData.like_dislike.length - 1} other</p>
+            </>
+          ) : (
+            <>
+              <img src={like} alt="like" />
+              <p> {postData.like_dislike.length - 1}</p>
+            </>
+          );
+        }
+      }
+    }
+
+    return (
+      <>
+        <img src={like} alt="like" />
+        <p>
+          {togglelike
+            ? "You and " + postData.like_dislike.length + " others"
+            : postData.like_dislike.length - 1}
+        </p>
+      </>
+    );
+  }
+
   return (
     <div className="AddPost">
       <Card sx={{ borderRadius: "10px" }}>
@@ -90,14 +179,26 @@ function AllPost({ postData }) {
           <div className="AllPost_body">{PostBodyFun()}</div>
 
           <div className="AllPost_lower">
+            <div className="LikeCommentsCounts">{LikeCommentSCounts()}</div>
+            <Divider variant="middle" />
+
             <div className="AllPost_lower_likeShareComment">
               <div>
-                <IconButton>
-                  <ThumbUpAltOutlinedIcon />
+                <IconButton
+                  onClick={() => {
+                    setToggleLike(!togglelike);
+                    handlelike();
+                  }}
+                >
+                  {togglelike ? (
+                    <ThumbUpAltIcon sx={{ color: "#0570e7" }} />
+                  ) : (
+                    <ThumbUpAltOutlinedIcon />
+                  )}
                 </IconButton>
               </div>
               <div>
-                <IconButton>
+                <IconButton onClick={() => console.log(commentInput.current)}>
                   <ChatBubbleOutlineOutlinedIcon />
                 </IconButton>
               </div>
@@ -106,6 +207,8 @@ function AllPost({ postData }) {
             <Divider variant="middle" />
             <div className="AllPost_lower_inputMessage">
               <InputEmoji
+                className="commentInput"
+                ref={commentInput}
                 value={commentText}
                 onChange={setCommentText}
                 onEnter={commentText != "" ? send : null}

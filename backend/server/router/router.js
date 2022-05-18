@@ -33,6 +33,9 @@ router.post(
 
 router.get("/getPosts", Authorization, controller.getPosts);
 
+router.post("/like_dislike", Authorization, controller.like_dislike);
+
+
 function Authorization(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader.split(" ")[1];

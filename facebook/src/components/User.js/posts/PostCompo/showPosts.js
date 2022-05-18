@@ -45,7 +45,7 @@ function ShowPosts() {
     postDetail.length != 0 ? (
       postDetail.map((e) => {
         return (
-          <div>
+          <div key={e._id}>
             <AllPost text={e.text} photo={e.photo} bg={e.Bg} postData={e} />
           </div>
         );

@@ -33,3 +33,13 @@
 .AllPost_body_photo > div  {
     word-break: break-word;
 }
+
+.LikeCommentsCounts{
+    margin: 10px  0  10px 10px;
+   display: flex;
+}
+.LikeCommentsCounts > img{
+    height: 18px;
+    width: 18px;
+    margin-right: 10px;
+}

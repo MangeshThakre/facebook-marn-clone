@@ -3,6 +3,7 @@ import userModel from "../schema/userSchema.js";
 import postModel from "../schema/postsSchema.js";
 import jsonwebtoken from "jsonwebtoken";
 import dotenv from "dotenv";
+import { response } from "express";
 dotenv.config();
 class controller {
   static jwt = jsonwebtoken;
@@ -102,6 +103,7 @@ class controller {
       const response = await userModel.findById(user_id);
       console.log(response);
       res.json({
+        id: response._id,
         firstName: response.firstName,
         lastName: response.lastName,
         phoneNo: response.phoneNo,
@@ -129,7 +131,7 @@ class controller {
       };
       const posts = new postModel(postData);
       const result = await posts.save();
-      console.log(result);
+      // console.log(result);
       res.json(req.body);
     } catch (error) {
       console.log("error :", error);
@@ -148,6 +150,25 @@ class controller {
       res.json({
         status: 500,
       });
+    }
+  }
+
+  static async like_dislike(req, res) {
+    const user_id = req.user.id;
+    const likeDislike = req.body.likeDislike;
+    const postId = req.body.postId;
+    try {
+      console.log(likeDislike);
+      console.log(postId);
+
+      const saveLike = await postModel.findByIdAndUpdate(postId, {
+        like_dislike: likeDislike,
+      });
+      console.log(saveLike);
+      res.json("successfully updated");
+    } catch (error) {
+      console.log("LIKE DISLIKE ERROR", error);
+      res.json({ status: 500 });
     }
   }
 }
