@@ -6,7 +6,7 @@ import Photo from "./PostCompo/photo";
 import Friends from "./PostCompo/friends";
 import Create from "./PostCompo/create";
 import ShowPosts from "./PostCompo/showPosts";
-import PersonalInfo from "./PostCompo/personalInfo";
+import PostMakre from "./PostCompo/PostMaker.js";
 function Post({ setPage }) {
   return (
     <div className="posts">
@@ -47,11 +47,6 @@ function Post({ setPage }) {
               <Grid>
                 <div>
                   <ShowPosts />
-                </div>
-              </Grid>
-              <Grid>
-                <div>
-                  <PersonalInfo />
                 </div>
               </Grid>
             </div>

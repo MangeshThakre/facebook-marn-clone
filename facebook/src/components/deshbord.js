@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { user } from "../redux/globleSplice.js";
 import NewPosts from "./User.js/newPosts/newPosts";
+import HomePage from "./homePage/homePage.js";
 import axios from "axios";
 function Deshbord() {
   const navigate = useNavigate();
@@ -50,9 +51,14 @@ function Deshbord() {
       {isLoading ? (
         " loading"
       ) : (
-        <div className="navBar" style={{ height: "56px" }}>
-          <Navbar />
-        </div>
+        <>
+          <div className="navBar" style={{ height: "56px" }}>
+            <Navbar />
+          </div>
+          <div className="homePage">
+            <HomePage />
+          </div>
+        </>
       )}
     </div>
   );

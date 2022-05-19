@@ -4,6 +4,7 @@ import "./navBar.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
+import More from "./NavBarRightComponents/more.js";
 function Right() {
   const navigate = useNavigate();
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -143,6 +144,7 @@ function Right() {
           </svg>
         </div>
       </div>
+      <div>{toggleMore ? <More /> : null}</div>
     </div>
   );
 }

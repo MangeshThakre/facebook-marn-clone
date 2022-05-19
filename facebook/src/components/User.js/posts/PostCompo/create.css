@@ -1,3 +1,25 @@
+.Create_upper > img{
+    height:  40px;
+    width:  40px;
+    border-radius: 50px;
+    margin-right: 10px;
+}
+.Create_upper >  .input{
+    height: 40px;
+    width : 26.25rem;
+    border-radius: 20px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+
+.Create{
+    margin: 0.938rem 0  0.938rem 0;
+}
+
+
 .Create_bottom{
     display: flex;
     width: 100%;

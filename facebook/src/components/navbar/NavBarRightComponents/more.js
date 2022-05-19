@@ -1,0 +1,68 @@
+import React from "react";
+import "./more.css";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import { useSelector } from "react-redux";
+import contact from "../../../image/contact.png";
+import Divider from "@mui/material/Divider";
+import LogoutIcon from "@mui/icons-material/Logout";
+import NightlightRoundIcon from "@mui/icons-material/NightlightRound";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+function More() {
+  const navigate = useNavigate();
+  const USER = useSelector((state) => state.globle.user);
+  const [toggleDisplayAndAssibality, setToggleDisplayAndAssibality] =
+    useState(false);
+  function handleLogOut() {
+    localStorage.removeItem("TOKEN");
+    navigate("/signin");
+  }
+
+  return (
+    <div className="navebarRightMore">
+      <Card>
+        <CardContent>
+          <div className="userProfile">
+            <img src={contact} alt="" />
+            <div>
+              <p>
+                <b>{USER.firstName + " " + USER.lastName}</b>
+              </p>
+              <p style={{ fontSize: "13px", color: "gray" }}>
+                See your Profile
+              </p>
+            </div>
+          </div>
+          <Divider variant="middle" />
+          <div className="NavbarRightOprionButtons">
+            <div
+              className="DisplayAndAssibality"
+              onClick={() => setToggleDisplayAndAssibality(true)}
+            >
+              <div>
+                <NightlightRoundIcon sx={{ margin: "0 10px 0 10px" }} />
+                <p> Display & Accessibility</p>
+              </div>
+              <div>
+                <ArrowForwardIosIcon />
+              </div>
+            </div>
+            <div className="logout" onClick={() => handleLogOut()}>
+              <LogoutIcon sx={{ margin: "0 10px 0 10px" }} />
+              <p>Logout</p>
+            </div>
+          </div>
+          <div>
+            <p style={{ fontSize: "13px", color: "gray" }}>
+              Privacy · Terms · Advertising · Ad Choices · Cookies Clone © 2022
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+export default More;

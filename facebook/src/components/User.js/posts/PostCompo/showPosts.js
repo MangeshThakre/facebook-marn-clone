@@ -4,10 +4,10 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import "./showPost.css";
 import { useState } from "react";
-import AllPost from "../../../AllPostComponent/AllPost";
 import hart from "../../../../image/hart.png";
 import { dividerClasses } from "@mui/material";
 import { useSelector } from "react-redux";
+import PostMaker from "./PostMaker.js";
 import axios from "axios";
 function ShowPosts() {
   const [postDetail, setPostDetails] = useState([]);
@@ -38,24 +38,6 @@ function ShowPosts() {
       console.log("Error", error);
     }
   }
-
-  console.log(postDetail);
-
-  const posts =
-    postDetail.length != 0 ? (
-      postDetail.map((e) => {
-        return (
-          <div key={e._id}>
-            <AllPost text={e.text} photo={e.photo} bg={e.Bg} postData={e} />
-          </div>
-        );
-      })
-    ) : (
-      <div className="noPost" style={{ color: "gray" }}>
-        <h3>No posts available</h3>
-      </div>
-    );
-
   return (
     <div className="showPosts">
       <Card sx={{ borderRadius: "10px" }}>
@@ -66,7 +48,11 @@ function ShowPosts() {
           <div className="showPots_lower"></div>
         </CardContent>
       </Card>
-      {isFetchPostLoading ? "loading...." : posts}
+      {isFetchPostLoading ? (
+        "loading...."
+      ) : (
+        <PostMaker postDetail={postDetail} />
+      )}
     </div>
   );
 }
