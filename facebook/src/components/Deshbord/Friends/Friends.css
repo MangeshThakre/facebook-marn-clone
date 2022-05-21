@@ -1,0 +1,17 @@
+
+.friendsBody{
+    display: flex;
+}
+.friendsRight{
+    margin-top:56px;
+    width: 100%;
+    height: 100%;
+    margin-left: 360px;
+}
+
+.friendMainBody{
+    padding: 20px;
+}
+
+
+

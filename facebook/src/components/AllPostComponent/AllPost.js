@@ -54,8 +54,6 @@ function AllPost({ postData }) {
     }
   }, []);
 
-  console.log(postData.like_dislike);
-
   async function handlelike() {
     let likeDislike = new Set(postData.like_dislike);
     if (!togglelike) {

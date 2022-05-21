@@ -23,7 +23,12 @@ function HomePageLeft() {
           <p> {USER?.firstName + " " + USER?.lastName}</p>
         </div>
       </div>
-      <div className="findFriends">
+      <div
+        className="findFriends"
+        onClick={() => {
+          navigate("/friends");
+        }}
+      >
         <div>
           <img src={findFriends} alt="contact" />
           <p> Find freinds</p>

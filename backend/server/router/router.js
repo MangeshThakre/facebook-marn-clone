@@ -35,6 +35,22 @@ router.get("/getPosts", Authorization, controller.getPosts);
 
 router.post("/like_dislike", Authorization, controller.like_dislike);
 
+router.get("/get_all_user", Authorization, controller.get_all_user);
+
+router.get("/friend_request", Authorization, controller.friend_request);
+
+router.get(
+  "/sended_friend_requests",
+  Authorization,
+  controller.sended_friend_requests
+);
+router.get(
+  "/cancle_friend_request",
+  Authorization,
+  controller.cancle_friend_request
+);
+
+
 
 function Authorization(req, res, next) {
   const authHeader = req.headers["authorization"];

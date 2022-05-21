@@ -1,22 +1,22 @@
 import React, { useEffect } from "react";
-import Navbar from "./navbar/navbar";
+import Navbar from "../navbar/navbar";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { user } from "../redux/globleSplice.js";
-import NewPosts from "./User.js/newPosts/newPosts";
-import HomePage from "./homePage/homePage.js";
+import { user } from "../../redux/globleSplice.js";
+import NewPosts from "../User.js/newPosts/newPosts";
+import HomePage from "../homePage/homePage.js";
 import axios from "axios";
 function Deshbord() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const USER = useSelector((state) => state.globle.user);
   const TOKEN = localStorage.getItem("TOKEN");
   const URL = process.env.REACT_APP_API_URL;
   const [isLoading, setIsLoading] = useState(false);
   const backgroundColor = useSelector(
     (state) => state.darkLight.backgroundColor
   );
-
   console.log("TOKEN", TOKEN);
 
   useEffect(() => {
@@ -24,6 +24,7 @@ function Deshbord() {
   }, []);
 
   const getUser = async () => {
+    if (USER != null) return;
     setIsLoading(true);
     try {
       const response = await axios({

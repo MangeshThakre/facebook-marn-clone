@@ -1,9 +1,10 @@
 import jwt from "jsonwebtoken";
 import userModel from "../schema/userSchema.js";
 import postModel from "../schema/postsSchema.js";
+import frendRequestModel from "../schema/friendRequestSchema.js";
 import jsonwebtoken from "jsonwebtoken";
 import dotenv from "dotenv";
-import { response } from "express";
+
 dotenv.config();
 class controller {
   static jwt = jsonwebtoken;
@@ -168,6 +169,66 @@ class controller {
       res.json("successfully updated");
     } catch (error) {
       console.log("LIKE DISLIKE ERROR", error);
+      res.json({ status: 500 });
+    }
+  }
+
+  static async get_all_user(req, res) {
+    const user_id = req.user.id;
+    try {
+      const response = await userModel
+        .find({
+          _id: { $nin: [user_id] },
+        })
+        .select("_id")
+        .select("firstName")
+        .select("lastName");
+      res.json(response);
+    } catch (error) {
+      res.json({ status: 500 });
+      console.log("Error", error);
+    }
+  }
+
+  static async friend_request(req, res) {
+    const user_id = req.user.id;
+    const request_id = req.query.requested_id;
+    try {
+      const frendRequestModelSave = new frendRequestModel({
+        user_id,
+        request_id,
+      });
+      const result = await frendRequestModelSave.save();
+      console.log("friend_request", result);
+    } catch (error) {
+      res.json({ status: 500 });
+    }
+  }
+  static async sended_friend_requests(req, res) {
+    const user_id = req.user.id;
+    try {
+      const response = await frendRequestModel
+        .find({ user_id })
+        .select("request_id");
+      res.json(response);
+    } catch (error) {
+      console.log("Error", error);
+      res.json({ status: 500 });
+    }
+  }
+
+  static async cancle_friend_request(req, res) {
+    const user_id = req.user.id;
+    const request_id = req.query.requested_id;
+    try {
+      const response = await frendRequestModel.findOneAndDelete({
+        user_id: { $gte: user_id },
+        request_id: { $gte: request_id },
+      });
+      console.log("deleted", response);
+      res.json({ response });
+    } catch (error) {
+      console.log("Error", error);
       res.json({ status: 500 });
     }
   }

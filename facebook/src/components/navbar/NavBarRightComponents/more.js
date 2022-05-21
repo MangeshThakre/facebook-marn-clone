@@ -2,21 +2,24 @@ import React from "react";
 import "./more.css";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import contact from "../../../image/contact.png";
 import Divider from "@mui/material/Divider";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NightlightRoundIcon from "@mui/icons-material/NightlightRound";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useState } from "react";
+import { user } from "../../../redux/globleSplice.js";
 import { useNavigate } from "react-router-dom";
 function More() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const USER = useSelector((state) => state.globle.user);
   const [toggleDisplayAndAssibality, setToggleDisplayAndAssibality] =
     useState(false);
   function handleLogOut() {
     localStorage.removeItem("TOKEN");
+    dispatch(user(null));
     navigate("/signin");
   }
 
