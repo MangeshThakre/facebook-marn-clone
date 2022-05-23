@@ -18,12 +18,13 @@ function Friendcard({ type, user, friendRequests }) {
   const [requestMessage, setRequesMessage] = useState("");
   const [cancleLoading, setCancleLoading] = useState(false);
   useEffect(() => {
-    for (const friend_request_id of friend_requests) {
-      if (friend_request_id.request_id === request_suggest._id) {
-        setRequesSended(true);
-        setRequesMessage("Request sent");
+    if (type != "request")
+      for (const friend_request_id of friend_requests) {
+        if (friend_request_id.request_id === request_suggest._id) {
+          setRequesSended(true);
+          setRequesMessage("Request sent");
+        }
       }
-    }
   });
 
   async function requestSend() {
@@ -108,7 +109,12 @@ function Friendcard({ type, user, friendRequests }) {
                   </>
                 ) : (
                   <>
-                    <Button variant="contained" onClick={() => requestSend()}>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        requestSend();
+                      }}
+                    >
                       Add Friend
                     </Button>
                     <div>

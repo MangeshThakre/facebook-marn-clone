@@ -78,6 +78,7 @@ class controller {
       }
     } else if (req.body.email) {
       try {
+        console.table({ email: req.body.email, password: req.body.password });
         const response = await userModel.findOne({
           email: req.body.email,
           password: req.body.password,
@@ -183,7 +184,17 @@ class controller {
         .select("_id")
         .select("firstName")
         .select("lastName");
-      res.json(response);
+
+      const response_friendRequest = await frendRequestModel.find({
+        request_id: user_id,
+      });
+      var arr = [];
+      for (const request of response_friendRequest) {
+        for (const user of response) {
+          if (user._id != request.user_id) arr.push(user);
+        }
+      }
+      res.json(arr);
     } catch (error) {
       res.json({ status: 500 });
       console.log("Error", error);
@@ -230,6 +241,27 @@ class controller {
     } catch (error) {
       console.log("Error", error);
       res.json({ status: 500 });
+    }
+  }
+
+  static async get_friend_requests(req, res) {
+    const user_id = req.user.id;
+    try {
+      const response = await frendRequestModel.aggregate([
+        { $match: { request_id: user_id } },
+        { $project: { userObjId: { $toObjectId: "$user_id" } } },
+        {
+          $lookup: {
+            from: "userschemas",
+            localField: "userObjId",
+            foreignField: "_id",
+            as: "requestDetail",
+          },
+        },
+      ]);
+      res.json(response[0].requestDetail);
+    } catch (error) {
+      console.log(" ERROR get_friend_request :", error);
     }
   }
 }

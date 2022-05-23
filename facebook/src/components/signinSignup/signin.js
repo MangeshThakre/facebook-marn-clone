@@ -33,12 +33,12 @@ function Signin() {
     if (useremail_phone.includes(".com")) {
       data = {
         email: useremail_phone.toLowerCase(),
-        password: userpass,
+        password: md5(userpass),
       };
     } else {
       data = {
         phoneNo: Number(useremail_phone.toLowerCase()),
-        password: userpass,
+        password: md5(userpass),
       };
     }
 

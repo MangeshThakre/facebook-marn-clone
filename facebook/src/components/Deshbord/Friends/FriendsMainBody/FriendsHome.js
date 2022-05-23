@@ -9,11 +9,13 @@ function FriendsHome() {
   const URL = process.env.REACT_APP_API_URL;
   const TOKEN = localStorage.getItem("TOKEN");
   const [allUsers, setAllUsers] = useState([]);
+  const [isLoadingAllUser, setIsLoadingAllUser] = useState(false);
   const [friend_requests, setFriend_requests] = useState([]);
-
+  const [getFriendRequest, setGetFriendrequests] = useState([]);
   useEffect(() => {
     fetchAllUser();
     fetchSendedFriendRequest();
+    fetchFriendRequests();
   }, []);
 
   async function fetchSendedFriendRequest() {
@@ -27,14 +29,32 @@ function FriendsHome() {
         },
       });
       const data = await response.data;
-      console.log(data);
       setFriend_requests(data);
     } catch (error) {
       console.log("Error", error);
     }
   }
 
+  async function fetchFriendRequests() {
+    try {
+      const response = await axios({
+        method: "get",
+        url: URL + "/api/get_friend_requests",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
+      const data = await response.data;
+      console.log(data);
+      setGetFriendrequests(data);
+    } catch (error) {
+      console.log("ERROR", error);
+    }
+  }
+
   async function fetchAllUser() {
+    setIsLoadingAllUser(true);
     try {
       const response = await axios({
         method: "get",
@@ -46,6 +66,7 @@ function FriendsHome() {
       });
       const data = await response.data;
       setAllUsers(data);
+      setIsLoadingAllUser(false);
     } catch (error) {
       console.log("Error", error);
     }
@@ -59,8 +80,9 @@ function FriendsHome() {
           <p>See All</p>
         </div>
         <div className="FriendcardDiv">
-          {/* <Friendcard type={"request"} />
-          <Friendcard type={"request"} /> */}
+          {getFriendRequest.map((e) => {
+            return <Friendcard type={"request"} user={e} />;
+          })}
         </div>
       </div>
       <Divider />
@@ -70,15 +92,17 @@ function FriendsHome() {
           <p>See All</p>
         </div>
         <div className="FriendcardDiv">
-          {allUsers.map((e) => {
-            return (
-              <Friendcard
-                type={"suggest"}
-                friendRequests={friend_requests}
-                user={e}
-              />
-            );
-          })}
+          {isLoadingAllUser
+            ? "loading"
+            : allUsers.map((e) => {
+                return (
+                  <Friendcard
+                    type={"suggest"}
+                    friendRequests={friend_requests}
+                    user={e}
+                  />
+                );
+              })}
         </div>
       </div>
     </div>

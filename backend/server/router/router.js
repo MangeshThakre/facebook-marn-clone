@@ -50,6 +50,11 @@ router.get(
   controller.cancle_friend_request
 );
 
+router.get(
+  "/get_friend_requests",
+  Authorization,
+  controller.get_friend_requests
+);
 
 
 function Authorization(req, res, next) {
