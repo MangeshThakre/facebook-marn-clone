@@ -13,12 +13,11 @@ font-size: medium;
 font: bold;
 border: none;
 border-radius: 5px;
+cursor: pointer;
 }
 
 
-.showPosts{
-    margin: 0.938rem;
-}
+
 .photo{
     margin: 0.938rem;
 }

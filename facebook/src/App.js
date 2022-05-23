@@ -11,7 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Deshbord />}></Route>
           <Route path="/signin" element={<Signin />}></Route>
-          <Route path="/user" element={<User />}></Route>
+          <Route path="/user/:USERID" element={<User />}></Route>
           <Route path="/friends" element={<Friends />}></Route>
         </Routes>
       </BrowserRouter>

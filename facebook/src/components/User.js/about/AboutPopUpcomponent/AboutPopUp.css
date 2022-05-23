@@ -1,0 +1,86 @@
+.aboutComponentBody{
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(250, 252, 252, 0.689);
+    z-index: 5;
+    width: 100%;
+}
+
+.aboutpopupBox{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width :700px;
+    /* height:428px ; */
+    /* border-radius: 7px; */
+    /* box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px; */
+
+}
+
+.aboutpopup_head{
+    display :flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    padding: 0 10px 0 10px;
+}
+.aboutpopup_close{
+    height: 36px;
+    width: 36px;
+    cursor: pointer;
+
+    border-radius: 50%;
+    background-color: #e4e6eb;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.aboutpopup_close   :hover{
+    background-color: #c8c9cc;
+}
+
+.AboutPopPuoBody{
+    overflow-y: scroll;
+    max-height: 60vh;
+}
+
+.AboutPopPuoFooter{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.AboutPopPuoFooter > .p{
+    height: 36px;
+    width: 182px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #1976d2  ;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
+.AboutPopPuoFooter > div >  div>button{
+    margin-right: 6px;
+    background-color: #e4e6eb;
+    color: black;
+}
+.AboutPopPuoFooter > div> div  :hover{
+    background-color: #e4e6eb;
+}
+.AboutPopPuoFooter > div {
+    display: flex;
+}
+
+   
+.AboutPopPuoBody> div{
+    margin-top: 10px;
+
+}
+

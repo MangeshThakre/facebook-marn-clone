@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import userModel from "../schema/userSchema.js";
 import postModel from "../schema/postsSchema.js";
 import frendRequestModel from "../schema/friendRequestSchema.js";
+import friendsModel from "../schema/friendsSchema.js";
 import jsonwebtoken from "jsonwebtoken";
 import dotenv from "dotenv";
 
@@ -188,13 +189,29 @@ class controller {
       const response_friendRequest = await frendRequestModel.find({
         request_id: user_id,
       });
+      const friends = await friendsModel.find({ user_id });
       var arr = [];
-      for (const request of response_friendRequest) {
+
+      if (response_friendRequest.length == 0) {
+        arr = response;
+      } else {
         for (const user of response) {
-          if (user._id != request.user_id) arr.push(user);
+          for (const request of response_friendRequest) {
+            if (user._id != request.user_id) arr.push(user);
+          }
         }
       }
-      res.json(arr);
+      const allUsers = [];
+      if (friends.length == 0) {
+        allUsers = arr;
+      } else {
+        for (const user of arr) {
+          for (const friend of friends) {
+            if (user.id != friend.friend_id) allUsers.push(user);
+          }
+        }
+      }
+      res.json(allUsers);
     } catch (error) {
       res.json({ status: 500 });
       console.log("Error", error);
@@ -210,7 +227,7 @@ class controller {
         request_id,
       });
       const result = await frendRequestModelSave.save();
-      console.log("friend_request", result);
+      res.json("sended");
     } catch (error) {
       res.json({ status: 500 });
     }
@@ -259,9 +276,30 @@ class controller {
           },
         },
       ]);
-      res.json(response[0].requestDetail);
+      const data = response.length == 0 ? [] : response[0]?.requestDetail;
+      res.json(data);
     } catch (error) {
       console.log(" ERROR get_friend_request :", error);
+    }
+  }
+
+  static async confirm_friend_request(req, res) {
+    const user_id = req.user.id;
+    const confirmRequestId = req.query.conform_id;
+    try {
+      await new friendsModel({
+        user_id,
+        friend_id: confirmRequestId,
+      }).save();
+      await new friendsModel({
+        user_id: confirmRequestId,
+        friend_id: user_id,
+      }).save();
+      await frendRequestModel.findOneAndDelete({ user_id: confirmRequestId });
+      res.json("confirmed");
+    } catch (error) {
+      console.log("Error confirm_friend_request:", error);
+      res.json({ status: 500 });
     }
   }
 }

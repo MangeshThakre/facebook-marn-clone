@@ -3,6 +3,7 @@ import { Card } from "@mui/material";
 import content from "../../../../image/contact.png";
 import Button from "@mui/material/Button";
 import { useState, useRef } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 import "./FriendCard.css";
 import { margin } from "@mui/system";
 import axios from "axios";
@@ -17,6 +18,9 @@ function Friendcard({ type, user, friendRequests }) {
   const [requestSended, setRequesSended] = useState(false);
   const [requestMessage, setRequesMessage] = useState("");
   const [cancleLoading, setCancleLoading] = useState(false);
+
+  const [isAddFriendLoading, setIsAddfriendLoading] = useState(false);
+  const [isConfirmedLoading, setIsConfirmedLoading] = useState(false);
   useEffect(() => {
     if (type != "request")
       for (const friend_request_id of friend_requests) {
@@ -28,7 +32,7 @@ function Friendcard({ type, user, friendRequests }) {
   });
 
   async function requestSend() {
-    setRequesSended(true);
+    setIsAddfriendLoading(true);
     setRequesMessage("Request sent");
     try {
       const response = await axios({
@@ -39,6 +43,13 @@ function Friendcard({ type, user, friendRequests }) {
           Authorization: `Bearer ${TOKEN}`,
         },
       });
+      const data = await response.data;
+      if (data == "sended") {
+        setTimeout(() => {
+          setIsAddfriendLoading(false);
+          setRequesSended(true);
+        }, 500);
+      }
     } catch (error) {
       console.log("Error", error);
     }
@@ -67,6 +78,35 @@ function Friendcard({ type, user, friendRequests }) {
     }
   }
 
+  async function handleConfirm() {
+    setIsConfirmedLoading(true);
+    try {
+      const response = await axios({
+        method: "get",
+        url: URL + "/api/confirm_friend_request?conform_id=" + user._id,
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
+      const data = await response.data;
+
+      if (data == "confirmed")
+        setTimeout(() => {
+          setIsConfirmedLoading(false);
+        }, 1000);
+      removeUserRef.current.remove();
+    } catch (error) {
+      console.log("Error", error);
+    }
+  }
+
+  function handleDelete() {
+    removeUserRef.current.remove();
+    try {
+    } catch (error) {}
+  }
+
   function removeUser() {
     removeUserRef.current.remove();
   }
@@ -83,9 +123,26 @@ function Friendcard({ type, user, friendRequests }) {
           <div className="FriendCardButton">
             {CardType == "request" ? (
               <div className="FrendRequestButton">
-                <Button variant="contained">Confirm</Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    handleConfirm();
+                  }}
+                >
+                  {isConfirmedLoading ? (
+                    <CircularProgress sx={{ color: "white" }} size="1.6rem" />
+                  ) : (
+                    "Confirm"
+                  )}
+                </Button>
                 <div>
-                  <Button variant="contained" sx={{ color: "black" }}>
+                  <Button
+                    variant="contained"
+                    sx={{ color: "black" }}
+                    onClick={() => {
+                      handleDelete();
+                    }}
+                  >
                     Delete
                   </Button>
                 </div>
@@ -115,7 +172,14 @@ function Friendcard({ type, user, friendRequests }) {
                         requestSend();
                       }}
                     >
-                      Add Friend
+                      {isAddFriendLoading ? (
+                        <CircularProgress
+                          sx={{ color: "white" }}
+                          size="1.6rem"
+                        />
+                      ) : (
+                        "Add Friend"
+                      )}
                     </Button>
                     <div>
                       <Button

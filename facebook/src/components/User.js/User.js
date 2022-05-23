@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "../navbar/navbar";
 import Posts from "./posts/Post.js";
 import About from "./about/About";
@@ -10,23 +9,34 @@ import Button from "@mui/material/Button";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import NewPosts from "./newPosts/newPosts";
-import { useState } from "react";
+import AboutPopUp from "./about/AboutPopUpcomponent/AboutPopUp";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 function User() {
-  const [page, setPage] = useState("POST");
-  const USER = useSelector((state) => state.globle.user);
-  var user;
   const navigate = useNavigate();
+
+  const [page, setPage] = useState("POST");
+  const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
+  const { USERID } = useParams();
+  const [own, setown] = useState(false);
+  var user;
   const profilePic = user ? "" : "";
   const toggleCreatePost = useSelector(
     (state) => state.globle.toggleCreatePost
   );
+  const toggleAboutPopUp = useSelector(
+    (state) => state.globle.toggleAboutPopUp
+  );
+  useEffect(() => {
+    USERID == USER.id ? setown(true) : setown(false);
+  });
   return (
     <div>
       {toggleCreatePost ? <NewPosts /> : null}
+      {toggleAboutPopUp ? <AboutPopUp /> : null}
 
       <Navbar />
       <div>
@@ -41,22 +51,24 @@ function User() {
             >
               <div style={{ border: "none", position: " relative" }}>
                 <img className="profilePic" src={contact} alt="" />
-                <div
-                  style={{
-                    position: "absolute",
-                    height: "36px",
-                    width: "36px",
-                    borderRadius: "50%",
-                    backgroundColor: "green",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    bottom: "10px",
-                    right: "10px",
-                  }}
-                >
-                  <CameraAltIcon sx={{ color: "white" }} />
-                </div>
+                {own ? (
+                  <div
+                    style={{
+                      position: "absolute",
+                      height: "36px",
+                      width: "36px",
+                      borderRadius: "50%",
+                      backgroundColor: "green",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      bottom: "10px",
+                      right: "10px",
+                    }}
+                  >
+                    <CameraAltIcon sx={{ color: "white" }} />
+                  </div>
+                ) : null}
               </div>
             </legend>
           </fieldset>
@@ -74,20 +86,32 @@ function User() {
                 float: "right",
               }}
             >
-              <Button
-                sx={{ width: "115px", height: "36px", margin: "0  7px" }}
-                variant="contained"
-              >
-                <AddCircleIcon sx={{ fontSize: 20 }} />
-                <p> Story</p>
-              </Button>
-              <Button
-                sx={{ width: "115px", height: "36px", margin: "0  7px" }}
-                variant="contained"
-              >
-                <EditIcon sx={{ fontSize: 20 }} />
-                <p>Profile</p>
-              </Button>
+              {own ? (
+                <>
+                  <Button
+                    sx={{ width: "115px", height: "36px", margin: "0  7px" }}
+                    variant="contained"
+                  >
+                    <AddCircleIcon sx={{ fontSize: 20 }} />
+                    <p> Story</p>
+                  </Button>
+                  <Button
+                    sx={{ width: "115px", height: "36px", margin: "0  7px" }}
+                    variant="contained"
+                  >
+                    <EditIcon sx={{ fontSize: 20 }} />
+                    <p>Profile</p>
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  sx={{ width: "150px", height: "36px", margin: "0  7px" }}
+                  variant="contained"
+                >
+                  <AddCircleIcon sx={{ fontSize: 20 }} />
+                  <p> Add Friend</p>
+                </Button>
+              )}
             </div>
           </div>
         </div>

@@ -6,10 +6,16 @@ import Photo from "./PostCompo/photo";
 import Friends from "./PostCompo/friends";
 import Create from "./PostCompo/create";
 import ShowPosts from "./PostCompo/showPosts";
-import PostMakre from "./PostCompo/PostMaker.js";
+import { useRef } from "react";
+import { useSelector } from "react-redux";
 function Post({ setPage }) {
+  const scrollPostRef = useRef(null);
+  const backgroundColor = useSelector(
+    (state) => state.darkLight.backgroundColor
+  );
+
   return (
-    <div className="posts">
+    <div className="posts" style={{ backgroundColor: backgroundColor }}>
       <div className="container">
         <Grid container>
           <Grid xs={12} md={6}>
@@ -32,13 +38,16 @@ function Post({ setPage }) {
               <Grid>
                 <p>
                   Privacy·Terms · Advertising · Ad Choices · Cookies · Meta ©
-                  2022{" "}
+                  2022
                 </p>
               </Grid>
             </div>
           </Grid>
           <Grid xs={12} md={6}>
-            <div>
+            <div
+              ref={scrollPostRef}
+              style={{ height: "100vh", overflowY: "auto" }}
+            >
               <Grid>
                 <div>
                   <Create />

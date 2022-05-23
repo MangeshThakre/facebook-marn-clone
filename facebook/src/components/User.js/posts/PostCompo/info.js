@@ -6,7 +6,10 @@ import CardContent from "@mui/material/CardContent";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
+import { useDispatch } from "react-redux";
+import { toggleAboutPopUp } from "../../../../redux/globleSplice.js";
 function Info() {
+  const dispatch = useDispatch();
   const [bio_button, setInfo_button] = useState(false);
   const [text_bio, setText_bio] = useState("");
   const [bio, setBio] = useState("");
@@ -67,16 +70,12 @@ function Info() {
           <h2>Intro</h2>
           <div className="InfoButtons">
             {info}
-            <button>
+            <button onClick={() => dispatch(toggleAboutPopUp(true))}>
               <p>Edit Detail</p>
             </button>
 
             <button>
-              <p>Add hobbies</p>
-            </button>
-
-            <button>
-              <p>Add Featured</p>
+              <p>Edit hobbies</p>
             </button>
           </div>
         </CardContent>

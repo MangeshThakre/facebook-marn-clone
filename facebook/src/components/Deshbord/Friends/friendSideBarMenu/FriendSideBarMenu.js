@@ -69,7 +69,7 @@ function FriendSideBarMenu() {
               </div>
 
               <div
-                classname="friends_AllFriends"
+                className="friends_AllFriends"
                 onClick={() => {
                   setHome(false);
                   setAllFriends(true);

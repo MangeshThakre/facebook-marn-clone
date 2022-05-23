@@ -74,18 +74,22 @@ function FriendsHome() {
 
   return (
     <div className="friendsHome">
-      <div className="friendsHome_friendRequest">
-        <div className="friendsHome_friendRequest_head">
-          <h3>Friend Requests</h3>
-          <p>See All</p>
-        </div>
-        <div className="FriendcardDiv">
-          {getFriendRequest.map((e) => {
-            return <Friendcard type={"request"} user={e} />;
-          })}
-        </div>
-      </div>
-      <Divider />
+      {getFriendRequest.length != 0 ? (
+        <>
+          <div className="friendsHome_friendRequest">
+            <div className="friendsHome_friendRequest_head">
+              <h3>Friend Requests</h3>
+              <p>See All</p>
+            </div>
+            <div className="FriendcardDiv">
+              {getFriendRequest.map((e) => {
+                return <Friendcard key={e._id} type={"request"} user={e} />;
+              })}
+            </div>
+          </div>
+          <Divider />
+        </>
+      ) : null}
       <div className="friendsHome_friendRequest">
         <div className="friendsHome_friendRequest_head">
           <h3>People You May Know</h3>
@@ -97,6 +101,7 @@ function FriendsHome() {
             : allUsers.map((e) => {
                 return (
                   <Friendcard
+                    key={e._id}
                     type={"suggest"}
                     friendRequests={friend_requests}
                     user={e}

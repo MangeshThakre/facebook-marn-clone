@@ -23,7 +23,7 @@ import plain from "../../image/plain.png";
 import heart from "../../image/hart.png";
 import axios from "axios";
 function AllPost({ postData }) {
-  const USER = useSelector((state) => state.globle.user);
+  const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const URL = process.env.REACT_APP_API_URL;
   const TOKEN = localStorage.getItem("TOKEN");
   const [commentText, setCommentText] = useState("");
@@ -49,7 +49,6 @@ function AllPost({ postData }) {
   useEffect(() => {
     const user_id = USER?.id;
     for (const user of postData.like_dislike) {
-      console.log(user);
       user == user_id ? setToggleLike(true) : setToggleLike(false);
     }
   }, []);
@@ -66,7 +65,7 @@ function AllPost({ postData }) {
       postId: postData._id,
     };
 
-    console.log(data);
+    // console.log(data);
     try {
       const response = await axios({
         method: "post",

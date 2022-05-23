@@ -13,12 +13,17 @@ function ShowPosts() {
   const [postDetail, setPostDetails] = useState([]);
   const [isFetchPostLoading, setIsFetchPostLoading] = useState(false);
   const URL = process.env.REACT_APP_API_URL;
-  const POSTS = useSelector((state) => state.globle.posts);
   const TOKEN = localStorage.getItem("TOKEN");
+  const POSTS = useSelector((state) => state.globle.posts);
+
   useEffect(() => {
-    setPostDetails(POSTS);
     fetchPosts();
   }, []);
+
+  useEffect(() => {
+    setPostDetails(POSTS, ...postDetail);
+  }, [POSTS]);
+ 
 
   async function fetchPosts() {
     setIsFetchPostLoading(true);

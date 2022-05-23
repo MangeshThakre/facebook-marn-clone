@@ -17,7 +17,6 @@ function Deshbord() {
   const backgroundColor = useSelector(
     (state) => state.darkLight.backgroundColor
   );
-  console.log("TOKEN", TOKEN);
 
   useEffect(() => {
     getUser();
@@ -38,6 +37,7 @@ function Deshbord() {
       const data = await response.data;
       dispatch(user(data));
       setIsLoading(false);
+      localStorage.setItem("LOCALUSER", JSON.stringify(data));
     } catch (error) {
       console.log("Error", error);
       navigate("/signin");

@@ -16,14 +16,14 @@ function Right() {
   const notification = useSelector((state) => state.icon.notification);
   const more = useSelector((state) => state.icon.more);
   const iconColor = useSelector((state) => state.darkLight.iconColor);
-  const USER = useSelector((state) => state.globle.user);
+  const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const navRight = useRef(null);
 
   return (
     <div className="navBarRight" ref={navRight}>
       <div
         onClick={(e) => {
-          navigate("/user");
+          navigate("/user/" + USER.id);
         }}
       >
         <div className="user">

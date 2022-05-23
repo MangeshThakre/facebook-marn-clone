@@ -19,6 +19,7 @@ function More() {
     useState(false);
   function handleLogOut() {
     localStorage.removeItem("TOKEN");
+    localStorage.removeItem("LOCALUSER");
     dispatch(user(null));
     navigate("/signin");
   }
