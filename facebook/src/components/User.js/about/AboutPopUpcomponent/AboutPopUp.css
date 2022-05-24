@@ -4,20 +4,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(250, 252, 252, 0.689);
+    
     z-index: 5;
     width: 100%;
 }
+
+
 
 .aboutpopupBox{
     margin-top: 30px;
     margin-bottom: 30px;
     width :700px;
     /* height:428px ; */
-    /* border-radius: 7px; */
-    /* box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px; */
+    border-radius: 7px;    
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 
 }
+
+
 
 .aboutpopup_head{
     display :flex;
@@ -46,6 +50,7 @@ justify-content: center;
 .AboutPopPuoBody{
     overflow-y: scroll;
     max-height: 60vh;
+    margin: 0 0px 0 10px;
 }
 
 .AboutPopPuoFooter{
@@ -80,7 +85,25 @@ justify-content: center;
 
    
 .AboutPopPuoBody> div{
-    margin-top: 10px;
+    margin-top: 15px;
 
 }
+.AboutPopPuoBody> div > div{
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.AboutPopPuoBody> div > div > p{
+  color: #1976d2;
+  margin-left: 10px;
+}
 
+.AboutPopPuoBody> div > div  :hover{
+    text-decoration: underline;
+  }
+
+  .AboutSwitch > div{
+      display: flex;
+      justify-content: space-between;
+  }

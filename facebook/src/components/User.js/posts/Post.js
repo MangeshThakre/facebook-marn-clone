@@ -10,12 +10,9 @@ import { useRef } from "react";
 import { useSelector } from "react-redux";
 function Post({ setPage }) {
   const scrollPostRef = useRef(null);
-  const backgroundColor = useSelector(
-    (state) => state.darkLight.backgroundColor
-  );
 
   return (
-    <div className="posts" style={{ backgroundColor: backgroundColor }}>
+    <div className="posts">
       <div className="container">
         <Grid container>
           <Grid xs={12} md={6}>

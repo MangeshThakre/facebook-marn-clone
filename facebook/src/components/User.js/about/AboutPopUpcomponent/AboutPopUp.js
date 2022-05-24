@@ -8,13 +8,19 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Button } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { height } from "@mui/system";
+import Divider from "@mui/material/Divider";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
+import EditIcon from "@mui/icons-material/Edit";
 function AboutPopUp() {
   const dispatch = useDispatch();
   return (
-    <div className="aboutComponentBody" style={{ backgroundColor: "blue" }}>
+    <div
+      className="aboutComponentBody"
+      style={{ backgroundColor: "rgba(250, 252, 252, 0.689)" }}
+    >
       <div className="aboutpopupBox">
-        <Card>
+        <Card sx={{ borderRadius: "7px" }}>
           <div className="aboutpopup_head">
             <div></div>
             <div style={{ display: "flex", justifyContent: "center" }}>
@@ -30,16 +36,20 @@ function AboutPopUp() {
               </IconButton>
             </div>
           </div>
+          <Divider />
+
           <CardContent>
             <div className="AboutPopPuoBody">
               <h3> Customize your intro</h3>
               <p>Details you select will be public.</p>
               <div>
                 <p>Work</p>
-                <AddCircleOutlineIcon
-                  sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
-                />
-                <p>add a Work Place</p>
+                <div>
+                  <AddCircleOutlineIcon
+                    sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
+                  />
+                  <p>add a Work Place</p>
+                </div>
               </div>
               <div>
                 <p>Education</p>
@@ -56,12 +66,16 @@ function AboutPopUp() {
                   <p>Add a College</p>
                 </div>
               </div>
-              <div>
+              <div className="AboutSwitch">
                 <p>Current City</p>
                 <div>
-                  <AddCircleOutlineIcon
-                    sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
+                  <FormControlLabel
+                    control={<Switch defaultChecked />}
+                    label="Single"
                   />
+                  <IconButton>
+                    <EditIcon />
+                  </IconButton>
                 </div>
               </div>
               <div>
@@ -73,24 +87,33 @@ function AboutPopUp() {
                   <p>Add hometown</p>
                 </div>
               </div>
-              <div>
+              <div className="AboutSwitch">
                 <p>Relationship</p>
                 <div>
-                  <AddCircleOutlineIcon
-                    sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
+                  <FormControlLabel
+                    control={<Switch defaultChecked />}
+                    label="Single"
                   />
+                  <IconButton>
+                    <EditIcon />
+                  </IconButton>
                 </div>
               </div>
-              <div>
+              <div className="AboutSwitch">
                 <p>Joined Facebook</p>
                 <div>
-                  <AddCircleOutlineIcon
-                    sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
+                  <FormControlLabel
+                    control={<Switch defaultChecked />}
+                    label="Single"
                   />
+                  <IconButton>
+                    <EditIcon />
+                  </IconButton>
                 </div>
               </div>
             </div>
           </CardContent>
+          <Divider />
           <CardContent>
             <div className="AboutPopPuoFooter">
               <div className="p">

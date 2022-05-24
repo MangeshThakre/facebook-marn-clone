@@ -1,0 +1,40 @@
+ 
+
+ .About{
+    margin: 0.938rem;
+ }
+
+
+
+ul{
+    list-style-type:none
+}
+
+.aboutLeftOptions  > li> div{
+    height: 31.66px;
+    display: flex;
+    align-items: center;
+    width: 287px;
+    border-radius: 5px;
+    cursor: pointer;   
+    margin-top: 8px; 
+} 
+
+
+.aboutLeftOptions  > li> div > p{
+margin-left: 6px;
+}
+
+.inActive  > div:hover{
+   background-color: #dcdada54;
+} 
+.about_right{
+    width: 600px;
+}
+
+.activeOption {
+    color: #1876f2;
+    background-color:#78b9f12e ;
+    border-radius: 5px;
+    width: 287px;
+}

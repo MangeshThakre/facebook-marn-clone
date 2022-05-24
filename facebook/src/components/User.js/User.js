@@ -14,7 +14,6 @@ import NewPosts from "./newPosts/newPosts";
 import AboutPopUp from "./about/AboutPopUpcomponent/AboutPopUp";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-
 function User() {
   const navigate = useNavigate();
 
@@ -26,6 +25,9 @@ function User() {
   const profilePic = user ? "" : "";
   const toggleCreatePost = useSelector(
     (state) => state.globle.toggleCreatePost
+  );
+  const backgroundColor = useSelector(
+    (state) => state.darkLight.backgroundColor
   );
   const toggleAboutPopUp = useSelector(
     (state) => state.globle.toggleAboutPopUp
@@ -134,7 +136,10 @@ function User() {
         </div>
       </div>
 
-      <div className="userBodydetail" style={{ marginTop: "20px" }}>
+      <div
+        className="userBodydetail"
+        style={{ marginTop: "20px", backgroundColor: backgroundColor }}
+      >
         {page === "POST" ? <Posts setPage={setPage} /> : null}
         {page === "ABOUT" ? <About /> : null}
         {page === "FRIENDS" ? <Friends /> : null}
