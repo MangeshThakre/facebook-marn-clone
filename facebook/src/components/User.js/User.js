@@ -13,10 +13,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import NewPosts from "./newPosts/newPosts";
 import AboutPopUp from "./about/AboutPopUpcomponent/AboutPopUp";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  toggleOverview,
+  toggleWorkAndEducation,
+  togglePlaceslived,
+  toggleContactBasicInformation,
+  toggleFamilyAndRelation,
+} from "../../redux/aboutPAgeSplice.js";
 function User() {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [page, setPage] = useState("POST");
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const { USERID } = useParams();
@@ -35,6 +42,7 @@ function User() {
   useEffect(() => {
     USERID == USER.id ? setown(true) : setown(false);
   });
+
   return (
     <div>
       {toggleCreatePost ? <NewPosts /> : null}

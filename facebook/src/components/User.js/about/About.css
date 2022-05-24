@@ -38,3 +38,56 @@ margin-left: 6px;
     border-radius: 5px;
     width: 287px;
 }
+
+.aboutEdit{
+    height: 95px;
+}
+
+.aboutEdit > p{
+    font-weight:bold ;
+}
+
+
+.aboutEdit > div{
+    margin-top: 20px; 
+    display: flex;
+    align-items: center;
+    color: #1876f2;
+    cursor: pointer;
+    padding-bottom: 20px;
+
+}
+.aboutEdit > div > p{
+    margin-left: 10px;
+}
+
+.aboutEdit > div :hover{
+text-decoration: underline;
+}
+
+
+
+
+.aboutStatic > div {
+    display: flex;
+   margin-top: 20px;
+   }
+   .aboutStatic > div > div >div{
+       margin-bottom: 5px;
+    margin-left: 10px;
+   }
+   .aboutStatic > div >div{
+    display: flex;
+    flex-direction: column;
+   }
+.aboutStatic > p{
+    font-weight:bold ;
+}
+.aboutStatic{
+    margin-bottom: 10px;
+}
+
+.subStaticP{
+    color: #777373;
+font-size: 12px;
+}

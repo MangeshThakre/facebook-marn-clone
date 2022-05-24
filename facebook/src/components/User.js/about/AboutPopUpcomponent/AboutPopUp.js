@@ -41,7 +41,7 @@ function AboutPopUp() {
           <CardContent>
             <div className="AboutPopPuoBody">
               <h3> Customize your intro</h3>
-              <p>Details you select will be public.</p>
+              <p className="subStaticP">Details you select will be public.</p>
               <div>
                 <p>Work</p>
                 <div>

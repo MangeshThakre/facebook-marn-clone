@@ -4,6 +4,7 @@ export const aboutSplice = createSlice({
   name: "globle",
 
   initialState: {
+    toggleOverview: true,
     toggleWorkAndEducation: false,
     togglePlaceslived: false,
     toggleContactBasicInformation: false,
@@ -11,6 +12,9 @@ export const aboutSplice = createSlice({
   },
 
   reducers: {
+    toggleOverview: (state, action) => {
+      state.toggleOverview = action.payload;
+    },
     toggleWorkAndEducation: (state, action) => {
       state.toggleWorkAndEducation = action.payload;
     },
@@ -27,6 +31,7 @@ export const aboutSplice = createSlice({
 });
 
 export const {
+  toggleOverview,
   toggleWorkAndEducation,
   togglePlaceslived,
   toggleContactBasicInformation,
