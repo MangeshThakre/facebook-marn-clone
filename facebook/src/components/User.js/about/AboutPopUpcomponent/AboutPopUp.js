@@ -12,8 +12,17 @@ import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import EditIcon from "@mui/icons-material/Edit";
+import { setAboutOption } from "../../../../redux/aboutPAgeSplice.js";
+import { setPage } from "../../../../redux/userSplice.js";
+
 function AboutPopUp() {
   const dispatch = useDispatch();
+
+  function setAboutOption_(option) {
+    dispatch(setAboutOption(option));
+    dispatch(setPage("ABOUT"));
+    dispatch(toggleAboutPopUp(false));
+  }
   return (
     <div
       className="aboutComponentBody"
@@ -44,7 +53,7 @@ function AboutPopUp() {
               <p className="subStaticP">Details you select will be public.</p>
               <div>
                 <p>Work</p>
-                <div>
+                <div onClick={() => setAboutOption_("WorkAndEducation")}>
                   <AddCircleOutlineIcon
                     sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
                   />
@@ -53,13 +62,17 @@ function AboutPopUp() {
               </div>
               <div>
                 <p>Education</p>
-                <div>
+                <div
+                  onClick={() => {
+                    setAboutOption_("WorkAndEducation");
+                  }}
+                >
                   <AddCircleOutlineIcon
                     sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
                   />
                   <p>Add a high school</p>
                 </div>
-                <div>
+                <div onClick={() => setAboutOption_("WorkAndEducation")}>
                   <AddCircleOutlineIcon
                     sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
                   />
@@ -80,7 +93,7 @@ function AboutPopUp() {
               </div>
               <div>
                 <p>Hometown</p>
-                <div>
+                <div onClick={() => setAboutOption_("Placeslived")}>
                   <AddCircleOutlineIcon
                     sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
                   />
@@ -116,12 +129,24 @@ function AboutPopUp() {
           <Divider />
           <CardContent>
             <div className="AboutPopPuoFooter">
-              <div className="p">
+              <div
+                className="p"
+                onClick={() => {
+                  setAboutOption_("Overview");
+                }}
+              >
                 <p>Update Your Information</p>
               </div>
               <div>
                 <div>
-                  <Button variant="contained">Cancle</Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      dispatch(toggleAboutPopUp(false));
+                    }}
+                  >
+                    Cancle
+                  </Button>
                 </div>
                 <Button variant="contained">Save</Button>
               </div>

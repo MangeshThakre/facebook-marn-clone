@@ -9,6 +9,8 @@ const userSchema = new Schema({
   profilePic: { type: String },
   password: { type: String, require: true },
   DOB: { type: Date },
+  currentCity: { type: Object },
+  homeTown: { type: Object },
 });
 
 const userModel = mongoose.model("userSchema", userSchema);

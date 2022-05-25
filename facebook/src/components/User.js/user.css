@@ -42,12 +42,14 @@
 }
 
 .userBodyNav{
+
     width: 100%;
     display: flex;
     justify-content: center;
 }
 
-.userBodyNav > div{
+.userBodyNav > div {
+  padding-top: 5px;    
     width: 875px;
     border-top: solid #c5c7c9 1px;
     height: 54px;
@@ -55,7 +57,7 @@
     justify-content: space-evenly;
 }
 
-.userBodyNav > div > li{
+.userBodyNav > div > li {
     margin: 3px;
    width: 71.6px;
    display: flex;
@@ -65,19 +67,27 @@
    cursor: pointer;
 }
 
-.userBodyNav > div > :hover{
-    background-color: #e4e6eb24;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.__active{
+.activePage{
     color: #1976d2;
     border-bottom: solid #1976d2 ;
 }
-.__active  :hover{
-    background-color: none;
+
+
+
+.inactivePage   :hover{
+    background-color: #dcdada54;
+    cursor: pointer;
+    border-radius: 5px;
+   width: 100%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
 }
+
+
+
+
 .userBodydetail{
 display: flex; 
  justify-content: center; 

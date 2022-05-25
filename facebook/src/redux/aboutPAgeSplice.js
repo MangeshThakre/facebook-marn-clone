@@ -4,38 +4,16 @@ export const aboutSplice = createSlice({
   name: "globle",
 
   initialState: {
-    toggleOverview: true,
-    toggleWorkAndEducation: false,
-    togglePlaceslived: false,
-    toggleContactBasicInformation: false,
-    toggleFamilyAndRelation: false,
+    setAboutOption: "Overview",
   },
 
   reducers: {
-    toggleOverview: (state, action) => {
-      state.toggleOverview = action.payload;
-    },
-    toggleWorkAndEducation: (state, action) => {
-      state.toggleWorkAndEducation = action.payload;
-    },
-    togglePlaceslived: (state, action) => {
-      state.togglePlaceslived = action.payload;
-    },
-    toggleContactBasicInformation: (state, action) => {
-      state.toggleContactBasicInformation = action.payload;
-    },
-    toggleFamilyAndRelation: (state, action) => {
-      state.toggleFamilyAndRelation = action.payload;
+    setAboutOption: (state, action) => {
+      state.setAboutOption = action.payload;
     },
   },
 });
 
-export const {
-  toggleOverview,
-  toggleWorkAndEducation,
-  togglePlaceslived,
-  toggleContactBasicInformation,
-  toggleFamilyAndRelation,
-} = aboutSplice.actions;
+export const { setAboutOption } = aboutSplice.actions;
 
 export default aboutSplice.reducer;

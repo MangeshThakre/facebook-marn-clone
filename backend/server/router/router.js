@@ -62,6 +62,8 @@ router.get(
   controller.confirm_friend_request
 );
 
+router.get("/about_info_", Authorization, controller.about_info);
+
 
 function Authorization(req, res, next) {
   const authHeader = req.headers["authorization"];

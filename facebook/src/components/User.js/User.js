@@ -12,21 +12,16 @@ import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { useNavigate, useParams } from "react-router-dom";
 import NewPosts from "./newPosts/newPosts";
 import AboutPopUp from "./about/AboutPopUpcomponent/AboutPopUp";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  toggleOverview,
-  toggleWorkAndEducation,
-  togglePlaceslived,
-  toggleContactBasicInformation,
-  toggleFamilyAndRelation,
-} from "../../redux/aboutPAgeSplice.js";
+import { setPage } from "../../redux/userSplice.js";
 function User() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [page, setPage] = useState("POST");
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const { USERID } = useParams();
+  const page = useSelector((state) => state.user.setPage);
+  const userNavRef = useRef();
   const [own, setown] = useState(false);
   var user;
   const profilePic = user ? "" : "";
@@ -42,6 +37,20 @@ function User() {
   useEffect(() => {
     USERID == USER.id ? setown(true) : setown(false);
   });
+
+  useEffect(() => {
+    const options = userNavRef.current.childNodes;
+
+    for (const li of options) {
+      const [className, isActive] = li.className.split(" ");
+      li.className = "";
+      if (className == page) {
+        li.className = className + " activePage";
+      } else {
+        li.className = className + " inactivePage";
+      }
+    }
+  }, [page]);
 
   return (
     <div>
@@ -126,19 +135,38 @@ function User() {
           </div>
         </div>
         <div className="userBodyNav">
-          <div>
-            <li className="posts __active" onClick={() => setPage("POST")}>
-              <p>Posts</p>
+          <div ref={userNavRef}>
+            <li
+              className="POST activePage"
+              onClick={() => dispatch(setPage("POST"))}
+            >
+              <div>
+                <p>Posts</p>
+              </div>
             </li>
-
-            <li className="About" onClick={() => setPage("ABOUT")}>
-              <p>About</p>
+            <li
+              className="ABOUT inactivePage"
+              onClick={() => dispatch(setPage("ABOUT"))}
+            >
+              <div>
+                <p>About</p>
+              </div>
             </li>
-            <li className="Friends" onClick={() => setPage("FRIENDS")}>
-              <p>Friends</p>
+            <li
+              className="FRIENDS inactivePage"
+              onClick={() => dispatch(setPage("FRIENDS"))}
+            >
+              <div>
+                <p>Friends</p>
+              </div>
             </li>
-            <li className="Photos" onClick={() => setPage("PHOTOS")}>
-              <p> Photos</p>
+            <li
+              className="PHOTOS  inactivePage"
+              onClick={() => dispatch(setPage("PHOTOS"))}
+            >
+              <div>
+                <p> Photos</p>
+              </div>
             </li>
           </div>
         </div>

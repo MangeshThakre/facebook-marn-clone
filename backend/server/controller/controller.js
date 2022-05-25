@@ -5,6 +5,7 @@ import frendRequestModel from "../schema/friendRequestSchema.js";
 import friendsModel from "../schema/friendsSchema.js";
 import jsonwebtoken from "jsonwebtoken";
 import dotenv from "dotenv";
+import { request } from "express";
 
 dotenv.config();
 class controller {
@@ -300,6 +301,28 @@ class controller {
     } catch (error) {
       console.log("Error confirm_friend_request:", error);
       res.json({ status: 500 });
+    }
+  }
+
+  static async about_info(req, res) {
+    const user_id = req.user.id;
+    const currentCity = req.query?.CurrentCity;
+    const homeTown = req.query?.Hometown;
+    try {
+      if (currentCity) {
+        const response = await userModel.findByIdAndUpdate(user_id, {
+          currentCity: { currentCity, type: "public" },
+        });
+        await res.json(response);
+      } else {
+        const response = await userModel.findByIdAndUpdate(user_id, {
+          homeTown: { homeTown, type: "public" },
+        });
+
+        await res.json(response);
+      }
+    } catch (error) {
+      console.log("abourInfo Error", error);
     }
   }
 }
