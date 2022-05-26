@@ -5,27 +5,36 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import PublicIcon from "@mui/icons-material/Public";
-import "./aboutOptions.css";
-import { useState, useEffect } from "react";
+import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import {
+  togglseConformDeletePopup,
+  deleteItem,
+} from "../../../../redux/aboutPAgeSplice.js";
+import { Card, CardContent } from "@mui/material";
+import { useState, useEffect } from "react";
 import { currentCity, homeTown } from "../../../../redux/userSplice";
-import Input from "@mui/material/Input";
+import { useSelector, useDispatch } from "react-redux";
+import "./aboutOptions.css";
 const URL = process.env.REACT_APP_API_URL;
 const TOKEN = localStorage.getItem("TOKEN");
 
 export function PlaceLived({ close, type }) {
   const dispatch = useDispatch();
   const CURRENTCITY = useSelector((state) => state.user.currentCity);
-  const HOMETOWN = useSelector((state) => state.user.currentCity);
+  const HOMETOWN = useSelector((state) => state.user.homeTown);
   var [place, setPlace] = useState("");
 
+  console.log(type);
+
   useEffect(() => {
-    if (Object.keys(CURRENTCITY).length != 0) {
+    if (Object.keys(CURRENTCITY).length != 0 && type == "CurrentCity") {
       const { city, type } = CURRENTCITY;
       setPlace(city);
     }
-    if (Object.keys(HOMETOWN).length != 0) {
+    if ((Object.keys(HOMETOWN).length != 0) & (type == "homeTown")) {
       const { city, type } = HOMETOWN;
       setPlace(city);
     }
@@ -67,7 +76,9 @@ export function PlaceLived({ close, type }) {
       </div>
       <Divider />
       <div id="PlaceLivedBottom">
-        <Button variant="contained">public</Button>
+        <Button variant="contained">
+          <PublicIcon />
+        </Button>
         <div>
           <Button variant="contained" onClick={() => close(false)}>
             Cancle
@@ -166,7 +177,8 @@ export function AddStudiedAt({ close }) {
   );
 }
 
-export function AddCurrentCity({ obj, Citytype, open }) {
+export function ShowCity({ obj, Citytype, open }) {
+  const [toggleDeleteEdit, setToggleDeleteEdit] = useState(false);
   const { city, type } = obj;
   return (
     <>
@@ -177,11 +189,44 @@ export function AddCurrentCity({ obj, Citytype, open }) {
         </div>
         <div className="listRight">
           <PublicIcon />
-          <IconButton onClick={() => open(true)}>
+          <IconButton onClick={() => setToggleDeleteEdit(!toggleDeleteEdit)}>
             <MoreHorizIcon />
           </IconButton>
+          {toggleDeleteEdit ? DeleteEditPopup(open, Citytype) : null}
         </div>
       </div>
     </>
   );
 }
+
+function DeleteEditPopup(Toggle, type) {
+  const { USERID } = useParams();
+  const dispatch = useDispatch();
+  console.log(type);
+  return (
+    <div className="DeleteEditPopup">
+      <Card>
+        <CardContent>
+          <div className="DeleteEditPopupBody">
+            <div onClick={() => Toggle(true)}>
+              <ModeEditOutlinedIcon />
+              <p>edit {type}</p>
+            </div>
+            <div
+              onClick={() => {
+                dispatch(togglseConformDeletePopup(true));
+                dispatch(deleteItem(type));
+              }}
+            >
+              <DeleteOutlinedIcon />
+              <p>Delete {type}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+
+ 

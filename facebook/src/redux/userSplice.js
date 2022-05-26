@@ -5,8 +5,8 @@ export const userSplice = createSlice({
 
   initialState: {
     userDetail: null,
-    homeTown: { city: "", type: "" },
-    currentCity: { city: "", type: "" },
+    homeTown: {},
+    currentCity: {},
     setPage: "POST",
   },
 
@@ -15,10 +15,14 @@ export const userSplice = createSlice({
       state.userDetail = action.payload;
     },
     homeTown: (state, action) => {
-      state.homeTown = action.payload;
+      action.payload
+        ? (state.homeTown = action.payload)
+        : (state.homeTown = {});
     },
     currentCity: (state, action) => {
-      state.currentCity = action.payload;
+      action.payload
+        ? (state.currentCity = action.payload)
+        : (state.currentCity = {});
     },
     setPage: (state, action) => {
       state.setPage = action.payload;

@@ -4,7 +4,6 @@ import About from "./about/About";
 import Photos from "./photos/Photos";
 import Friends from "./friends/Friends";
 import NewPosts from "./newPosts/newPosts";
-import AboutPopUp from "./about/AboutPopUpcomponent/AboutPopUp";
 import contact from "../../image/contact.png";
 import Button from "@mui/material/Button";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -12,10 +11,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import axios from "axios";
 import { setPage } from "../../redux/userSplice.js";
+import {
+  ConfirmDeletPopup,
+  AboutPopUp,
+} from "./about/AboutPopUpcomponent/AboutPopUp.js";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect, useRef } from "react";
 import { userDetail, currentCity, homeTown } from "../../redux/userSplice.js";
+
 import "./user.css";
 
 function User() {
@@ -38,6 +42,9 @@ function User() {
 
   const toggleAboutPopUp = useSelector(
     (state) => state.globle.toggleAboutPopUp
+  );
+  const togglseConformDeletePopup = useSelector(
+    (state) => state.about.togglseConformDeletePopup
   );
   var user;
   const profilePic = user ? "" : "";
@@ -84,6 +91,7 @@ function User() {
     <div>
       {toggleCreatePost ? <NewPosts /> : null}
       {toggleAboutPopUp ? <AboutPopUp /> : null}
+      {togglseConformDeletePopup ? <ConfirmDeletPopup /> : null}
 
       <Navbar />
       <div>

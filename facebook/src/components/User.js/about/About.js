@@ -5,23 +5,27 @@ import CallIcon from "@mui/icons-material/Call";
 import CakeIcon from "@mui/icons-material/Cake";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PersonIcon from "@mui/icons-material/Person";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Card } from "@mui/material";
 import { CardContent } from "@mui/material";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setAboutOption } from "../../../redux/aboutPAgeSplice.js";
+import { useParams } from "react-router-dom";
+
 import {
   PlaceLived,
   Familymembers,
   AddWorkPlace,
   AddStudiedAt,
-  AddCurrentCity,
+  ShowCity,
 } from "./AboutAssOptions/aboutOptions.js";
 import "./About.css";
 
 function About() {
   const dispatch = useDispatch();
+  const { USERID } = useParams();
   const aboutLeftOptionsRef = useRef(null);
   const bottomViewRef = useRef(null);
   const [toggleCurrentCity, setToggleCurrentCity] = useState(false);
@@ -118,55 +122,82 @@ function About() {
   }
 
   function Placeslived() {
-    const addCurrentCity =
-      Object.keys(CURRENTCITY).length === 0 ? (
-        <div
-          className="aboutEditDiv"
-          onClick={() => setToggleCurrentCity(true)}
-        >
-          <AddCircleOutlineIcon />
-          <p>Add Current City</p>
-        </div>
-      ) : (
-        <AddCurrentCity
-          obj={CURRENTCITY}
-          Citytype={"current City"}
-          open={setToggleCurrentCity}
-        />
-      );
+    const showCurrentCity = (
+      <div className="aboutEditDiv" onClick={() => setToggleCurrentCity(true)}>
+        <AddCircleOutlineIcon />
+        <p>Add Current City</p>
+      </div>
+    );
 
-    const addHomeTown =
-      Object.keys(HOMETOWN).length === 0 ? (
-        <div
-          className="aboutEditDiv"
-          onClick={() => setToggleAddHometown(true)}
-        >
-          <AddCircleOutlineIcon />
-          <p>Add hometown</p>
-        </div>
-      ) : (
-        <AddCurrentCity
-          obj={HOMETOWN}
-          Citytype={"homeTown"}
-          open={setToggleAddHometown}
-        />
-      );
+    const showEditCurrentCity = (
+      <ShowCity
+        obj={CURRENTCITY}
+        Citytype={"current City"}
+        open={setToggleCurrentCity}
+      />
+    );
+
+    const noCurrentCity = (
+      <div className="notEdit" onClick={() => setToggleCurrentCity(true)}>
+        <LocationOnIcon />
+        <p> Current City not Added</p>
+      </div>
+    );
+
+    const showHomeTown = (
+      <div className="aboutEditDiv" onClick={() => setToggleAddHometown(true)}>
+        <AddCircleOutlineIcon />
+        <p>Add hometown</p>
+      </div>
+    );
+
+    const showEditHomeTown = (
+      <ShowCity
+        obj={HOMETOWN}
+        Citytype={"homeTown"}
+        open={setToggleAddHometown}
+      />
+    );
+
+    const noHometown = (
+      <div className="notEdit" onClick={() => setToggleCurrentCity(true)}>
+        <LocationOnIcon />
+        <p> Home Town not Added</p>
+      </div>
+    );
+
+    function addCurrentCity() {
+      if (USERID == USER.id) {
+        if (toggleCurrentCity) {
+          return (
+            <PlaceLived close={setToggleCurrentCity} type={"CurrentCity"} />
+          );
+        } else if (Object.keys(CURRENTCITY).length === 0) {
+          return showCurrentCity;
+        } else return showEditCurrentCity;
+      } else if (Object.keys(CURRENTCITY).length === 0) {
+        console.log(CURRENTCITY);
+        return noCurrentCity;
+      } else return showEditCurrentCity;
+    }
+
+    function addHomeTown() {
+      if (USERID == USER.id) {
+        if (toggleAddHometown) {
+          return <PlaceLived close={setToggleAddHometown} type={"Hometown"} />;
+        } else if (Object.keys(HOMETOWN).length === 0) {
+          return showHomeTown;
+        } else return showEditHomeTown;
+      } else if (Object.keys(HOMETOWN).length === 0) {
+        return noHometown;
+      } else return showEditHomeTown;
+    }
 
     return (
       <div className="aboutEdit">
         <p>Places lived</p>
-
-        {toggleCurrentCity ? (
-          <PlaceLived close={setToggleCurrentCity} type={"CurrentCity"} />
-        ) : (
-          addCurrentCity
-        )}
-
-        {toggleAddHometown ? (
-          <PlaceLived close={setToggleAddHometown} type={"Hometown"} />
-        ) : (
-          addHomeTown
-        )}
+        {addCurrentCity()}
+        {addHomeTown()}
       </div>
     );
   }

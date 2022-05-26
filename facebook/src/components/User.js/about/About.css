@@ -89,3 +89,10 @@ text-decoration: underline;
     color: #777373;
 font-size: 12px;
 }
+
+.notEdit{    
+    margin-top: 20px; 
+    display: flex;
+    align-items: center;
+    padding-bottom: 20px;
+}

@@ -42,8 +42,29 @@ display: flex;
 .listRight{
     display: flex;
 align-items: center;
+position: relative;
 }
 
 .pHeading{
     font-weight: bold;
+}
+
+.DeleteEditPopup{
+    position:absolute;
+    right: 0;
+    top: 41px;
+    z-index: 2;
+width: 344px;
+box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+}
+
+.DeleteEditPopupBody >div{
+    display: flex;
+    align-items: center;
+    height: 36px;
+    cursor: pointer;
+}
+.DeleteEditPopupBody > div > p{
+    margin-left: 10px;
 }

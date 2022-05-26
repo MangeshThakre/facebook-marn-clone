@@ -310,6 +310,7 @@ class controller {
     const user_id = req.query.user;
     try {
       const response = await userModel.findById(user_id, { password: 0 });
+       console.log(response);
       res.json(response);
     } catch (error) {
       console.log("get_about_info Error :", error);
@@ -337,5 +338,25 @@ class controller {
       console.log("abourInfo Error", error);
     }
   }
+
+ static async remove(req,res){
+   const user_id =req.user.id
+   const  type = req.body.type
+   try {
+     if (type == "homeTown"){
+       await userModel.findByIdAndUpdate(user_id    ,{ $unset: { homeTown: {} } })
+       res.json("deleted") 
+      }
+     if(type =="current City"){
+      await userModel.findByIdAndUpdate(user_id    ,{ $unset: { currentCity: {} } })
+       res.json("deleted") 
+    }
+   } catch (error) {
+     console.log("remove Error: " ,error)
+   } 
+ }
+
+
+
 }
 export default controller;

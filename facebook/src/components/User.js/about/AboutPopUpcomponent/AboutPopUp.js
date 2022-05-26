@@ -1,21 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../AboutPopUpcomponent/AboutPopUp.css";
 import Card from "@mui/material/Card";
-import { useDispatch } from "react-redux";
-import { toggleAboutPopUp } from "../../../../redux/globleSplice.js";
-import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Button } from "@mui/material";
-import CardContent from "@mui/material/CardContent";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import EditIcon from "@mui/icons-material/Edit";
+import Divider from "@mui/material/Divider";
+import CardContent from "@mui/material/CardContent";
+import axios from "axios";
+import { Button } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { togglseConformDeletePopup } from "../../../../redux/aboutPAgeSplice.js";
+import { toggleAboutPopUp } from "../../../../redux/globleSplice.js";
+import { IconButton } from "@mui/material";
+import { currentCity, homeTown } from "../../../../redux/userSplice.js";
 import { setAboutOption } from "../../../../redux/aboutPAgeSplice.js";
 import { setPage } from "../../../../redux/userSplice.js";
 
-function AboutPopUp() {
+export function AboutPopUp() {
   const dispatch = useDispatch();
 
   function setAboutOption_(option) {
@@ -135,7 +139,7 @@ function AboutPopUp() {
                   setAboutOption_("Overview");
                 }}
               >
-                <p>Update Your Information</p>
+                {/* <p>Update Your Information</p> */}
               </div>
               <div>
                 <div>
@@ -158,4 +162,84 @@ function AboutPopUp() {
   );
 }
 
-export default AboutPopUp;
+export function ConfirmDeletPopup() {
+  const dispatch = useDispatch();
+  const TOKEN = localStorage.getItem("TOKEN");
+  const URL = process.env.REACT_APP_API_URL;
+  const type = useSelector((state) => state.about.deleteItem);
+
+  async function remove() {
+    try {
+      const response = await axios({
+        method: "post",
+        url: URL + "/api/remove",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        data: { type },
+      });
+      const data = await response.data;
+      console.log(data);
+      if (data == "deleted") {
+        if (type == "homeTown") dispatch(homeTown({}));
+        if (type == "current City") dispatch(currentCity({}));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  return (
+    <div
+      className="aboutComponentBody"
+      style={{ backgroundColor: "rgba(250, 252, 252, 0.689)" }}
+    >
+      <div className="aboutpopupBox">
+        <Card sx={{ borderRadius: "7px" }}>
+          <div className="aboutpopup_head">
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <h3>Are you Sure?</h3>
+            </div>
+            <div className="aboutpopup_close">
+              <IconButton
+                onClick={() => {
+                  dispatch(togglseConformDeletePopup(false));
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div>
+          </div>
+
+          <Divider />
+          <CardContent>
+            <div>
+              <p>Are you sure you want to remove this from your profile?</p>
+            </div>
+          </CardContent>
+
+          <CardContent>
+            <div className="AboutPopPuoFooter">
+              <div></div>
+              <div>
+                <div>
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      dispatch(togglseConformDeletePopup(false));
+                    }}
+                  >
+                    Cancle
+                  </Button>
+                </div>
+                <Button onClick={() => remove()} variant="contained">
+                  Delete
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
