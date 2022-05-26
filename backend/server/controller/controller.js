@@ -5,7 +5,7 @@ import frendRequestModel from "../schema/friendRequestSchema.js";
 import friendsModel from "../schema/friendsSchema.js";
 import jsonwebtoken from "jsonwebtoken";
 import dotenv from "dotenv";
-import { request } from "express";
+import { request, response } from "express";
 
 dotenv.config();
 class controller {
@@ -43,6 +43,8 @@ class controller {
         phoneNo,
         password,
         DOB,
+        homeTown: {},
+        currentCity: {},
       });
       const result = await saveUserInfo.save();
       console.log(result);
@@ -304,6 +306,16 @@ class controller {
     }
   }
 
+  static async get_about_info(req, res) {
+    const user_id = req.query.user;
+    try {
+      const response = await userModel.findById(user_id, { password: 0 });
+      res.json(response);
+    } catch (error) {
+      console.log("get_about_info Error :", error);
+    }
+  }
+
   static async about_info(req, res) {
     const user_id = req.user.id;
     const currentCity = req.query?.CurrentCity;
@@ -311,12 +323,12 @@ class controller {
     try {
       if (currentCity) {
         const response = await userModel.findByIdAndUpdate(user_id, {
-          currentCity: { currentCity, type: "public" },
+          currentCity: { city: currentCity, type: "public" },
         });
         await res.json(response);
       } else {
         const response = await userModel.findByIdAndUpdate(user_id, {
-          homeTown: { homeTown, type: "public" },
+          homeTown: { city: homeTown, type: "public" },
         });
 
         await res.json(response);

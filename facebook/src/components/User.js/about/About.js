@@ -5,25 +5,23 @@ import CallIcon from "@mui/icons-material/Call";
 import CakeIcon from "@mui/icons-material/Cake";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PersonIcon from "@mui/icons-material/Person";
-import axios from "axios";
 import { Card } from "@mui/material";
 import { CardContent } from "@mui/material";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { setAboutOption } from "../../../redux/aboutPAgeSplice.js";
 import {
   PlaceLived,
   Familymembers,
   AddWorkPlace,
   AddStudiedAt,
+  AddCurrentCity,
 } from "./AboutAssOptions/aboutOptions.js";
 import "./About.css";
 
 function About() {
   const dispatch = useDispatch();
-  const { USERID } = useParams();
   const aboutLeftOptionsRef = useRef(null);
   const bottomViewRef = useRef(null);
   const [toggleCurrentCity, setToggleCurrentCity] = useState(false);
@@ -33,28 +31,14 @@ function About() {
   const [toggleStudiedAt, setToggleStudiedAt] = useState(false);
   const [toggleSchool, setTogglseSchool] = useState(false);
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
-  const TOKEN = localStorage.getItem("TOKEN");
   const setAboutOption_ = useSelector((state) => state.about.setAboutOption);
-  const URL = process.env.REACT_APP_API_URL;
+  const HOMETOWN = useSelector((state) => state.user.homeTown);
+  const CURRENTCITY = useSelector((state) => state.user.currentCity);
   const birthDay = new Date(USER.DOB).toLocaleDateString("en-us", {
     day: "numeric",
     month: "long",
   });
   const BirthYear = new Date(USER.DOB).getFullYear();
-
-  useEffect(() => {
-    async function getAboutInfo() {
-      try {
-        const Response = await axios({
-          menthod: "get",
-          url: URL + "get_about_info",
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getAboutInfo();
-  }, []);
 
   useEffect(() => {
     const options = aboutLeftOptionsRef.current.childNodes;
@@ -91,7 +75,10 @@ function About() {
           {toggleWorkPlace ? (
             <AddWorkPlace setTogglseWorkPlace={setTogglseWorkPlace} />
           ) : (
-            <div onClick={() => setTogglseWorkPlace(true)}>
+            <div
+              className="aboutEditDiv"
+              onClick={() => setTogglseWorkPlace(true)}
+            >
               <AddCircleOutlineIcon />
               <p>Add a Work Space</p>
             </div>
@@ -102,7 +89,10 @@ function About() {
           {toggleStudiedAt ? (
             <AddStudiedAt close={setToggleStudiedAt} />
           ) : (
-            <div onClick={() => setToggleStudiedAt(true)}>
+            <div
+              className="aboutEditDiv"
+              onClick={() => setToggleStudiedAt(true)}
+            >
               <AddCircleOutlineIcon />
               <p>Add a College</p>
             </div>
@@ -114,7 +104,10 @@ function About() {
           {toggleSchool ? (
             <AddStudiedAt close={setTogglseSchool} />
           ) : (
-            <div onClick={() => setTogglseSchool(true)}>
+            <div
+              className="aboutEditDiv"
+              onClick={() => setTogglseSchool(true)}
+            >
               <AddCircleOutlineIcon />
               <p>Add a high school</p>
             </div>
@@ -125,25 +118,54 @@ function About() {
   }
 
   function Placeslived() {
+    const addCurrentCity =
+      Object.keys(CURRENTCITY).length === 0 ? (
+        <div
+          className="aboutEditDiv"
+          onClick={() => setToggleCurrentCity(true)}
+        >
+          <AddCircleOutlineIcon />
+          <p>Add Current City</p>
+        </div>
+      ) : (
+        <AddCurrentCity
+          obj={CURRENTCITY}
+          Citytype={"current City"}
+          open={setToggleCurrentCity}
+        />
+      );
+
+    const addHomeTown =
+      Object.keys(HOMETOWN).length === 0 ? (
+        <div
+          className="aboutEditDiv"
+          onClick={() => setToggleAddHometown(true)}
+        >
+          <AddCircleOutlineIcon />
+          <p>Add hometown</p>
+        </div>
+      ) : (
+        <AddCurrentCity
+          obj={HOMETOWN}
+          Citytype={"homeTown"}
+          open={setToggleAddHometown}
+        />
+      );
+
     return (
       <div className="aboutEdit">
         <p>Places lived</p>
+
         {toggleCurrentCity ? (
           <PlaceLived close={setToggleCurrentCity} type={"CurrentCity"} />
         ) : (
-          <div onClick={() => setToggleCurrentCity(true)}>
-            <AddCircleOutlineIcon />
-            <p>Add Current City</p>
-          </div>
+          addCurrentCity
         )}
 
         {toggleAddHometown ? (
           <PlaceLived close={setToggleAddHometown} type={"Hometown"} />
         ) : (
-          <div onClick={() => setToggleAddHometown(true)}>
-            <AddCircleOutlineIcon />
-            <p>Add hometown</p>
-          </div>
+          addHomeTown
         )}
       </div>
     );
@@ -213,7 +235,10 @@ function About() {
           {togglefamilyMember ? (
             <Familymembers setTogglefamilyMember={setTogglefamilyMember} />
           ) : (
-            <div onClick={() => setTogglefamilyMember(true)}>
+            <div
+              className="aboutEditDiv"
+              onClick={() => setTogglefamilyMember(true)}
+            >
               <AddCircleOutlineIcon />
               <p>Add a family member</p>
             </div>

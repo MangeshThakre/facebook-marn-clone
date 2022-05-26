@@ -62,6 +62,8 @@ router.get(
   controller.confirm_friend_request
 );
 
+router.get("/get_about_info", Authorization, controller.get_about_info);
+
 router.get("/about_info_", Authorization, controller.about_info);
 
 

@@ -46,7 +46,7 @@ margin-left: 6px;
 }
 
 
-.aboutEdit > div{
+.aboutEdit > .aboutEditDiv{
     margin-top: 20px; 
     display: flex;
     align-items: center;
@@ -55,11 +55,11 @@ margin-left: 6px;
     padding-bottom: 20px;
 
 }
-.aboutEdit > div > p{
+.aboutEdit > .aboutEditDiv > p{
     margin-left: 10px;
 }
 
-.aboutEdit > div :hover{
+.aboutEdit > .aboutEditDiv :hover{
 text-decoration: underline;
 }
 

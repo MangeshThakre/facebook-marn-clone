@@ -26,3 +26,24 @@ display: flex;
 #PlaceLivedBottom > div > button {
     margin-right: 5px;
     }
+
+.Editordiv{
+    margin-top: 20px;
+}
+
+
+.list{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0 0 10px;
+}    
+
+.listRight{
+    display: flex;
+align-items: center;
+}
+
+.pHeading{
+    font-weight: bold;
+}

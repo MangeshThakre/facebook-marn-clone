@@ -3,37 +3,44 @@ import Posts from "./posts/Post.js";
 import About from "./about/About";
 import Photos from "./photos/Photos";
 import Friends from "./friends/Friends";
-import "./user.css";
+import NewPosts from "./newPosts/newPosts";
+import AboutPopUp from "./about/AboutPopUpcomponent/AboutPopUp";
 import contact from "../../image/contact.png";
 import Button from "@mui/material/Button";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import { useNavigate, useParams } from "react-router-dom";
-import NewPosts from "./newPosts/newPosts";
-import AboutPopUp from "./about/AboutPopUpcomponent/AboutPopUp";
-import { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 import { setPage } from "../../redux/userSplice.js";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect, useRef } from "react";
+import { userDetail, currentCity, homeTown } from "../../redux/userSplice.js";
+import "./user.css";
+
 function User() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
-  const { USERID } = useParams();
-  const page = useSelector((state) => state.user.setPage);
   const userNavRef = useRef();
+  const { USERID } = useParams();
   const [own, setown] = useState(false);
-  var user;
-  const profilePic = user ? "" : "";
+  const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
+  const TOKEN = localStorage.getItem("TOKEN");
+  const URL = process.env.REACT_APP_API_URL;
+  const page = useSelector((state) => state.user.setPage);
   const toggleCreatePost = useSelector(
     (state) => state.globle.toggleCreatePost
   );
+
   const backgroundColor = useSelector(
     (state) => state.darkLight.backgroundColor
   );
+
   const toggleAboutPopUp = useSelector(
     (state) => state.globle.toggleAboutPopUp
   );
+  var user;
+  const profilePic = user ? "" : "";
   useEffect(() => {
     USERID == USER.id ? setown(true) : setown(false);
   });
@@ -52,6 +59,27 @@ function User() {
     }
   }, [page]);
 
+  useEffect(() => {
+    async function getAboutInfo() {
+      try {
+        const response = await axios({
+          method: "get",
+          url: URL + "/api/get_about_info?user=" + USERID,
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${TOKEN}`,
+          },
+        });
+        const data = await response.data;
+        dispatch(currentCity(data.currentCity));
+        dispatch(homeTown(data.homeTown));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getAboutInfo();
+  }, []);
+
   return (
     <div>
       {toggleCreatePost ? <NewPosts /> : null}
@@ -61,10 +89,6 @@ function User() {
       <div>
         <div className="profileBackground">
           <fieldset className="profile" style={{ position: "relative" }}>
-            {/* <img
-            src="https://www.lambdatest.com/blog/wp-content/uploads/2021/07/ezgif.com-gif-maker-25.gif"
-            alt=""
-          /> */}
             <legend
               style={{ position: "absolute", bottom: "-80px", left: "30px" }}
             >
