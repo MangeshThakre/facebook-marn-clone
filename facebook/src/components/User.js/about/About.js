@@ -6,6 +6,8 @@ import CakeIcon from "@mui/icons-material/Cake";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PersonIcon from "@mui/icons-material/Person";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import WorkIcon from "@mui/icons-material/Work";
+import SchoolIcon from "@mui/icons-material/School";
 import { Card } from "@mui/material";
 import { CardContent } from "@mui/material";
 import { useRef, useState } from "react";
@@ -30,14 +32,15 @@ function About() {
   const bottomViewRef = useRef(null);
   const [toggleCurrentCity, setToggleCurrentCity] = useState(false);
   const [toggleAddHometown, setToggleAddHometown] = useState(false);
-  const [togglefamilyMember, setTogglefamilyMember] = useState(false);
   const [toggleWorkPlace, setTogglseWorkPlace] = useState(false);
+  const [togglefamilyMember, setTogglefamilyMember] = useState(false);
   const [toggleStudiedAt, setToggleStudiedAt] = useState(false);
   const [toggleSchool, setTogglseSchool] = useState(false);
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const setAboutOption_ = useSelector((state) => state.about.setAboutOption);
   const HOMETOWN = useSelector((state) => state.user.homeTown);
   const CURRENTCITY = useSelector((state) => state.user.currentCity);
+  const WORKPLACE = useSelector((state) => state.user.workPlace);
   const birthDay = new Date(USER.DOB).toLocaleDateString("en-us", {
     day: "numeric",
     month: "long",
@@ -71,12 +74,46 @@ function About() {
   }
 
   function WorkAndEducation() {
+    const showWorkPlaceEdit = (
+      <div className="aboutEditDiv" onClick={() => setTogglseWorkPlace(true)}>
+        <AddCircleOutlineIcon />
+        <p>Add a Work Space</p>
+      </div>
+    );
+    const showWorkPlaceList = {};
+
+    function showNotAdded(type) {
+      if (type == "workplace") {
+        return (
+          <div className="notEdit" onClick={() => setTogglseWorkPlace(true)}>
+            <WorkIcon />
+            <p> {type} not Added</p>
+          </div>
+        );
+      }
+    }
+    function showEditor(type) {
+      if (type == "workplace")
+        return <AddWorkPlace setTogglseWorkPlace={setTogglseWorkPlace} />;
+    }
+
+    function WorkPlace() {
+      if (USERID == USER.id) {
+        if (toggleWorkPlace) {
+          return showEditor("workplace");
+        } else if (WORKPLACE.length == 0) {
+          return showWorkPlaceEdit, showWorkPlaceList;
+        } else return showWorkPlaceEdit;
+      } else if (WORKPLACE.length == 0) {
+        return showNotAdded("workplace");
+      } else return showWorkPlaceList;
+    }
     return (
       <>
         <div className="aboutEdit">
           <p>Work</p>
 
-          {toggleWorkPlace ? (
+          {/* {toggleWorkPlace ? (
             <AddWorkPlace setTogglseWorkPlace={setTogglseWorkPlace} />
           ) : (
             <div
@@ -86,7 +123,8 @@ function About() {
               <AddCircleOutlineIcon />
               <p>Add a Work Space</p>
             </div>
-          )}
+          )} */}
+          {WorkPlace()}
         </div>
         <div className="aboutEdit">
           <p>College</p>

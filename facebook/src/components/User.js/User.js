@@ -18,7 +18,12 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect, useRef } from "react";
-import { userDetail, currentCity, homeTown } from "../../redux/userSplice.js";
+import {
+  userDetail,
+  currentCity,
+  workPlace,
+  homeTown,
+} from "../../redux/userSplice.js";
 
 import "./user.css";
 
@@ -80,6 +85,7 @@ function User() {
         const data = await response.data;
         dispatch(currentCity(data.currentCity));
         dispatch(homeTown(data.homeTown));
+        dispatch(workPlace(data.workPlace));
       } catch (error) {
         console.log(error);
       }

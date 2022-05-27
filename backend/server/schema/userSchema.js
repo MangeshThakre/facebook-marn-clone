@@ -11,6 +11,7 @@ const userSchema = new Schema({
   DOB: { type: Date },
   currentCity: { type: Object },
   homeTown: { type: Object },
+  workPlace: { type: Array },
 });
 
 const userModel = mongoose.model("userSchema", userSchema);

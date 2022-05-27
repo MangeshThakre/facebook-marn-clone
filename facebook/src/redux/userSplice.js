@@ -7,6 +7,7 @@ export const userSplice = createSlice({
     userDetail: null,
     homeTown: {},
     currentCity: {},
+    workPlace: [],
     setPage: "POST",
   },
 
@@ -24,13 +25,18 @@ export const userSplice = createSlice({
         ? (state.currentCity = action.payload)
         : (state.currentCity = {});
     },
+    workPlace: (state, action) => {
+      action.payload
+        ? (state.workPlace = action.payload)
+        : (state.workPlace = []);
+    },
     setPage: (state, action) => {
       state.setPage = action.payload;
     },
   },
 });
 
-export const { setPage, currentCity, homeTown, userDetail } =
+export const { setPage, currentCity, homeTown, userDetail, workPlace } =
   userSplice.actions;
 
 export default userSplice.reducer;

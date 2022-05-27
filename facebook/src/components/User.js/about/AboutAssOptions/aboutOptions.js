@@ -129,11 +129,23 @@ export function Familymembers({ setTogglefamilyMember }) {
 
 export function AddWorkPlace({ setTogglseWorkPlace }) {
   return (
-    <>
+    <div className="Editordiv">
       <div id="PlaceLivedTop">
-        <TextField id="outlined-basic" label="company" variant="outlined" />{" "}
-        <TextField id="outlined-basic" label="Position" variant="outlined" />{" "}
-        <TextField id="Description" label="Description" variant="outlined" />
+        <TextField
+          id="formatted-numberformat-input"
+          label="company"
+          variant="outlined"
+        />
+        <TextField
+          id="formatted-numberformat-input"
+          label="company"
+          variant="outlined"
+        />
+        <TextField
+          id="formatted-numberformat-input"
+          label="company"
+          variant="outlined"
+        />
       </div>
       <Divider />
       <div id="PlaceLivedBottom">
@@ -150,7 +162,7 @@ export function AddWorkPlace({ setTogglseWorkPlace }) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -180,6 +192,7 @@ export function AddStudiedAt({ close }) {
 export function ShowCity({ obj, Citytype, open }) {
   const [toggleDeleteEdit, setToggleDeleteEdit] = useState(false);
   const { city, type } = obj;
+
   return (
     <>
       <div className="list">
@@ -200,9 +213,7 @@ export function ShowCity({ obj, Citytype, open }) {
 }
 
 function DeleteEditPopup(Toggle, type) {
-  const { USERID } = useParams();
   const dispatch = useDispatch();
-  console.log(type);
   return (
     <div className="DeleteEditPopup">
       <Card>

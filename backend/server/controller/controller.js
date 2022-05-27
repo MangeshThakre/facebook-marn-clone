@@ -45,6 +45,7 @@ class controller {
         DOB,
         homeTown: {},
         currentCity: {},
+        workPlace: [],
       });
       const result = await saveUserInfo.save();
       console.log(result);
