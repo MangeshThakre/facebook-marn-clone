@@ -12,6 +12,8 @@ const userSchema = new Schema({
   currentCity: { type: Object },
   homeTown: { type: Object },
   workPlace: { type: Array },
+  college: { type: Array },
+  school: { type: Array },
 });
 
 const userModel = mongoose.model("userSchema", userSchema);

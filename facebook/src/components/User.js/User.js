@@ -23,6 +23,8 @@ import {
   currentCity,
   workPlace,
   homeTown,
+  college,
+  school,
 } from "../../redux/userSplice.js";
 
 import "./user.css";
@@ -86,6 +88,8 @@ function User() {
         dispatch(currentCity(data.currentCity));
         dispatch(homeTown(data.homeTown));
         dispatch(workPlace(data.workPlace));
+        dispatch(college(data.college));
+        dispatch(school(data.school));
       } catch (error) {
         console.log(error);
       }

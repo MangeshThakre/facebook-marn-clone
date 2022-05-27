@@ -12,235 +12,273 @@ import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import { Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { togglseConformDeletePopup } from "../../../../redux/aboutPAgeSplice.js";
+import {
+  togglseConformDeletePopup,
+  deleteItem,
+  indexNo,
+} from "../../../../redux/aboutPAgeSplice.js";
 import { toggleAboutPopUp } from "../../../../redux/globleSplice.js";
 import { IconButton } from "@mui/material";
-import { currentCity, homeTown } from "../../../../redux/userSplice.js";
-  import { setAboutOption } from "../../../../redux/aboutPAgeSplice.js";
-  import { setPage } from "../../../../redux/userSplice.js";
+import {
+  currentCity,
+  homeTown,
+  workPlace,
+  college,
+  school,
+} from "../../../../redux/userSplice.js";
+import { setAboutOption } from "../../../../redux/aboutPAgeSplice.js";
+import { setPage } from "../../../../redux/userSplice.js";
 
-  export function AboutPopUp() {
-    const dispatch = useDispatch();
+export function AboutPopUp() {
+  const dispatch = useDispatch();
 
-    function setAboutOption_(option) {
-      dispatch(setAboutOption(option));
-      dispatch(setPage("ABOUT"));
-      dispatch(toggleAboutPopUp(false));
-    }
-    return (
-      <div
-        className="aboutComponentBody"
-        style={{ backgroundColor: "rgba(250, 252, 252, 0.689)" }}
-      >
-        <div className="aboutpopupBox">
-          <Card sx={{ borderRadius: "7px" }}>
-            <div className="aboutpopup_head">
-              <div></div>
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <h3>Create Post</h3>
+  function setAboutOption_(option) {
+    dispatch(setAboutOption(option));
+    dispatch(setPage("ABOUT"));
+    dispatch(toggleAboutPopUp(false));
+  }
+  return (
+    <div
+      className="aboutComponentBody"
+      style={{ backgroundColor: "rgba(250, 252, 252, 0.689)" }}
+    >
+      <div className="aboutpopupBox">
+        <Card sx={{ borderRadius: "7px" }}>
+          <div className="aboutpopup_head">
+            <div></div>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <h3>Create Post</h3>
+            </div>
+            <div className="aboutpopup_close">
+              <IconButton
+                onClick={() => {
+                  dispatch(toggleAboutPopUp(false));
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div>
+          </div>
+          <Divider />
+
+          <CardContent>
+            <div className="AboutPopPuoBody">
+              <h3> Customize your intro</h3>
+              <p className="subStaticP">Details you select will be public.</p>
+              <div>
+                <p>Work</p>
+                <div onClick={() => setAboutOption_("WorkAndEducation")}>
+                  <AddCircleOutlineIcon
+                    sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
+                  />
+                  <p>add a Work Place</p>
+                </div>
               </div>
-              <div className="aboutpopup_close">
-                <IconButton
+              <div>
+                <p>Education</p>
+                <div
                   onClick={() => {
-                    dispatch(toggleAboutPopUp(false));
+                    setAboutOption_("WorkAndEducation");
                   }}
                 >
-                  <CloseIcon />
-                </IconButton>
+                  <AddCircleOutlineIcon
+                    sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
+                  />
+                  <p>Add a high school</p>
+                </div>
+                <div onClick={() => setAboutOption_("WorkAndEducation")}>
+                  <AddCircleOutlineIcon
+                    sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
+                  />
+                  <p>Add a College</p>
+                </div>
+              </div>
+              <div className="AboutSwitch">
+                <p>Current City</p>
+                <div>
+                  <FormControlLabel
+                    control={<Switch defaultChecked />}
+                    label="Single"
+                  />
+                  <IconButton>
+                    <EditIcon />
+                  </IconButton>
+                </div>
+              </div>
+              <div>
+                <p>Hometown</p>
+                <div onClick={() => setAboutOption_("Placeslived")}>
+                  <AddCircleOutlineIcon
+                    sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
+                  />
+                  <p>Add hometown</p>
+                </div>
+              </div>
+              <div className="AboutSwitch">
+                <p>Relationship</p>
+                <div>
+                  <FormControlLabel
+                    control={<Switch defaultChecked />}
+                    label="Single"
+                  />
+                  <IconButton>
+                    <EditIcon />
+                  </IconButton>
+                </div>
+              </div>
+              <div className="AboutSwitch">
+                <p>Joined Facebook</p>
+                <div>
+                  <FormControlLabel
+                    control={<Switch defaultChecked />}
+                    label="Single"
+                  />
+                  <IconButton>
+                    <EditIcon />
+                  </IconButton>
+                </div>
               </div>
             </div>
-            <Divider />
-
-            <CardContent>
-              <div className="AboutPopPuoBody">
-                <h3> Customize your intro</h3>
-                <p className="subStaticP">Details you select will be public.</p>
+          </CardContent>
+          <Divider />
+          <CardContent>
+            <div className="AboutPopPuoFooter">
+              <div
+                className="p"
+                onClick={() => {
+                  setAboutOption_("Overview");
+                }}
+              >
+                {/* <p>Update Your Information</p> */}
+              </div>
+              <div>
                 <div>
-                  <p>Work</p>
-                  <div onClick={() => setAboutOption_("WorkAndEducation")}>
-                    <AddCircleOutlineIcon
-                      sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
-                    />
-                    <p>add a Work Place</p>
-                  </div>
-                </div>
-                <div>
-                  <p>Education</p>
-                  <div
+                  <Button
+                    variant="contained"
                     onClick={() => {
-                      setAboutOption_("WorkAndEducation");
+                      dispatch(toggleAboutPopUp(false));
                     }}
                   >
-                    <AddCircleOutlineIcon
-                      sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
-                    />
-                    <p>Add a high school</p>
-                  </div>
-                  <div onClick={() => setAboutOption_("WorkAndEducation")}>
-                    <AddCircleOutlineIcon
-                      sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
-                    />
-                    <p>Add a College</p>
-                  </div>
-                </div>
-                <div className="AboutSwitch">
-                  <p>Current City</p>
-                  <div>
-                    <FormControlLabel
-                      control={<Switch defaultChecked />}
-                      label="Single"
-                    />
-                    <IconButton>
-                      <EditIcon />
-                    </IconButton>
-                  </div>
-                </div>
-                <div>
-                  <p>Hometown</p>
-                  <div onClick={() => setAboutOption_("Placeslived")}>
-                    <AddCircleOutlineIcon
-                      sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
-                    />
-                    <p>Add hometown</p>
-                  </div>
-                </div>
-                <div className="AboutSwitch">
-                  <p>Relationship</p>
-                  <div>
-                    <FormControlLabel
-                      control={<Switch defaultChecked />}
-                      label="Single"
-                    />
-                    <IconButton>
-                      <EditIcon />
-                    </IconButton>
-                  </div>
-                </div>
-                <div className="AboutSwitch">
-                  <p>Joined Facebook</p>
-                  <div>
-                    <FormControlLabel
-                      control={<Switch defaultChecked />}
-                      label="Single"
-                    />
-                    <IconButton>
-                      <EditIcon />
-                    </IconButton>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-            <Divider />
-            <CardContent>
-              <div className="AboutPopPuoFooter">
-                <div
-                  className="p"
-                  onClick={() => {
-                    setAboutOption_("Overview");
-                  }}
-                >
-                  {/* <p>Update Your Information</p> */}
-                </div>
-                <div>
-                  <div>
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        dispatch(toggleAboutPopUp(false));
-                      }}
-                    >
-                      Cancle
-                    </Button>
-                  </div>
-                  <Button variant="contained">Save</Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
-  export function ConfirmDeletPopup() {
-    const dispatch = useDispatch();
-    const TOKEN = localStorage.getItem("TOKEN");
-    const URL = process.env.REACT_APP_API_URL;
-    const type = useSelector((state) => state.about.deleteItem);
-
-    async function remove() {
-      try {
-        const response = await axios({
-          method: "post",
-          url: URL + "/api/remove",
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${TOKEN}`,
-          },
-          data: { type },
-        });
-        const data = await response.data;
-        console.log(data);
-        if (data == "deleted") {
-          if (type == "homeTown") dispatch(homeTown({}));
-          if (type == "current City") dispatch(currentCity({}));
-        }
-        dispatch(togglseConformDeletePopup(false));
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    return (
-      <div
-        className="aboutComponentBody"
-        style={{ backgroundColor: "rgba(250, 252, 252, 0.689)" }}
-      >
-        <div className="aboutpopupBox">
-          <Card sx={{ borderRadius: "7px" }}>
-            <div className="aboutpopup_head">
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <h3>Are you Sure?</h3>
-              </div>
-              <div className="aboutpopup_close">
-                <IconButton
-                  onClick={() => {
-                    dispatch(togglseConformDeletePopup(false));
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-              </div>
-            </div>
-
-            <Divider />
-            <CardContent>
-              <div>
-                <p>Are you sure you want to remove this from your profile?</p>
-              </div>
-            </CardContent>
-
-            <CardContent>
-              <div className="AboutPopPuoFooter">
-                <div></div>
-                <div>
-                  <div>
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        dispatch(togglseConformDeletePopup(false));
-                      }}
-                    >
-                      Cancle
-                    </Button>
-                  </div>
-                  <Button onClick={() => remove()} variant="contained">
-                    Delete
+                    Cancle
                   </Button>
                 </div>
+                <Button variant="contained">Save</Button>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
-    );
+    </div>
+  );
+}
+
+export function ConfirmDeletPopup() {
+  const dispatch = useDispatch();
+  const TOKEN = localStorage.getItem("TOKEN");
+  const URL = process.env.REACT_APP_API_URL;
+  const type = useSelector((state) => state.about.deleteItem);
+  const INDEXNO = useSelector((state) => state.about.indexNo);
+  const WORKPLACE = useSelector((state) => state.user.workPlace);
+  const COLLEGE = useSelector((state) => state.user.college);
+  const SCHOOL = useSelector((state) => state.user.school);
+  console.log(type);
+  async function remove() {
+    try {
+      const response = await axios({
+        method: "post",
+        url: URL + "/api/remove",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        data: { type, indexNo: INDEXNO },
+      });
+      const data = await response.data;
+      console.log(data);
+      if (data == "deleted") {
+        if (type == "homeTown") dispatch(homeTown({}));
+        if (type == "current City") dispatch(currentCity({}));
+        if (type == "workplace") {
+          var newWorkPlace = [];
+          WORKPLACE.forEach((e, i) => {
+            if (i != INDEXNO) newWorkPlace.push(e);
+          });
+          dispatch(workPlace(newWorkPlace));
+        }
+        if (type == "college") {
+          var newWorkPlace = [];
+          COLLEGE.forEach((e, i) => {
+            if (i != INDEXNO) newWorkPlace.push(e);
+          });
+          dispatch(college(newWorkPlace));
+        }
+        if (type == "school") {
+          var newWorkPlace = [];
+          SCHOOL.forEach((e, i) => {
+            if (i != INDEXNO) newWorkPlace.push(e);
+          });
+          dispatch(school(newWorkPlace));
+        }
+      }
+      dispatch(togglseConformDeletePopup(false));
+      dispatch(deleteItem(""));
+    } catch (error) {
+      console.log(error);
+    }
   }
+  return (
+    <div
+      className="aboutComponentBody"
+      style={{ backgroundColor: "rgba(250, 252, 252, 0.689)" }}
+    >
+      <div className="aboutpopupBox">
+        <Card sx={{ borderRadius: "7px" }}>
+          <div className="aboutpopup_head">
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <h3>Are you Sure?</h3>
+            </div>
+            <div className="aboutpopup_close">
+              <IconButton
+                onClick={() => {
+                  dispatch(togglseConformDeletePopup(false));
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div>
+          </div>
+
+          <Divider />
+          <CardContent>
+            <div>
+              <p>Are you sure you want to remove this from your profile?</p>
+            </div>
+          </CardContent>
+
+          <CardContent>
+            <div className="AboutPopPuoFooter">
+              <div></div>
+              <div>
+                <div>
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      dispatch(togglseConformDeletePopup(false));
+                      dispatch(deleteItem(""));
+                      dispatch(indexNo(""));
+                    }}
+                  >
+                    Cancle
+                  </Button>
+                </div>
+                <Button onClick={() => remove()} variant="contained">
+                  Delete
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}

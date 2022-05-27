@@ -22,6 +22,8 @@ import {
   AddWorkPlace,
   AddStudiedAt,
   ShowCity,
+  ShowWorkEduList,
+  ShowCollegeSchoollist,
 } from "./AboutAssOptions/aboutOptions.js";
 import "./About.css";
 
@@ -34,13 +36,16 @@ function About() {
   const [toggleAddHometown, setToggleAddHometown] = useState(false);
   const [toggleWorkPlace, setTogglseWorkPlace] = useState(false);
   const [togglefamilyMember, setTogglefamilyMember] = useState(false);
-  const [toggleStudiedAt, setToggleStudiedAt] = useState(false);
+  const [toggleCollege, setTogglecollege] = useState(false);
   const [toggleSchool, setTogglseSchool] = useState(false);
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const setAboutOption_ = useSelector((state) => state.about.setAboutOption);
   const HOMETOWN = useSelector((state) => state.user.homeTown);
   const CURRENTCITY = useSelector((state) => state.user.currentCity);
   const WORKPLACE = useSelector((state) => state.user.workPlace);
+  const COLLEGE = useSelector((state) => state.user.college);
+  const SCHOOL = useSelector((state) => state.user.school);
+
   const birthDay = new Date(USER.DOB).toLocaleDateString("en-us", {
     day: "numeric",
     month: "long",
@@ -74,27 +79,132 @@ function About() {
   }
 
   function WorkAndEducation() {
-    const showWorkPlaceEdit = (
-      <div className="aboutEditDiv" onClick={() => setTogglseWorkPlace(true)}>
-        <AddCircleOutlineIcon />
-        <p>Add a Work Space</p>
-      </div>
-    );
-    const showWorkPlaceList = {};
+    function showEdit(type) {
+      if (type == "workplace") {
+        return (
+          <div
+            className="aboutEditDiv"
+            onClick={() => setTogglseWorkPlace(true)}
+          >
+            <AddCircleOutlineIcon />
+            <p>Add a Workplce</p>
+          </div>
+        );
+      }
+      if (type == "college") {
+        return (
+          <div className="aboutEditDiv" onClick={() => setTogglecollege(true)}>
+            <AddCircleOutlineIcon />
+            <p>Add a College</p>
+          </div>
+        );
+      }
+      if (type == "school") {
+        return (
+          <div className="aboutEditDiv" onClick={() => setTogglseSchool(true)}>
+            <AddCircleOutlineIcon />
+            <p>Add a high school</p>
+          </div>
+        );
+      }
+    }
+
+    function showWorkPlaceList() {
+      return (
+        <>
+          {WORKPLACE.map((obj, i) => {
+            return (
+              <ShowWorkEduList
+                key={i}
+                obj={obj}
+                itemType={"workplace"}
+                indexNo={i}
+                open={setTogglseWorkPlace}
+              />
+            );
+          })}
+        </>
+      );
+    }
+
+    function showCollegeList() {
+      return (
+        <>
+          {COLLEGE.map((obj, i) => {
+            return (
+              <ShowCollegeSchoollist
+                key={i}
+                obj={obj}
+                itemType={"college"}
+                indexNo={i}
+                open={setTogglecollege}
+              />
+            );
+          })}
+        </>
+      );
+    }
+
+    function showSchoolList() {
+      return (
+        <>
+          {SCHOOL.map((obj, i) => {
+            return (
+              <ShowCollegeSchoollist
+                key={i}
+                obj={obj}
+                itemType={"school"}
+                indexNo={i}
+                open={setTogglseSchool}
+              />
+            );
+          })}
+        </>
+      );
+    }
 
     function showNotAdded(type) {
       if (type == "workplace") {
         return (
-          <div className="notEdit" onClick={() => setTogglseWorkPlace(true)}>
+          <div className="notEdit">
             <WorkIcon />
             <p> {type} not Added</p>
           </div>
         );
       }
+      if (type == "college") {
+        return (
+          <div className="notEdit">
+            <SchoolIcon />
+            <p> {type} not Added</p>
+          </div>
+        );
+      }
+      if (type == "school") {
+        return (
+          <div className="notEdit">
+            <SchoolIcon />
+            <p> {type} not Added</p>
+          </div>
+        );
+      }
     }
+
     function showEditor(type) {
-      if (type == "workplace")
-        return <AddWorkPlace setTogglseWorkPlace={setTogglseWorkPlace} />;
+      if (type == "workplace") {
+        return (
+          <AddWorkPlace
+            setTogglseWorkPlace={setTogglseWorkPlace}
+            type={"workplace"}
+          />
+        );
+      }
+
+      if (type == "college")
+        return <AddStudiedAt close={setTogglecollege} type={"college"} />;
+
+      if (type == "school")
+        return <AddStudiedAt close={setTogglseSchool} type={"school"} />;
     }
 
     function WorkPlace() {
@@ -102,58 +212,71 @@ function About() {
         if (toggleWorkPlace) {
           return showEditor("workplace");
         } else if (WORKPLACE.length == 0) {
-          return showWorkPlaceEdit, showWorkPlaceList;
-        } else return showWorkPlaceEdit;
+          return showEdit("workplace");
+        } else {
+          return (
+            <>
+              {showEdit("workplace")}
+              {showWorkPlaceList()}
+            </>
+          );
+        }
       } else if (WORKPLACE.length == 0) {
         return showNotAdded("workplace");
-      } else return showWorkPlaceList;
+      } else return showWorkPlaceList();
     }
+
+    function college() {
+      if (USERID == USER.id) {
+        if (toggleCollege) {
+          return showEditor("college");
+        } else if (COLLEGE.length == 0) {
+          return showEdit("college");
+        } else {
+          return (
+            <>
+              {showEdit("college")}
+              {showCollegeList()}
+            </>
+          );
+        }
+      } else if (COLLEGE.length == 0) {
+        return showNotAdded("college");
+      } else return showWorkPlaceList();
+    }
+
+    function school() {
+      if (USERID == USER.id) {
+        if (toggleSchool) {
+          return showEditor("school");
+        } else if (SCHOOL.length == 0) {
+          return showEdit("school");
+        } else {
+          return (
+            <>
+              {showEdit("school")}
+              {showSchoolList()}
+            </>
+          );
+        }
+      } else if (SCHOOL.length == 0) {
+        return showNotAdded("school");
+      } else return showWorkPlaceList();
+    }
+
     return (
       <>
         <div className="aboutEdit">
           <p>Work</p>
-
-          {/* {toggleWorkPlace ? (
-            <AddWorkPlace setTogglseWorkPlace={setTogglseWorkPlace} />
-          ) : (
-            <div
-              className="aboutEditDiv"
-              onClick={() => setTogglseWorkPlace(true)}
-            >
-              <AddCircleOutlineIcon />
-              <p>Add a Work Space</p>
-            </div>
-          )} */}
           {WorkPlace()}
         </div>
         <div className="aboutEdit">
           <p>College</p>
-          {toggleStudiedAt ? (
-            <AddStudiedAt close={setToggleStudiedAt} />
-          ) : (
-            <div
-              className="aboutEditDiv"
-              onClick={() => setToggleStudiedAt(true)}
-            >
-              <AddCircleOutlineIcon />
-              <p>Add a College</p>
-            </div>
-          )}
+          {college()}
         </div>
         <div className="aboutEdit">
           <p>High School</p>
-
-          {toggleSchool ? (
-            <AddStudiedAt close={setTogglseSchool} />
-          ) : (
-            <div
-              className="aboutEditDiv"
-              onClick={() => setTogglseSchool(true)}
-            >
-              <AddCircleOutlineIcon />
-              <p>Add a high school</p>
-            </div>
-          )}
+          {school()}
         </div>
       </>
     );
@@ -214,7 +337,6 @@ function About() {
           return showCurrentCity;
         } else return showEditCurrentCity;
       } else if (Object.keys(CURRENTCITY).length === 0) {
-        console.log(CURRENTCITY);
         return noCurrentCity;
       } else return showEditCurrentCity;
     }
@@ -386,6 +508,7 @@ function About() {
                 {setAboutOption_ == "ContactBasicInformation"
                   ? ContactBasicInformation()
                   : null}
+                <div style={{ height: "100px" }}></div>
               </div>
             </CardContent>
           </Grid>

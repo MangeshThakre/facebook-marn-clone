@@ -5,7 +5,6 @@ import frendRequestModel from "../schema/friendRequestSchema.js";
 import friendsModel from "../schema/friendsSchema.js";
 import jsonwebtoken from "jsonwebtoken";
 import dotenv from "dotenv";
-import { request, response } from "express";
 
 dotenv.config();
 class controller {
@@ -311,7 +310,7 @@ class controller {
     const user_id = req.query.user;
     try {
       const response = await userModel.findById(user_id, { password: 0 });
-       console.log(response);
+      console.log(response);
       res.json(response);
     } catch (error) {
       console.log("get_about_info Error :", error);
@@ -322,6 +321,7 @@ class controller {
     const user_id = req.user.id;
     const currentCity = req.query?.CurrentCity;
     const homeTown = req.query?.Hometown;
+
     try {
       if (currentCity) {
         const response = await userModel.findByIdAndUpdate(user_id, {
@@ -340,24 +340,99 @@ class controller {
     }
   }
 
- static async remove(req,res){
-   const user_id =req.user.id
-   const  type = req.body.type
-   try {
-     if (type == "homeTown"){
-       await userModel.findByIdAndUpdate(user_id    ,{ $unset: { homeTown: {} } })
-       res.json("deleted") 
+  static async remove(req, res) {
+    const user_id = req.user.id;
+    const type = req.body.type;
+    const indexNo = req.body.indexNo;
+    try {
+      if (type == "homeTown") {
+        await userModel.findByIdAndUpdate(user_id, {
+          $unset: { homeTown: {} },
+        });
+        res.json("deleted");
       }
-     if(type =="current City"){
-      await userModel.findByIdAndUpdate(user_id    ,{ $unset: { currentCity: {} } })
-       res.json("deleted") 
+      if (type == "current City") {
+        await userModel.findByIdAndUpdate(user_id, {
+          $unset: { currentCity: {} },
+        });
+        res.json("deleted");
+      }
+      if (type == "workplace") {
+        const { _id, workPlace } = await userModel
+          .findById(user_id)
+          .select("workPlace");
+
+        var newWorkPlace = [];
+        workPlace.forEach((e, i) => {
+          if (i != indexNo) newWorkPlace.push(e);
+        });
+        await userModel.findByIdAndUpdate(user_id, {
+          workPlace: newWorkPlace,
+        });
+        res.json("deleted");
+      }
+      if (type == "college") {
+        const { _id, college } = await userModel
+          .findById(user_id)
+          .select("college");
+
+        var newcollege = [];
+        college.forEach((e, i) => {
+          if (i != indexNo) newcollege.push(e);
+        });
+        await userModel.findByIdAndUpdate(user_id, {
+          college: newcollege,
+        });
+        res.json("deleted");
+      }
+      console.log(type);
+      if (type == "school") {
+        const { _id, school } = await userModel
+          .findById(user_id)
+          .select("college");
+
+        var newcollege = [];
+        school.forEach((e, i) => {
+          if (i != indexNo) newcollege.push(e);
+        });
+        await userModel.findByIdAndUpdate(user_id, {
+          school: newcollege,
+        });
+        res.json("deleted");
+      }
+    } catch (error) {
+      console.log("remove Error: ", error);
     }
-   } catch (error) {
-     console.log("remove Error: " ,error)
-   } 
- }
+  }
 
-
-
+  static async about_info_workPlace(req, res) {
+    const user_id = req.user.id;
+    const list_arr = req.body.newData;
+    const type = req.body.type;
+    console.log(type);
+    try {
+      if (type == "college") {
+        await userModel.findByIdAndUpdate(user_id, {
+          college: list_arr,
+        });
+        res.json("updated");
+      }
+      if (type == "workPlace") {
+        await userModel.findByIdAndUpdate(user_id, {
+          workPlace: list_arr,
+        });
+        res.json("updated");
+      }
+      if (type == "school") {
+        await userModel.findByIdAndUpdate(user_id, {
+          school: list_arr,
+        });
+        res.json("updated");
+      }
+    } catch (error) {
+      console.log("about_info_workPlace Error", error);
+      res.json({ status: 500 });
+    }
+  }
 }
 export default controller;

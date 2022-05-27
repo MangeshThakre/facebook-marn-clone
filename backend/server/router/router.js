@@ -68,6 +68,13 @@ router.get("/about_info_", Authorization, controller.about_info);
 
 router.post("/remove", Authorization, controller.remove);
 
+router.post(
+  "/about_info_workPlace",
+  Authorization,
+  controller.about_info_workPlace
+);
+
+
 function Authorization(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader.split(" ")[1];
