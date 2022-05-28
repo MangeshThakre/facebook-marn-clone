@@ -42,9 +42,7 @@ class controller {
         phoneNo,
         password,
         DOB,
-        homeTown: {},
-        currentCity: {},
-        workPlace: [],
+        created_at: new Date(),
       });
       const result = await saveUserInfo.save();
       console.log(result);
@@ -115,6 +113,7 @@ class controller {
         phoneNo: response.phoneNo,
         email: response.email,
         DOB: response.DOB,
+        created_at: response.created_at,
       });
     } catch (error) {
       console.log("error:", error);
@@ -156,6 +155,31 @@ class controller {
       res.json({
         status: 500,
       });
+    }
+  }
+
+  static async getFriendsPost(req, res) {
+    const user_id = req.user.id;
+    try {
+      const response = await friendsModel.aggregate([
+        { $match: { user_id: user_id } },
+        // { $project: { friendObjId: { $toObjectId: "$friend_id" } } },
+        {
+          $lookup: {
+            from: "postschemas",
+            localField: "friend_id",
+            foreignField: "user_id",
+            as: "postDetail",
+          },
+        },
+      ]);
+      var friendPosts = [];
+      for (const user of response) {
+        user.postDetail.forEach((e) => friendPosts.push(e));
+      }
+      res.json(friendPosts);
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -385,7 +409,6 @@ class controller {
         });
         res.json("deleted");
       }
-      console.log(type);
       if (type == "school") {
         const { _id, school } = await userModel
           .findById(user_id)
@@ -400,6 +423,20 @@ class controller {
         });
         res.json("deleted");
       }
+      if (type == "familyMember") {
+        const { _id, familyMember } = await userModel
+          .findById(user_id)
+          .select("familyMember");
+
+        var newfamilyMember = [];
+        familyMember.forEach((e, i) => {
+          if (i != indexNo) newfamilyMember.push(e);
+        });
+        await userModel.findByIdAndUpdate(user_id, {
+          familyMember: newfamilyMember,
+        });
+        res.json("deleted");
+      }
     } catch (error) {
       console.log("remove Error: ", error);
     }
@@ -409,7 +446,6 @@ class controller {
     const user_id = req.user.id;
     const list_arr = req.body.newData;
     const type = req.body.type;
-    console.log(type);
     try {
       if (type == "college") {
         await userModel.findByIdAndUpdate(user_id, {
@@ -427,6 +463,13 @@ class controller {
         await userModel.findByIdAndUpdate(user_id, {
           school: list_arr,
         });
+        res.json("updated");
+      }
+      if (type == "familyMember") {
+        await userModel.findByIdAndUpdate(user_id, {
+          familyMember: list_arr,
+        });
+        console.log(list_arr);
         res.json("updated");
       }
     } catch (error) {

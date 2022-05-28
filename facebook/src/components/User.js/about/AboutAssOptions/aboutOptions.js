@@ -14,6 +14,8 @@ import DatePicker from "react-date-picker";
 import FormHelperText from "@mui/material/FormHelperText";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import HomeIcon from "@mui/icons-material/Home";
+import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
+
 import SchoolIcon from "@mui/icons-material/School";
 import { useParams } from "react-router-dom";
 import {
@@ -30,6 +32,7 @@ import {
   workPlace,
   college,
   school,
+  familyMember,
 } from "../../../../redux/userSplice";
 import { useSelector, useDispatch } from "react-redux";
 import "./aboutOptions.css";
@@ -112,34 +115,159 @@ export function PlaceLived({ close, type }) {
   );
 }
 
-export function Familymembers({ setTogglefamilyMember }) {
+export function Familymembers({ setTogglefamilyMember, type }) {
+  const dispatch = useDispatch();
+  const FAMILYMEMBER = useSelector((state) => state.user.familyMember);
+  const [member, setMamber] = useState("");
+  const [relation, setRelation] = useState("");
+  const INDEXNO = useSelector((state) => state.about.indexNo);
+  const SELECTEDITEM = useSelector((state) => state.about.deleteItem);
+  const [update, setUpdate] = useState(false);
+  var familyMemberObj = {};
+  useEffect(() => {
+    if (SELECTEDITEM == "familyMember") {
+      familyMemberObj = FAMILYMEMBER[INDEXNO];
+      setMamber(familyMemberObj.member);
+      setRelation(familyMemberObj.relation);
+      setUpdate(true);
+    }
+  }, []);
+
+  async function save() {
+    const obj = {
+      member,
+      relation,
+    };
+
+    var newdata = [];
+    if (update) {
+      FAMILYMEMBER.forEach((e, i) => {
+        if (i == INDEXNO) {
+          newdata.push(obj);
+        } else {
+          newdata.push(e);
+        }
+      });
+    } else {
+      newdata = [...FAMILYMEMBER, obj];
+    }
+
+    console.log(newdata);
+
+    try {
+      const response = await axios({
+        method: "post",
+        url: URL + "/api/about_info_workPlace",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        data: { newData: newdata, type },
+      });
+      const data = response.data;
+      if (data == "updated") {
+        dispatch(familyMember(newdata));
+        setTogglefamilyMember(false);
+      }
+      dispatch(deleteItem(""));
+      dispatch(indexNo(""));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="Editordiv">
       <div id="PlaceLivedTop">
         <TextField
-          id="outlined-basic"
-          label="Family members"
+          label="family Member"
+          value={member}
+          onChange={(e) => setMamber(e.target.value)}
+          name="numberformat"
+          id="formatted-numberformat-input"
+          variant="outlined"
+        />
+        <TextField
+          label="Relation"
+          value={relation}
+          onChange={(e) => setRelation(e.target.value)}
+          name="numberformat"
+          id="formatted-numberformat-input"
           variant="outlined"
         />
       </div>
       <Divider />
       <div id="PlaceLivedBottom">
-        <Button variant="contained">public</Button>
+        <Button variant="contained">
+          <PublicIcon />
+        </Button>
         <div>
           <Button
             variant="contained"
-            onClick={() => setTogglefamilyMember(false)}
+            onClick={() => {
+              setTogglefamilyMember(false);
+              dispatch(deleteItem(""));
+              dispatch(indexNo(""));
+            }}
           >
             Cancle
           </Button>
           <div>
-            <Button variant="contained">Save</Button>
+            <Button
+              disabled={member != "" && relation != "" ? false : true}
+              variant="contained"
+              onClick={() => save()}
+            >
+              Save
+            </Button>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+export function ShowList({ obj, itemType, indexNo, open }) {
+  const [toggleDeleteEdit, setToggleDeleteEdit] = useState(false);
+  const { USERID } = useParams();
+  const { member, relation } = obj;
+
+  return (
+    <>
+      <div className="list" style={{ margin: "5px 0 20px 0px" }}>
+        <div className="listLeft">
+          <FamilyRestroomIcon />
+          <div>
+            <p className="pHeading">{member}</p>
+            <p className="subStaticP">
+              <b>{relation}</b>
+            </p>
+          </div>
+        </div>
+
+        <div className="listRight">
+          {USER.id == USERID ? (
+            <>
+              <PublicIcon />
+              <IconButton
+                onClick={() => setToggleDeleteEdit(!toggleDeleteEdit)}
+              >
+                <MoreHorizIcon />
+              </IconButton>
+              {toggleDeleteEdit
+                ? DeleteEditPopup(open, itemType, indexNo)
+                : null}
+            </>
+          ) : null}
+        </div>
+      </div>
+    </>
+  );
+}
+  
+
+
+
 
 export function AddWorkPlace({ setTogglseWorkPlace, type }) {
   const dispatch = useDispatch();

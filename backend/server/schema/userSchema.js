@@ -14,6 +14,8 @@ const userSchema = new Schema({
   workPlace: { type: Array },
   college: { type: Array },
   school: { type: Array },
+  familyMember: { type: Array },
+  created_at: { type: Date },
 });
 
 const userModel = mongoose.model("userSchema", userSchema);

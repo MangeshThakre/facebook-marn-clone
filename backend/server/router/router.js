@@ -33,6 +33,8 @@ router.post(
 
 router.get("/getPosts", Authorization, controller.getPosts);
 
+router.get("/getFriendsPost", Authorization, controller.getFriendsPost);
+
 router.post("/like_dislike", Authorization, controller.like_dislike);
 
 router.get("/get_all_user", Authorization, controller.get_all_user);

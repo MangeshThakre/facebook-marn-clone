@@ -25,6 +25,7 @@ import {
   homeTown,
   college,
   school,
+  familyMember,
 } from "../../redux/userSplice.js";
 
 import "./user.css";
@@ -85,11 +86,22 @@ function User() {
           },
         });
         const data = await response.data;
+        const userDetaile = {
+          DOB: data.DOB,
+          phoneNo: data.phoneNo,
+          lastName: data.lastName,
+          firstName: data.firstName,
+          email: data.email,
+          _id: data._id,
+          created_at: data.created_at,
+        };
+        dispatch(userDetail(userDetaile));
         dispatch(currentCity(data.currentCity));
         dispatch(homeTown(data.homeTown));
         dispatch(workPlace(data.workPlace));
         dispatch(college(data.college));
         dispatch(school(data.school));
+        dispatch(familyMember(data.familyMember));
       } catch (error) {
         console.log(error);
       }

@@ -8,6 +8,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import WorkIcon from "@mui/icons-material/Work";
 import SchoolIcon from "@mui/icons-material/School";
+import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
 import { Card } from "@mui/material";
 import { CardContent } from "@mui/material";
 import { useRef, useState } from "react";
@@ -24,6 +25,7 @@ import {
   ShowCity,
   ShowWorkEduList,
   ShowCollegeSchoollist,
+  ShowList,
 } from "./AboutAssOptions/aboutOptions.js";
 import "./About.css";
 
@@ -38,19 +40,28 @@ function About() {
   const [togglefamilyMember, setTogglefamilyMember] = useState(false);
   const [toggleCollege, setTogglecollege] = useState(false);
   const [toggleSchool, setTogglseSchool] = useState(false);
+  const PROFILEUSER = useSelector((state) => state.user.userDetail);
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
+
   const setAboutOption_ = useSelector((state) => state.about.setAboutOption);
   const HOMETOWN = useSelector((state) => state.user.homeTown);
   const CURRENTCITY = useSelector((state) => state.user.currentCity);
   const WORKPLACE = useSelector((state) => state.user.workPlace);
   const COLLEGE = useSelector((state) => state.user.college);
   const SCHOOL = useSelector((state) => state.user.school);
+  const FAMILYMEMBER = useSelector((state) => state.user.familyMember);
 
-  const birthDay = new Date(USER.DOB).toLocaleDateString("en-us", {
+  const birthDay = new Date(PROFILEUSER.DOB).toLocaleDateString("en-us", {
     day: "numeric",
     month: "long",
   });
-  const BirthYear = new Date(USER.DOB).getFullYear();
+  const BirthYear = new Date(PROFILEUSER.DOB).getFullYear();
+  const joinAt = new Date(PROFILEUSER.created_at).toLocaleDateString("en-us", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  console.log(PROFILEUSER);
 
   useEffect(() => {
     const options = aboutLeftOptionsRef.current.childNodes;
@@ -72,13 +83,14 @@ function About() {
 
   function Overview() {
     return (
-      <div>
-        <h3>OverView</h3>
-      </div>
+      <>
+        {WorkAndEducation("overView")}
+        {Placeslived("overView")}
+      </>
     );
   }
 
-  function WorkAndEducation() {
+  function WorkAndEducation(overview = "") {
     function showEdit(type) {
       if (type == "workplace") {
         return (
@@ -214,11 +226,13 @@ function About() {
         } else if (WORKPLACE.length == 0) {
           return showEdit("workplace");
         } else {
-          return (
+          const listAndEdit = (
             <>
-              {showEdit("workplace")}
-              {showWorkPlaceList()}
+              {showEdit("workplace")} {showWorkPlaceList()}
             </>
+          );
+          return (
+            <>{overview == "overView" ? showWorkPlaceList() : listAndEdit}</>
           );
         }
       } else if (WORKPLACE.length == 0) {
@@ -233,11 +247,13 @@ function About() {
         } else if (COLLEGE.length == 0) {
           return showEdit("college");
         } else {
-          return (
+          const listAndEdit = (
             <>
-              {showEdit("college")}
-              {showCollegeList()}
+              {showEdit("college")} {showCollegeList()}
             </>
+          );
+          return (
+            <>{overview == "overView" ? showCollegeList() : listAndEdit}</>
           );
         }
       } else if (COLLEGE.length == 0) {
@@ -252,12 +268,13 @@ function About() {
         } else if (SCHOOL.length == 0) {
           return showEdit("school");
         } else {
-          return (
+          const listAndEdit = (
             <>
               {showEdit("school")}
               {showSchoolList()}
             </>
           );
+          return <>{overview == "overView" ? showSchoolList() : listAndEdit}</>;
         }
       } else if (SCHOOL.length == 0) {
         return showNotAdded("school");
@@ -371,7 +388,7 @@ function About() {
             <CallIcon />
             <div>
               <div>
-                <p>{USER.phoneNo}</p>
+                <p>{PROFILEUSER.phoneNo}</p>
                 <p className="subStaticP">Mobile</p>
               </div>
             </div>
@@ -383,8 +400,8 @@ function About() {
             <PersonIcon />
             <div>
               <div>
-                <p>{}</p>
-                <p className="subStaticP">Mobile</p>
+                <p>{joinAt}</p>
+                <p className="subStaticP">Join at</p>
               </div>
             </div>
           </div>
@@ -407,6 +424,68 @@ function About() {
   }
 
   function FamilyAndRelation() {
+    function showNotAdded(type) {
+      return (
+        <div className="notEdit">
+          <FamilyRestroomIcon />
+          <p> {type} not Added</p>
+        </div>
+      );
+    }
+    function showList() {
+      return (
+        <>
+          {FAMILYMEMBER.map((e, i) => {
+            return (
+              <ShowList
+                obj={e}
+                indexNo={i}
+                key={i}
+                open={setTogglefamilyMember}
+                itemType={"familyMember"}
+              />
+            );
+          })}
+        </>
+      );
+    }
+    function showEditor() {
+      return (
+        <Familymembers
+          setTogglefamilyMember={setTogglefamilyMember}
+          type="familyMember"
+        />
+      );
+    }
+    function showEdit() {
+      return (
+        <div
+          className="aboutEditDiv"
+          onClick={() => setTogglefamilyMember(true)}
+        >
+          <AddCircleOutlineIcon />
+          <p>Add a family member</p>
+        </div>
+      );
+    }
+    function familyMember() {
+      if (USERID == USER.id) {
+        if (togglefamilyMember) {
+          return showEditor();
+        } else if (FAMILYMEMBER.length == 0) {
+          return showEdit();
+        } else
+          return (
+            <>
+              {showEdit()}
+              {showList()}
+            </>
+          );
+      } else if (FAMILYMEMBER.length == 0) {
+        return showNotAdded("family member");
+      } else return showList();
+    }
+
     return (
       <>
         <div className="aboutStatic">
@@ -415,7 +494,7 @@ function About() {
             <FavoriteIcon />
             <div>
               <div>
-                <p>{USER.phoneNo}</p>
+                <p>Single</p>
                 <p className="subStaticP"></p>
               </div>
             </div>
@@ -423,17 +502,8 @@ function About() {
         </div>
         <div className="aboutEdit">
           <p>Family members</p>
-          {togglefamilyMember ? (
-            <Familymembers setTogglefamilyMember={setTogglefamilyMember} />
-          ) : (
-            <div
-              className="aboutEditDiv"
-              onClick={() => setTogglefamilyMember(true)}
-            >
-              <AddCircleOutlineIcon />
-              <p>Add a family member</p>
-            </div>
-          )}
+
+          {familyMember()}
         </div>
       </>
     );

@@ -28,7 +28,7 @@ function HomePageMiddle() {
     try {
       const response = await axios({
         method: "get",
-        url: URL + "/api/getPosts",
+        url: URL + "/api/getFriendsPost",
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${TOKEN}`,

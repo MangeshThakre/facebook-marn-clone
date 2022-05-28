@@ -25,6 +25,7 @@ import {
   workPlace,
   college,
   school,
+  familyMember,
 } from "../../../../redux/userSplice.js";
 import { setAboutOption } from "../../../../redux/aboutPAgeSplice.js";
 import { setPage } from "../../../../redux/userSplice.js";
@@ -181,6 +182,8 @@ export function ConfirmDeletPopup() {
   const WORKPLACE = useSelector((state) => state.user.workPlace);
   const COLLEGE = useSelector((state) => state.user.college);
   const SCHOOL = useSelector((state) => state.user.school);
+  const FAMILYMEMBER = useSelector((state) => state.user.familyMember);
+
   console.log(type);
   async function remove() {
     try {
@@ -218,6 +221,13 @@ export function ConfirmDeletPopup() {
             if (i != INDEXNO) newWorkPlace.push(e);
           });
           dispatch(school(newWorkPlace));
+        }
+        if (type == "familyMember") {
+          var newarr = [];
+          FAMILYMEMBER.forEach((e, i) => {
+            if (i != INDEXNO) newarr.push(e);
+          });
+          dispatch(familyMember(newarr));
         }
       }
       dispatch(togglseConformDeletePopup(false));
