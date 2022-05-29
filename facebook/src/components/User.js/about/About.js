@@ -224,7 +224,13 @@ function About() {
         if (toggleWorkPlace) {
           return showEditor("workplace");
         } else if (WORKPLACE.length == 0) {
-          return showEdit("workplace");
+          return (
+            <>
+              {overview == "overView"
+                ? showNotAdded("workplace")
+                : showEdit("workplace")}
+            </>
+          );
         } else {
           const listAndEdit = (
             <>
@@ -245,7 +251,13 @@ function About() {
         if (toggleCollege) {
           return showEditor("college");
         } else if (COLLEGE.length == 0) {
-          return showEdit("college");
+          return (
+            <>
+              {overview == "overView"
+                ? showNotAdded("college")
+                : showEdit("college")}
+            </>
+          );
         } else {
           const listAndEdit = (
             <>
@@ -266,7 +278,13 @@ function About() {
         if (toggleSchool) {
           return showEditor("school");
         } else if (SCHOOL.length == 0) {
-          return showEdit("school");
+          return (
+            <>
+              {overview == "overView"
+                ? showNotAdded("school")
+                : showEdit("school")}
+            </>
+          );
         } else {
           const listAndEdit = (
             <>

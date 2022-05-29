@@ -105,7 +105,7 @@ class controller {
     try {
       const user_id = req.user.id;
       const response = await userModel.findById(user_id);
-      console.log(response);
+      // console.log(response);
       res.json({
         id: response._id,
         firstName: response.firstName,
@@ -163,25 +163,53 @@ class controller {
     try {
       const response = await friendsModel.aggregate([
         { $match: { user_id: user_id } },
-        // { $project: { friendObjId: { $toObjectId: "$friend_id" } } },
+        // { $project: { friend_idObj: { $toObjectId: "$friend_id" } } },
+        // {
+        //   $lookup: {
+        //     from: "userschemas",
+        //     localField: "friend_idObj",
+        //     foreignField: "_id",
+        //     as: "userDetails",
+        //   },
+        // },
+        // { $unwind: "$userDetails" },
+        // {
+        //   $project: {
+        //     userName: {
+        //       $concat: ["$userDetails.firstName", " ", "$userDetails.lastName"],
+        //     },
+        //   },
+        // },
         {
           $lookup: {
             from: "postschemas",
             localField: "friend_id",
             foreignField: "user_id",
-            as: "postDetail",
+            as: "postDetails",
           },
         },
+        { $unwind: "$postDetails" },
       ]);
+
+      console.log(response);
       var friendPosts = [];
-      for (const user of response) {
-        user.postDetail.forEach((e) => friendPosts.push(e));
-      }
-      res.json(friendPosts);
+      // for (const user of response) {
+      //   user.postDetail.forEach((e) => friendPosts.push(e));
+      // }
+      res.json([]);
     } catch (error) {
       console.log(error);
     }
   }
+  // { $unwind: "$postDetails" },
+  // { $project: { friend_idObj: { $toObjectId: "$friend_id" } } },
+
+  // { $unwind: "$userDetails" },
+  // {
+  //   $project: { postdetail: "$postDetails" },
+  // },
+
+  // { $replaceRoot: { newRoot: { $mergeObjects:  [ { dogs: 0, cats: 0, birds: 0, fish: 0 }, "$pets" ] }} }
 
   static async like_dislike(req, res) {
     const user_id = req.user.id;
@@ -412,7 +440,7 @@ class controller {
       if (type == "school") {
         const { _id, school } = await userModel
           .findById(user_id)
-          .select("college");
+          .select("school");
 
         var newcollege = [];
         school.forEach((e, i) => {
