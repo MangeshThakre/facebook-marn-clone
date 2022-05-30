@@ -1,11 +1,21 @@
 .AddPost{
     margin:10px 0 5px 0;
+    position: relative;
 }
 
 .AllPost_upper{
     width: 100%;
     display: flex;
+    justify-content: space-between;
+    position: relative;    
+
 }
+
+.AllPost_upper > div{
+display: flex;
+}
+
+
 
 .AllPost_lower_likeShareComment{
     display: flex;

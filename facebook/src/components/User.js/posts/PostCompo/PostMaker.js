@@ -6,13 +6,16 @@ function PostMaker({ postDetail }) {
   return (
     <>
       {postDetails?.length != 0 ? (
-        postDetails?.map((e) => {
-          return (
-            <div key={e?._id}>
-              <AllPost text={e.text} photo={e.photo} bg={e.Bg} postData={e} />
-            </div>
-          );
-        })
+        <>
+          {postDetails?.map((e) => {
+            return (
+              <div key={e?._id}>
+                <AllPost text={e.text} photo={e.photo} bg={e.Bg} postData={e} />
+              </div>
+            );
+          })}
+          <div> loadmore </div>
+        </>
       ) : (
         <div className="noPost" style={{ color: "gray" }}>
           <h3>No posts available</h3>

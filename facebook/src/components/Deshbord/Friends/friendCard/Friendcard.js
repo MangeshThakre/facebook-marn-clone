@@ -57,7 +57,6 @@ function Friendcard({ type, user, friendRequests }) {
 
   async function cancleFriendRequest() {
     setCancleLoading(true);
-    setRequesSended(false);
     setRequesMessage("Request canceled");
     try {
       const response = await axios({
@@ -73,6 +72,7 @@ function Friendcard({ type, user, friendRequests }) {
       });
       const data = await response.data;
       setCancleLoading(false);
+      setRequesSended(false);
     } catch (error) {
       console.log("ERROR", error);
     }
@@ -160,7 +160,14 @@ function Friendcard({ type, user, friendRequests }) {
                         }}
                         sx={{ color: "black" }}
                       >
-                        {cancleLoading ? "Loading...." : "cancle"}
+                        {cancleLoading ? (
+                          <CircularProgress
+                            sx={{ color: "white" }}
+                            size="1.6rem"
+                          />
+                        ) : (
+                          "cancle"
+                        )}
                       </Button>
                     </div>
                   </>

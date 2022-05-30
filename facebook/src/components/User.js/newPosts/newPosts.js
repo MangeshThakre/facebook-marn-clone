@@ -27,6 +27,9 @@ import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt
 import AddPhoto from "../posts/PostCompo/AddPhoto.js";
 import axios from "axios";
 
+
+
+
 function NewPosts() {
   const dispatch = useDispatch();
   const USER = useSelector((state) => state.globle.user);
@@ -40,19 +43,63 @@ function NewPosts() {
   const [input_text, setInputText] = useState("");
   const [Bg, setBg] = useState("");
   const [bgName, setBgName] = useState("");
+  const [color, setColor] = useState("#45bd62");
+  const [updatePost, setUpdatePost] = useState(false);
   const postBody = useRef(null);
   const bgListRef = useRef(null);
   const bgIcon = useRef(null);
   const addPhoteRef = useRef(null);
-  const [color, setColor] = useState("#45bd62");
   const TOGGLEPHOTOVIDEO = useSelector(
     (state) => state.globle.togglePhotoVideo
   );
+  const POSTUPDATE = useSelector((state) => state.globle.postUpdate);
+  useEffect(() => {
+    if (Object(POSTUPDATE).key != 0) {
+      setUpdatePost(true);
+      setInputText(POSTUPDATE.text);
+      if (POSTUPDATE.bg != null) setToggleBg(true);
+      if (POSTUPDATE.bg == "iceCream") {
+        setBgName("iceCream");
+        handelBg(iceCream);
+      }
+      if (POSTUPDATE.bg == "nightSky") {
+        setBgName("nightSky");
+        handelBg(nightSky);
+      }
+      if (POSTUPDATE.bg == "orange") {
+        setBgName("orange");
+        handelBg(orange);
+      }
+      if (POSTUPDATE.bg == "purple") {
+        setBgName("purple");
+        handelBg(purple);
+      }
+      if (POSTUPDATE.bg == "radient") {
+        setBgName("radient");
+        handelBg(radient);
+      }
+      if (POSTUPDATE.bg == "plain") {
+        setBgName("plain");
+        handelBg(plain);
+      }
+      if (POSTUPDATE.bg == "heart") {
+        setBgName("heart");
+        handelBg(heart);
+      }
+      if (POSTUPDATE.bg == "null") {
+        setBgName("null");
+        handelBg(null);
+      }
+    }
+    if (POSTUPDATE.photo != null) dispatch(togglePhotoVideo(true));
+  }, []);
+
   const handelPost = async () => {
     const post = {
       text: input_text != "" ? input_text : null,
       bg: bgName != "" ? bgName : null,
       photo: base64Image != "" ? base64Image : null,
+      like_dislike: [],
     };
 
     dispatch(posts([...POSTS, post]));
@@ -199,14 +246,16 @@ function NewPosts() {
   );
 
   const handelBg = (bg) => {
-    var btnContainer = document.getElementById("list");
-    var btns = btnContainer.getElementsByClassName("li");
-    for (var i = 0; i < btns.length; i++) {
-      btns[i].addEventListener("click", function () {
-        var current = document.getElementsByClassName("active");
-        current[0].className = current[0].className.replace(" active", "");
-        this.className += " active";
-      });
+    if (updatePost) {
+      var btnContainer = document.getElementById("list");
+      var btns = btnContainer.getElementsByClassName("li");
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+          var current = document.getElementsByClassName("active");
+          current[0].className = current[0].className.replace(" active", "");
+          this.className += " active";
+        });
+      }
     }
 
     if (bg == "none") {

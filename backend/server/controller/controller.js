@@ -45,7 +45,7 @@ class controller {
         created_at: new Date(),
       });
       const result = await saveUserInfo.save();
-      console.log(result);
+      // console.log(result);
       var token = jwt.sign({ id: result._id }, process.env.ACCESS_TOKEN_SECRET);
       res.send({
         status: 200,
@@ -149,7 +149,37 @@ class controller {
   static async getPosts(req, res) {
     const user_id = req.user.id;
     try {
-      const response = await postModel.find({ user_id });
+      const response = await postModel
+        .aggregate([
+          { $match: { user_id: user_id } },
+          { $addFields: { user_idObj: { $toObjectId: "$user_id" } } },
+          {
+            $lookup: {
+              from: "userschemas",
+              localField: "user_idObj",
+              foreignField: "_id",
+              as: "userDetails",
+            },
+          },
+          { $unwind: "$userDetails" },
+          {
+            $project: {
+              userName: {
+                $concat: [
+                  "$userDetails.firstName",
+                  " ",
+                  "$userDetails.lastName",
+                ],
+              },
+              text: "$text",
+              bg: "$bg",
+              photo: "$photo",
+              like_dislike: "$like_dislike",
+              posted_at: "$posted_at",
+            },
+          },
+        ])
+        .sort({ posted_at: -1 });
       res.json(response);
     } catch (error) {
       res.json({
@@ -161,25 +191,19 @@ class controller {
   static async getFriendsPost(req, res) {
     const user_id = req.user.id;
     try {
-      const response = await friendsModel.aggregate([
+      const postResponse = await friendsModel.aggregate([
         { $match: { user_id: user_id } },
-        // { $project: { friend_idObj: { $toObjectId: "$friend_id" } } },
-        // {
-        //   $lookup: {
-        //     from: "userschemas",
-        //     localField: "friend_idObj",
-        //     foreignField: "_id",
-        //     as: "userDetails",
-        //   },
-        // },
-        // { $unwind: "$userDetails" },
-        // {
-        //   $project: {
-        //     userName: {
-        //       $concat: ["$userDetails.firstName", " ", "$userDetails.lastName"],
-        //     },
-        //   },
-        // },
+        { $addFields: { friend_idObj: { $toObjectId: "$friend_id" } } },
+        {
+          $lookup: {
+            from: "userschemas",
+            localField: "friend_idObj",
+            foreignField: "_id",
+            as: "userDetails",
+          },
+        },
+        { $unwind: "$userDetails" },
+
         {
           $lookup: {
             from: "postschemas",
@@ -189,35 +213,36 @@ class controller {
           },
         },
         { $unwind: "$postDetails" },
+        {
+          $project: {
+            _id: 0,
+            _id: "$postDetails._id",
+            user_id: "$postDetails.user_id",
+            userName: {
+              $concat: ["$userDetails.firstName", " ", "$userDetails.lastName"],
+            },
+            text: "$postDetails.text",
+            bg: "$postDetails.bg",
+            photo: "$postDetails.photo",
+            like_dislike: "$postDetails.like_dislike",
+            posted_at: "$postDetails.posted_at",
+          },
+        },
+        { $sort: { posted_at: -1 } },
       ]);
-
-      console.log(response);
-      var friendPosts = [];
-      // for (const user of response) {
-      //   user.postDetail.forEach((e) => friendPosts.push(e));
-      // }
-      res.json([]);
+      res.json(postResponse);
     } catch (error) {
       console.log(error);
     }
   }
-  // { $unwind: "$postDetails" },
-  // { $project: { friend_idObj: { $toObjectId: "$friend_id" } } },
-
-  // { $unwind: "$userDetails" },
-  // {
-  //   $project: { postdetail: "$postDetails" },
-  // },
-
-  // { $replaceRoot: { newRoot: { $mergeObjects:  [ { dogs: 0, cats: 0, birds: 0, fish: 0 }, "$pets" ] }} }
 
   static async like_dislike(req, res) {
     const user_id = req.user.id;
     const likeDislike = req.body.likeDislike;
     const postId = req.body.postId;
     try {
-      console.log(likeDislike);
-      console.log(postId);
+      // console.log(likeDislike);
+      // console.log(postId);
 
       const saveLike = await postModel.findByIdAndUpdate(postId, {
         like_dislike: likeDislike,
@@ -241,30 +266,28 @@ class controller {
         .select("firstName")
         .select("lastName");
 
+      const friends = await friendsModel.find({ user_id });
+      var arr=[]
+      if (friends.length == 0) {
+        arr = response;
+      } else {
+       arr=   response.filter(({ _id: id1 }) =>   !friends.some(({friend_id:id2})=>id1.toString() === id2) );         
+      }
       const response_friendRequest = await frendRequestModel.find({
         request_id: user_id,
       });
-      const friends = await friendsModel.find({ user_id });
-      var arr = [];
+      var allUsers = [];
 
       if (response_friendRequest.length == 0) {
-        arr = response;
-      } else {
-        for (const user of response) {
-          for (const request of response_friendRequest) {
-            if (user._id != request.user_id) arr.push(user);
-          }
-        }
-      }
-      const allUsers = [];
-      if (friends.length == 0) {
         allUsers = arr;
+        console.log("arr");
       } else {
-        for (const user of arr) {
-          for (const friend of friends) {
-            if (user.id != friend.friend_id) allUsers.push(user);
-          }
-        }
+        allUsers = arr.filter(
+          ({ _id: id1 }) =>
+            !response_friendRequest.some(
+              ({ user_id: id2 }) => id1.toString() === id2
+            )
+        );
       }
       res.json(allUsers);
     } catch (error) {
@@ -308,7 +331,7 @@ class controller {
         user_id: { $gte: user_id },
         request_id: { $gte: request_id },
       });
-      console.log("deleted", response);
+      // console.log("deleted", response);
       res.json({ response });
     } catch (error) {
       console.log("Error", error);
@@ -362,7 +385,7 @@ class controller {
     const user_id = req.query.user;
     try {
       const response = await userModel.findById(user_id, { password: 0 });
-      console.log(response);
+      // console.log(response);
       res.json(response);
     } catch (error) {
       console.log("get_about_info Error :", error);
@@ -497,7 +520,7 @@ class controller {
         await userModel.findByIdAndUpdate(user_id, {
           familyMember: list_arr,
         });
-        console.log(list_arr);
+        // console.log(list_arr);
         res.json("updated");
       }
     } catch (error) {

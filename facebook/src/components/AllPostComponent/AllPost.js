@@ -13,23 +13,32 @@ import Divider from "@mui/material/Divider";
 import date from "date-and-time";
 import like from "../../image/like.svg";
 import { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import nightSky from "../../image/nightSky.png";
 import iceCream from "../../image/iceCream.png";
 import orange from "../../image/orange.png";
 import purple from "../../image/purple.png";
 import radient from "../../image/radiend.png";
 import plain from "../../image/plain.png";
+import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
+import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import heart from "../../image/hart.png";
+import { useParams } from "react-router-dom";
+import { toggleCreatePost, postUpdate } from "../../redux/globleSplice";
+
 import axios from "axios";
 function AllPost({ postData }) {
+  const dispatch = useDispatch();
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const URL = process.env.REACT_APP_API_URL;
   const TOKEN = localStorage.getItem("TOKEN");
   const [commentText, setCommentText] = useState("");
   const [togglelike, setToggleLike] = useState(false);
+  const [toggleDeleteEdit, setToggleDeleteEdit] = useState(false);
   const text = postData.text;
   const photo = postData.photo;
+  const Name = postData.userName;
   const commentInput = useRef(null);
   var bg;
   if (postData.bg == "iceCream") bg = iceCream;
@@ -45,6 +54,8 @@ function AllPost({ postData }) {
   const send = () => {
     setCommentText("");
   };
+
+  const { USERID } = useParams();
 
   useEffect(() => {
     const user_id = USER?.id;
@@ -64,8 +75,6 @@ function AllPost({ postData }) {
       likeDislike: [...likeDislike],
       postId: postData._id,
     };
-
-    // console.log(data);
     try {
       const response = await axios({
         method: "post",
@@ -157,20 +166,69 @@ function AllPost({ postData }) {
     );
   }
 
+  function deleteEdit() {
+    function deletee() {}
+    return (
+      <div className="DeleteEditPopup">
+        <Card>
+          <CardContent>
+            <div className="DeleteEditPopupBody">
+              <div
+                onClick={() => {
+                  dispatch(postUpdate(postData));
+                  dispatch(toggleCreatePost(true));
+                  setToggleDeleteEdit(false);
+                }}
+              >
+                <ModeEditOutlinedIcon />
+                <p>edit Post</p>
+              </div>
+              <div
+                onClick={() => {
+                  deletee();
+                }}
+              >
+                <DeleteOutlinedIcon />
+                <p>Delete Post</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="AddPost">
       <Card sx={{ borderRadius: "10px" }}>
         <CardContent>
           <div className="AllPost_upper">
-            <div className="createPosts_body_header_pic">
-              <img src={contact} alt="pic" />
+            <div>
+              {toggleDeleteEdit ? deleteEdit() : null}
+
+              <div className="createPosts_body_header_pic">
+                <img src={contact} alt="pic" />
+              </div>
+              <div>
+                <h5>{Name}</h5>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <p> {posted_at}</p>
+                  <PublicOutlinedIcon sx={{ fontSize: "20px" }} />
+                </div>
+              </div>
             </div>
             <div>
-              <h5>{USER?.firstName + " " + USER?.lastName}</h5>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <p> {posted_at}</p>
-                <PublicOutlinedIcon sx={{ fontSize: "20px" }} />
-              </div>
+              {USERID && USERID === USER.id ? (
+                <>
+                  <IconButton
+                    onClick={() => setToggleDeleteEdit(!toggleDeleteEdit)}
+                  >
+                    <MoreHorizOutlinedIcon />
+                  </IconButton>
+                </>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
           <div className="AllPost_body">{PostBodyFun()}</div>
