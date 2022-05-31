@@ -11,6 +11,10 @@ export const globleSplice = createSlice({
     toggleAboutPopUp: false,
     posts: [],
     postUpdate: {},
+    UpdatedPost: {},
+    togglePostDelete: false,
+    deletePostId: "",
+    ActualdeletePostId: "",
   },
 
   reducers: {
@@ -36,6 +40,18 @@ export const globleSplice = createSlice({
     postUpdate: (state, action) => {
       state.postUpdate = action.payload;
     },
+    UpdatedPost: (state, action) => {
+      state.UpdatedPost = action.payload;
+    },
+    togglePostDelete: (state, action) => {
+      state.togglePostDelete = action.payload;
+    },
+    deletePostId: (state, action) => {
+      state.deletePostId = action.payload;
+    },
+    ActualdeletePostId: (state, action) => {
+      state.ActualdeletePostId = action.payload;
+    },
   },
 });
 
@@ -47,6 +63,10 @@ export const {
   user,
   posts,
   postUpdate,
+  UpdatedPost,
+  togglePostDelete,
+  deletePostId,
+  ActualdeletePostId,
 } = globleSplice.actions;
 
 export default globleSplice.reducer;

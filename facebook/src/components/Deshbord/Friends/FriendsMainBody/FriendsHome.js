@@ -17,7 +17,6 @@ function FriendsHome() {
     fetchSendedFriendRequest();
     fetchFriendRequests();
   }, []);
- 
 
   async function fetchSendedFriendRequest() {
     try {
@@ -47,7 +46,7 @@ function FriendsHome() {
         },
       });
       const data = await response.data;
-      console.log(data);
+      // console.log(data);
       setGetFriendrequests(data);
     } catch (error) {
       console.log("ERROR", error);
@@ -77,7 +76,7 @@ function FriendsHome() {
     }
   }
 
-  console.log(isLoadingAllUser);
+  // console.log(isLoadingAllUser);
 
   return (
     <div className="friendsHome">

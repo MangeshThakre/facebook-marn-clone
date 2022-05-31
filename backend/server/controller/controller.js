@@ -126,6 +126,8 @@ class controller {
     const text = req.body.text != "" ? req.body.text : null;
     const bg = req.body.bg ? req.body.bg : null;
     const photo = req.file ? req.file.path : null;
+    const update = req.body.update;
+    const id = req.body.id;
     try {
       const postData = {
         user_id,
@@ -134,10 +136,22 @@ class controller {
         photo,
         posted_at: new Date(),
       };
-      const posts = new postModel(postData);
-      const result = await posts.save();
-      // console.log(result);
-      res.json(req.body);
+      console.log(update);
+      if (update == "true") {
+        console.log("update");
+        console.log(id);
+        const posts = await postModel.findByIdAndUpdate(
+          { _id: id },
+          { text: text, bg: bg, photo: photo }
+        );
+        const updatedPost = await postModel.findById(id);
+        console.log();
+        res.json(updatedPost);
+      } else if (update == "false") {
+        const posts = new postModel(postData);
+        const result = await posts.save();
+        res.json(result);
+      }
     } catch (error) {
       console.log("error :", error);
       res.json({
@@ -187,6 +201,17 @@ class controller {
       });
     }
   }
+
+
+  static async delete_post(req,res){
+   const postId = req.query.postId
+  try {
+     const response = await postModel.findByIdAndDelete(postId)
+     res.json("deleted")
+  } catch (error) {
+    console.log("error",error )
+  }
+  } 
 
   static async getFriendsPost(req, res) {
     const user_id = req.user.id;

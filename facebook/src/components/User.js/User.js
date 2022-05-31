@@ -18,6 +18,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect, useRef } from "react";
+import PostDeleteComponent from "./posts/PostCompo/postDeleteComponent.js";
 import {
   userDetail,
   currentCity,
@@ -53,6 +54,9 @@ function User() {
   );
   const togglseConformDeletePopup = useSelector(
     (state) => state.about.togglseConformDeletePopup
+  );
+  const togglePostDelete = useSelector(
+    (state) => state.globle.togglePostDelete
   );
   var user;
   const profilePic = user ? "" : "";
@@ -114,6 +118,7 @@ function User() {
       {toggleCreatePost ? <NewPosts /> : null}
       {toggleAboutPopUp ? <AboutPopUp /> : null}
       {togglseConformDeletePopup ? <ConfirmDeletPopup /> : null}
+      {togglePostDelete ? <PostDeleteComponent /> : null}
 
       <Navbar />
       <div>

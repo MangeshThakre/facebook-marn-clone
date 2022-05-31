@@ -3,6 +3,9 @@ import {
   toggleCreatePost,
   togglePhotoVideo,
   posts,
+  postUpdate,
+  UpdatedPost,
+  user,
 } from "../../../redux/globleSplice";
 import { useDispatch, useSelector } from "react-redux";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
@@ -22,17 +25,16 @@ import heart from "../../../image/hart.png";
 import IconButton from "@mui/material/IconButton";
 import Picker from "emoji-picker-react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { useEffect, useState, useRef } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
+
+import { useEffect, useState, createRef } from "react";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
 import AddPhoto from "../posts/PostCompo/AddPhoto.js";
 import axios from "axios";
 
-
-
-
 function NewPosts() {
   const dispatch = useDispatch();
-  const USER = useSelector((state) => state.globle.user);
+  const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const POSTS = useSelector((state) => state.globle.posts);
   const TOKEN = localStorage.getItem("TOKEN");
   const URL = process.env.REACT_APP_API_URL;
@@ -45,17 +47,19 @@ function NewPosts() {
   const [bgName, setBgName] = useState("");
   const [color, setColor] = useState("#45bd62");
   const [updatePost, setUpdatePost] = useState(false);
-  const postBody = useRef(null);
-  const bgListRef = useRef(null);
-  const bgIcon = useRef(null);
-  const addPhoteRef = useRef(null);
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [postloading, setPostLoding] = useState(false);
+  const postBody = createRef(null);
+  const bgListRef = createRef(null);
+  const bgIcon = createRef(null);
+  const addPhoteRef = createRef(null);
   const TOGGLEPHOTOVIDEO = useSelector(
     (state) => state.globle.togglePhotoVideo
   );
   const POSTUPDATE = useSelector((state) => state.globle.postUpdate);
+
   useEffect(() => {
-    if (Object(POSTUPDATE).key != 0) {
-      setUpdatePost(true);
+    if (Object.keys(POSTUPDATE).length != 0) {
       setInputText(POSTUPDATE.text);
       if (POSTUPDATE.bg != null) setToggleBg(true);
       if (POSTUPDATE.bg == "iceCream") {
@@ -90,11 +94,33 @@ function NewPosts() {
         setBgName("null");
         handelBg(null);
       }
+
+      if (POSTUPDATE.photo != null) {
+        dispatch(togglePhotoVideo(true));
+        setPhotoUrl(URL + "/" + POSTUPDATE.photo);
+      }
     }
-    if (POSTUPDATE.photo != null) dispatch(togglePhotoVideo(true));
   }, []);
 
+  useEffect(() => {
+    if (Object.keys(POSTUPDATE).length === 0) {
+      setUpdatePost(false);
+    } else {
+      setUpdatePost(true);
+    }
+  });
+
+  useEffect(() => {
+    if (base64Image) setPhotoUrl("");
+  }, [base64Image]);
+
   const handelPost = async () => {
+    if (postUpdate) {
+      console.log("update");
+    } else {
+      console.log("insert");
+    }
+
     const post = {
       text: input_text != "" ? input_text : null,
       bg: bgName != "" ? bgName : null,
@@ -102,12 +128,16 @@ function NewPosts() {
       like_dislike: [],
     };
 
-    dispatch(posts([...POSTS, post]));
-
     var formData = new FormData();
     formData.append("text", input_text);
     formData.append("bg", bgName);
     formData.append("photo", PhotoFile);
+    formData.append("update", updatePost);
+    postUpdate
+      ? formData.append("id", POSTUPDATE._id)
+      : formData.append("id", "");
+
+    setPostLoding(true);
     try {
       const response = await axios({
         method: "post",
@@ -119,7 +149,26 @@ function NewPosts() {
         data: formData,
       });
       const data = await response.data;
-      console.log(data);
+
+      const newPost = {
+        _id: data._id,
+        text: data.text,
+        bg: data.bg,
+        photo: data.photo,
+        like_dislike: data.like_dislike,
+        userName: USER.firstName + " " + USER.lastName,
+        posted_at: updatePost ? POSTUPDATE.posted_at : String(new Date()),
+      };
+
+      if (updatePost) {
+        dispatch(UpdatedPost(newPost));
+        dispatch(postUpdate({}));
+      } else if (!updatePost) {
+        dispatch(posts([newPost]));
+      }
+      setTimeout(() => {
+        setPostLoding(false);
+      }, 500);
     } catch (error) {
       console.log("Error", error);
     }
@@ -285,6 +334,8 @@ function NewPosts() {
               onClick={() => {
                 dispatch(toggleCreatePost(false));
                 dispatch(togglePhotoVideo(false));
+                dispatch(postUpdate({}));
+                setUpdatePost(false);
               }}
             >
               <CloseIcon />
@@ -309,7 +360,6 @@ function NewPosts() {
                 rows="4"
                 value={input_text}
                 onChange={(e) => {
-                  // setPostText(e.target.value);
                   setInputText(e.target.value);
                 }}
                 placeholder="What's in your mind?"
@@ -339,10 +389,8 @@ function NewPosts() {
                     ></Picker>
                   ) : null}
                 </div>
-                <IconButton>
-                  <SentimentSatisfiedAltIcon
-                    onClick={() => setToggleIcon(!toggleIconicon)}
-                  />
+                <IconButton onClick={() => setToggleIcon(!toggleIconicon)}>
+                  <SentimentSatisfiedAltIcon />
                 </IconButton>
               </div>
             </div>
@@ -352,6 +400,7 @@ function NewPosts() {
                 PhotoFile={PhotoFile}
                 setBase64Image={setBase64Image}
                 base64Image={base64Image}
+                photoUrl={photoUrl}
               />
             </div>
             <div className="createPosts_body_options">
@@ -380,7 +429,11 @@ function NewPosts() {
                   handelPost();
                 }}
               >
-                Post
+                {postloading ? (
+                  <CircularProgress sx={{ color: "white" }} size="1.6rem" />
+                ) : (
+                  "Post"
+                )}
               </Button>
             </div>
           </div>

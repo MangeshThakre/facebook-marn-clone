@@ -33,6 +33,8 @@ router.post(
 
 router.get("/getPosts", Authorization, controller.getPosts);
 
+router.get("/delete_post", Authorization, controller.delete_post);
+
 router.get("/getFriendsPost", Authorization, controller.getFriendsPost);
 
 router.post("/like_dislike", Authorization, controller.like_dislike);
@@ -75,6 +77,8 @@ router.post(
   Authorization,
   controller.about_info_workPlace
 );
+
+
 
 
 function Authorization(req, res, next) {

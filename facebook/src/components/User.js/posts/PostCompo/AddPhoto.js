@@ -1,15 +1,21 @@
 import React from "react";
 import "./addPhoto.css";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import { useState, useRef } from "react";
+import { useState, createRef } from "react";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import { togglePhotoVideo } from "../../../../redux/globleSplice.js";
 import Button from "@mui/material/Button";
-function AddPhoto({ setPhotoFile, PhotoFile, base64Image, setBase64Image }) {
+function AddPhoto({
+  setPhotoFile,
+  PhotoFile,
+  base64Image,
+  setBase64Image,
+  photoUrl,
+}) {
   const dispatch = useDispatch();
-  const tergetInputRef = useRef(null);
+  const tergetInputRef = createRef(null);
   const viewPhoto = useState(null);
   const handleFile = async (e) => {
     const reader = new FileReader();
@@ -32,7 +38,7 @@ function AddPhoto({ setPhotoFile, PhotoFile, base64Image, setBase64Image }) {
             <CloseIcon />
           </IconButton>
         </div>
-        {!PhotoFile ? (
+        {!PhotoFile && !photoUrl ? (
           <div
             className="AddPhoto_body"
             onClick={() => tergetInputRef.current.click()}
@@ -66,15 +72,27 @@ function AddPhoto({ setPhotoFile, PhotoFile, base64Image, setBase64Image }) {
               <div></div>
             </div>
             <div>
-              <img
-                style={{
-                  objectFit: "cover",
-                  maxWidth: "450px",
-                  manHeight: "445px",
-                }}
-                src={base64Image ? base64Image : null}
-                alt="phpto"
-              />
+              {base64Image && !photoUrl ? (
+                <img
+                  style={{
+                    objectFit: "cover",
+                    maxWidth: "450px",
+                    manHeight: "445px",
+                  }}
+                  src={base64Image ? base64Image : null}
+                  alt="phpto"
+                />
+              ) : (
+                <img
+                  style={{
+                    objectFit: "cover",
+                    maxWidth: "450px",
+                    manHeight: "445px",
+                  }}
+                  src={photoUrl}
+                  alt="phpto"
+                />
+              )}
             </div>
           </div>
         )}

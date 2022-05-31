@@ -59,7 +59,7 @@ export function PlaceLived({ close, type }) {
 
   async function save() {
     try {
-      console.log(place);
+      // console.log(place);
       const response = await axios({
         method: "get",
         url: URL + `/api/about_info_?${type}=` + place,

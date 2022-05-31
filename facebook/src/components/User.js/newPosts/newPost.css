@@ -37,9 +37,7 @@ align-items: center;
 justify-content: center;
 }
 
-.createPost_close   :hover{
-    background-color: #c8c9cc;
-}
+
 .createPosts_body{
     width: 100%;
 }

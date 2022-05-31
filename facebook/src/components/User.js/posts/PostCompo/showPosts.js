@@ -6,24 +6,51 @@ import "./showPost.css";
 import { useState } from "react";
 import hart from "../../../../image/hart.png";
 import { dividerClasses } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PostMaker from "./PostMaker.js";
 import axios from "axios";
+import { posts, UpdatedPost } from "../../../../redux/globleSplice.js";
 function ShowPosts() {
+  const dispatch = useDispatch();
   const [postDetail, setPostDetails] = useState([]);
   const [isFetchPostLoading, setIsFetchPostLoading] = useState(false);
   const URL = process.env.REACT_APP_API_URL;
   const TOKEN = localStorage.getItem("TOKEN");
   const POSTS = useSelector((state) => state.globle.posts);
+  const UPDATEDPOST = useSelector((state) => state.globle.UpdatedPost);
+  const ACTUALDELETEPOSTID = useSelector(
+    (state) => state.globle.ActualdeletePostId
+  );
 
   useEffect(() => {
     fetchPosts();
   }, []);
 
   useEffect(() => {
-    setPostDetails(POSTS, ...postDetail);
+    setPostDetails([...POSTS, ...postDetail]);
   }, [POSTS]);
- 
+
+  useEffect(() => {
+    var arr = [];
+    if (Object.keys(UPDATEDPOST).length != 0) {
+      postDetail.forEach((e, i) => {
+        if (e._id == UPDATEDPOST._id) {
+          arr.push(UPDATEDPOST);
+        } else {
+          arr.push(e);
+        }
+      });
+    }
+    setPostDetails(arr);
+  }, [UPDATEDPOST]);
+
+  useEffect(() => {
+    var arr = [];
+    postDetail.forEach((e, i) => {
+      if (e._id.toString() !== ACTUALDELETEPOSTID) arr.push(e);
+    });
+    setPostDetails(arr);
+  }, [ACTUALDELETEPOSTID]);
 
   async function fetchPosts() {
     setIsFetchPostLoading(true);

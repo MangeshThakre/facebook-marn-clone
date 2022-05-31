@@ -12,7 +12,7 @@ import InputEmoji from "react-input-emoji";
 import Divider from "@mui/material/Divider";
 import date from "date-and-time";
 import like from "../../image/like.svg";
-import { useState, useRef, useEffect } from "react";
+import { useState, createRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import nightSky from "../../image/nightSky.png";
 import iceCream from "../../image/iceCream.png";
@@ -25,7 +25,13 @@ import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import heart from "../../image/hart.png";
 import { useParams } from "react-router-dom";
-import { toggleCreatePost, postUpdate } from "../../redux/globleSplice";
+import {
+  toggleCreatePost,
+  postUpdate,
+  UpdatedPost,
+  togglePostDelete,
+  deletePostId,
+} from "../../redux/globleSplice";
 
 import axios from "axios";
 function AllPost({ postData }) {
@@ -39,7 +45,7 @@ function AllPost({ postData }) {
   const text = postData.text;
   const photo = postData.photo;
   const Name = postData.userName;
-  const commentInput = useRef(null);
+  const commentInput = createRef(null);
   var bg;
   if (postData.bg == "iceCream") bg = iceCream;
   if (postData.bg == "nightSky") bg = nightSky;
@@ -167,7 +173,11 @@ function AllPost({ postData }) {
   }
 
   function deleteEdit() {
-    function deletee() {}
+    function deletee() {
+      setToggleDeleteEdit(false);
+      dispatch(togglePostDelete(true));
+      dispatch(deletePostId(postData._id));
+    }
     return (
       <div className="DeleteEditPopup">
         <Card>

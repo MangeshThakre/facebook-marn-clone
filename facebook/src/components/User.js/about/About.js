@@ -61,7 +61,7 @@ function About() {
     month: "long",
     year: "numeric",
   });
-  console.log(PROFILEUSER);
+  // console.log(PROFILEUSER);
 
   useEffect(() => {
     const options = aboutLeftOptionsRef.current.childNodes;
