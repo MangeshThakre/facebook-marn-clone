@@ -17,30 +17,44 @@ function HomePageMiddle() {
   const [toggleStory, setToggleStory] = useState(false);
   const [postDetail, setPostDetails] = useState([]);
   const [isFetchPostLoading, setIsFetchPostLoading] = useState(false);
+  const [nextPage, setNextPage] = useState(false);
+  const [page, setPage] = useState(1);
   const URL = process.env.REACT_APP_API_URL;
   const TOKEN = localStorage.getItem("TOKEN");
+
   useEffect(() => {
     fetchPosts();
   }, []);
 
   async function fetchPosts() {
     setIsFetchPostLoading(true);
+    console.log(page);
     try {
       const response = await axios({
         method: "get",
-        url: URL + "/api/getFriendsPost",
+        url: URL + `/api/getFriendsPost/?page=${page}&limit=5`,
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${TOKEN}`,
         },
       });
       const data = await response.data;
-      setPostDetails(data);
+      if (data.next) {
+        setPage(data.next.page);
+        setNextPage(true);
+      } else {
+        setNextPage(false);
+      }
+      data?.next ? setPage(data.next.page) : setPage(page);
+      const postData = [...postDetail, ...data.data];
+      setPostDetails(postData);
       setIsFetchPostLoading(false);
     } catch (error) {
       console.log("Error", error);
     }
   }
+
+  console.log(page);
 
   function storyComponent() {
     return toggleStory ? (
@@ -101,7 +115,25 @@ function HomePageMiddle() {
           {isFetchPostLoading ? (
             "loading...."
           ) : (
-            <PostMaker postDetail={postDetail} />
+            <>
+              <PostMaker postDetail={postDetail} />
+              <div className="loadMore">
+                {nextPage ? (
+                  isFetchPostLoading ? (
+                    "loading"
+                  ) : (
+                    <p
+                      style={{ color: "#297ce5" }}
+                      onClick={() => {
+                        fetchPosts();
+                      }}
+                    >
+                      Load more
+                    </p>
+                  )
+                ) : null}
+              </div>
+            </>
           )}
         </div>
       </div>

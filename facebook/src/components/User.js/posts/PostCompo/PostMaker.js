@@ -14,7 +14,6 @@ function PostMaker({ postDetail }) {
               </div>
             );
           })}
-          <div> loadmore </div>
         </>
       ) : (
         <div className="noPost" style={{ color: "gray" }}>

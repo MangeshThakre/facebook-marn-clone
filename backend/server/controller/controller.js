@@ -215,6 +215,11 @@ class controller {
 
   static async getFriendsPost(req, res) {
     const user_id = req.user.id;
+    const page = Number(req.query.page);
+    const limit = Number(req.query.limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
     try {
       const postResponse = await friendsModel.aggregate([
         { $match: { user_id: user_id } },
@@ -255,7 +260,24 @@ class controller {
         },
         { $sort: { posted_at: -1 } },
       ]);
-      res.json(postResponse);
+
+      const result = {};
+      if (endIndex < postResponse.length) {
+        result.next = {
+          page: page + 1,
+          limit: limit,
+        };
+      }
+
+      if (startIndex > 0) {
+        result.previous = {
+          page: page - 1,
+          limit: limit,
+        };
+      }
+      result.data = postResponse.slice(startIndex, endIndex);
+      console.log(result);
+      res.json(result);
     } catch (error) {
       console.log(error);
     }
