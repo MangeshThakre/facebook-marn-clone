@@ -12,6 +12,8 @@ export const userSplice = createSlice({
     school: [],
     familyMember: [],
     setPage: "POST",
+    profilePicture: "",
+    profileCover: "",
   },
 
   reducers: {
@@ -44,8 +46,15 @@ export const userSplice = createSlice({
         ? (state.familyMember = action.payload)
         : (state.school = []);
     },
+
     setPage: (state, action) => {
       state.setPage = action.payload;
+    },
+    profilePicture: (state, action) => {
+      state.profilePicture = action.payload;
+    },
+    profileCover: (state, action) => {
+      state.profileCover = action.payload;
     },
   },
 });
@@ -59,6 +68,8 @@ export const {
   college,
   school,
   familyMember,
+  profilePicture,
+  profileCover,
 } = userSplice.actions;
 
 export default userSplice.reducer;

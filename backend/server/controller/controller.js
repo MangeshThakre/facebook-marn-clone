@@ -5,6 +5,12 @@ import frendRequestModel from "../schema/friendRequestSchema.js";
 import friendsModel from "../schema/friendsSchema.js";
 import jsonwebtoken from "jsonwebtoken";
 import dotenv from "dotenv";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+const __filenamee = fileURLToPath(import.meta.url);
+const __dirnamee = dirname(__filenamee);
 
 dotenv.config();
 class controller {
@@ -114,6 +120,7 @@ class controller {
         email: response.email,
         DOB: response.DOB,
         created_at: response.created_at,
+        profilePic: response.profilePic,
       });
     } catch (error) {
       console.log("error:", error);
@@ -161,7 +168,7 @@ class controller {
   }
 
   static async getPosts(req, res) {
-    const user_id = req.user.id;
+    const user_id = req.query.user_id;
     try {
       const response = await postModel
         .aggregate([
@@ -185,6 +192,7 @@ class controller {
                   "$userDetails.lastName",
                 ],
               },
+              profilePic: "$userDetails.profilePic",
               text: "$text",
               bg: "$bg",
               photo: "$photo",
@@ -202,16 +210,15 @@ class controller {
     }
   }
 
-
-  static async delete_post(req,res){
-   const postId = req.query.postId
-  try {
-     const response = await postModel.findByIdAndDelete(postId)
-     res.json("deleted")
-  } catch (error) {
-    console.log("error",error )
+  static async delete_post(req, res) {
+    const postId = req.query.postId;
+    try {
+      const response = await postModel.findByIdAndDelete(postId);
+      res.json("deleted");
+    } catch (error) {
+      console.log("error", error);
+    }
   }
-  } 
 
   static async getFriendsPost(req, res) {
     const user_id = req.user.id;
@@ -251,6 +258,7 @@ class controller {
             userName: {
               $concat: ["$userDetails.firstName", " ", "$userDetails.lastName"],
             },
+            profilePic: "$userDetails.profilePic",
             text: "$postDetails.text",
             bg: "$postDetails.bg",
             photo: "$postDetails.photo",
@@ -276,7 +284,7 @@ class controller {
         };
       }
       result.data = postResponse.slice(startIndex, endIndex);
-      console.log(result);
+      // console.log(result);
       res.json(result);
     } catch (error) {
       console.log(error);
@@ -294,7 +302,7 @@ class controller {
       const saveLike = await postModel.findByIdAndUpdate(postId, {
         like_dislike: likeDislike,
       });
-      console.log(saveLike);
+      // console.log(saveLike);
       res.json("successfully updated");
     } catch (error) {
       console.log("LIKE DISLIKE ERROR", error);
@@ -311,14 +319,18 @@ class controller {
         })
         .select("_id")
         .select("firstName")
-        .select("lastName");
+        .select("lastName")
+        .select("profilePic");
 
       const friends = await friendsModel.find({ user_id });
-      var arr=[]
+      var arr = [];
       if (friends.length == 0) {
         arr = response;
       } else {
-       arr=   response.filter(({ _id: id1 }) =>   !friends.some(({friend_id:id2})=>id1.toString() === id2) );         
+        arr = response.filter(
+          ({ _id: id1 }) =>
+            !friends.some(({ friend_id: id2 }) => id1.toString() === id2)
+        );
       }
       const response_friendRequest = await frendRequestModel.find({
         request_id: user_id,
@@ -327,7 +339,7 @@ class controller {
 
       if (response_friendRequest.length == 0) {
         allUsers = arr;
-        console.log("arr");
+        // console.log("arr");
       } else {
         allUsers = arr.filter(
           ({ _id: id1 }) =>
@@ -573,6 +585,57 @@ class controller {
     } catch (error) {
       console.log("about_info_workPlace Error", error);
       res.json({ status: 500 });
+    }
+  }
+
+  static async upload_photo(req, res) {
+    const user_id = req.user.id;
+    const type = req.query.type;
+    const filePath = req.file.path;
+
+    try {
+      // if (oldPic != "") {
+      //   var oldPicname = oldPic.split("\\")[1];
+      //   const testFolder = path.join(__dirnamee, "../../uploads");
+      //   fs.readdirSync(testFolder).forEach((file) => {
+      //     if (oldPicname == file) fs.unlinkSync(testFolder + "/" + file);
+      //   });
+      // }
+      if (type == "profilePic") {
+        const response = await userModel.findByIdAndUpdate(user_id, {
+          profilePic: filePath,
+        });
+        // console.log(response);
+        res.json(filePath);
+      } else if (type == "profileBg") {
+        const response = await userModel.findByIdAndUpdate(user_id, {
+          profileBg: filePath,
+        });
+        res.json(filePath);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async Delete_photo(req, res) {
+    const user_id = req.user.id;
+    const type = req.query.type;
+    try {
+      if (type == "profilePic") {
+        const response = await userModel.findByIdAndUpdate(user_id, {
+          profilePic: "",
+        });
+        res.json("deleted");
+      } else if (type == "profileBg") {
+        const response = await userModel.findByIdAndUpdate(user_id, {
+          profileBg: "",
+        });
+        res.json("deleted");
+      }
+    } catch (error) {
+      res.json({ status: 500 });
+      console.log("error", error);
     }
   }
 }

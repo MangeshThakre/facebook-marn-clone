@@ -18,6 +18,15 @@
     width:940px ;
 }
 
+
+.profileBg{
+    width: 940Px;
+    height: 21.75rem;
+    object-fit: cover;
+}
+
+
+
 .profilePic{
     height: 168px;
     width: 168px;
@@ -93,4 +102,63 @@ display: flex;
  justify-content: center; 
 width: 100%;
 
+}
+
+
+.uploadContainer{
+    position: absolute;
+top: 125px;
+right: -106px;
+z-index: 2;
+box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+}
+
+
+.CameraAltIcon {position: absolute;
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 10px;
+    right: 10px;}
+
+ .uplaodPhotoPopup :hover{
+     display: absulate;
+     background-color: #c5c7c9;
+ }
+    .uplaodPhotoPopup > div{
+        display: flex;
+        cursor: pointer;
+        margin: 3px;
+        width: 134px;
+        height: 30px;
+        border-radius: 4px;
+        justify-content: center;
+        align-items: center;
+        margin: 8px 7px 6px 11px;
+       
+    }
+
+    .popupBg{
+        height: 100vh;
+        width: 100%;
+        position: fixed;
+        z-index: 1;
+    }
+
+
+.uploadBgContainer { position: absolute;
+right: 0;
+top: 39px;
+right: -47px;
+z-index: 2;
+
+box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+}
+
+
+.uploadBgContainer > div , .uploadContainer > div{
+    box-shadow:none
 }

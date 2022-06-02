@@ -4,6 +4,12 @@ const router = express.Router();
 import jsonwebtoken from "jsonwebtoken";
 const jwt = jsonwebtoken;
 import multer from "multer";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+const __filenamee = fileURLToPath(import.meta.url);
+const __dirnamee = dirname(__filenamee);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -11,7 +17,7 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now();
-    cb(null, uniqueSuffix + "-" + file.originalname);
+    cb(null, uniqueSuffix + "-" + req.user.id + "-" + file.originalname);
   },
 });
 const upload = multer({ storage: storage });
@@ -78,6 +84,32 @@ router.post(
   controller.about_info_workPlace
 );
 
+router.post(
+  "/upload_photo",
+  Authorization,
+  oldPicRemover,
+  upload.single("profileImg"),
+  controller.upload_photo
+);
+
+router.get(
+  "/Delete_photo",
+  Authorization,
+  oldPicRemover,
+  controller.Delete_photo
+);
+
+function oldPicRemover(req, res, next) {
+  const oldPic = req.query.OldProfileImg;
+  if (oldPic != "") {
+    var oldPicname = oldPic.split("\\")[1];
+    const testFolder = path.join(__dirnamee, "../../uploads");
+    fs.readdirSync(testFolder).forEach((file) => {
+      if (oldPicname == file) fs.unlinkSync(testFolder + "/" + file);
+    });
+  }
+  next();
+}
 
 
 

@@ -54,7 +54,7 @@ function HomePageMiddle() {
     }
   }
 
-  console.log(page);
+  // console.log(page);
 
   function storyComponent() {
     return toggleStory ? (

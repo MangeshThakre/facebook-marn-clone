@@ -42,9 +42,7 @@ align-items: center;
 justify-content: center;
 }
 
-.aboutpopup_close   :hover{
-    background-color: #c8c9cc;
-}
+
 
 .AboutPopPuoBody{
     overflow-y: scroll;

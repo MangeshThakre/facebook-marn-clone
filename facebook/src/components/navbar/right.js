@@ -17,6 +17,9 @@ function Right() {
   const more = useSelector((state) => state.icon.more);
   const iconColor = useSelector((state) => state.darkLight.iconColor);
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
+  const URL = process.env.REACT_APP_API_URL;
+  const ProfilePic = USER?.profilePic ? URL + "/" + USER.profilePic : "";
+
   const navRight = useRef(null);
 
   return (
@@ -27,7 +30,7 @@ function Right() {
         }}
       >
         <div className="user">
-          <img src={contact} alt="" />
+          <img src={ProfilePic ? ProfilePic : contact} alt="" />
           <p>
             <b>{USER?.firstName}</b>
           </p>

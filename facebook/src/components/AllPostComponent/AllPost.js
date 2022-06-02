@@ -42,6 +42,8 @@ function AllPost({ postData }) {
   const [commentText, setCommentText] = useState("");
   const [togglelike, setToggleLike] = useState(false);
   const [toggleDeleteEdit, setToggleDeleteEdit] = useState(false);
+  const profilePic = postData.profilePic ? URL + "/" + postData.profilePic : "";
+
   const text = postData.text;
   const photo = postData.photo;
   const Name = postData.userName;
@@ -217,7 +219,11 @@ function AllPost({ postData }) {
               {toggleDeleteEdit ? deleteEdit() : null}
 
               <div className="createPosts_body_header_pic">
-                <img src={contact} alt="pic" />
+                {profilePic != "" ? (
+                  <img src={profilePic} alt="pic" />
+                ) : (
+                  <img src={contact} alt="pic" />
+                )}
               </div>
               <div>
                 <h5>{Name}</h5>
@@ -251,7 +257,7 @@ function AllPost({ postData }) {
               <div>
                 <IconButton
                   onClick={() => {
-                    setToggleLike(!togglelike);
+                    setToggleLike((pertogglelike) => !pertogglelike);
                     handlelike();
                   }}
                 >

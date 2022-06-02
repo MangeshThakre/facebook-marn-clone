@@ -8,18 +8,22 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 function HomePageLeft() {
   const navigate = useNavigate();
-  const USER = useSelector((state) => state.globle.user);
+  const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
+
+  const URL = process.env.REACT_APP_API_URL;
+
+  const ProfilePic = USER?.profilePic ? URL + "/" + USER.profilePic : "";
 
   return (
     <div className="homePageLeftOptions">
       <div
         className="userProfile"
         onClick={() => {
-          navigate("/user");
+          navigate("/user/" + USER.id);
         }}
       >
         <div>
-          <img src={contact} alt="contact" />
+          <img src={ProfilePic ? ProfilePic : contact} alt="contact" />
           <p> {USER?.firstName + " " + USER?.lastName}</p>
         </div>
       </div>

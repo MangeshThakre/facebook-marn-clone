@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import "./showPost.css";
 import { useState } from "react";
@@ -9,9 +8,11 @@ import { dividerClasses } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import PostMaker from "./PostMaker.js";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 import { posts, UpdatedPost } from "../../../../redux/globleSplice.js";
 function ShowPosts() {
   const dispatch = useDispatch();
+  const { USERID } = useParams();
   const [postDetail, setPostDetails] = useState([]);
   const [isFetchPostLoading, setIsFetchPostLoading] = useState(false);
   const URL = process.env.REACT_APP_API_URL;
@@ -57,7 +58,7 @@ function ShowPosts() {
     try {
       const response = await axios({
         method: "get",
-        url: URL + "/api/getPosts",
+        url: URL + "/api/getPosts?user_id=" + USERID,
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${TOKEN}`,

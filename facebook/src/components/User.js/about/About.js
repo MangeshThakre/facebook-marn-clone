@@ -78,7 +78,7 @@ function About() {
 
   function activeOption(option) {
     dispatch(setAboutOption(option));
-    bottomViewRef.current.scrollIntoView();
+    bottomViewRef.current.scrollIntoView({ behavior: "smooth" });
   }
 
   function Overview() {

@@ -16,6 +16,8 @@ const userSchema = new Schema({
   school: { type: Array },
   familyMember: { type: Array },
   created_at: { type: Date },
+  profilePic: { type: String },
+  profileBg: { type: String },
 });
 
 const userModel = mongoose.model("userSchema", userSchema);

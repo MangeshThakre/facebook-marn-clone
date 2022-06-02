@@ -14,8 +14,12 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import NewPosts from "../../newPosts/newPosts.js";
 import "./create.css";
+import { useSelector } from "react-redux";
+
 function Create() {
   const dispatch = useDispatch();
+  const PROFILEPIC = useSelector((state) => state.user.profilePicture);
+
   return (
     <div className="Create">
       <Card sx={{ height: "122.8px", borderRadius: "10px" }}>
@@ -24,7 +28,7 @@ function Create() {
             className="Create_upper"
             style={{ display: "flex", marginBottom: "10px" }}
           >
-            <img src={contact} alt="" />
+            <img src={PROFILEPIC ? PROFILEPIC : contact} alt="" />
             <div
               className="input"
               onClick={() => {

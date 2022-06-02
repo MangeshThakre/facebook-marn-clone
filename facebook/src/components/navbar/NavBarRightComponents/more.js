@@ -14,9 +14,13 @@ import { useNavigate } from "react-router-dom";
 function More() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const USER = useSelector((state) => state.globle.user);
+  const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
+  const URL = process.env.REACT_APP_API_URL;
   const [toggleDisplayAndAssibality, setToggleDisplayAndAssibality] =
     useState(false);
+
+  const ProfilePic = USER.profilePic ? URL + "/" + USER.profilePic : "";
+
   function handleLogOut() {
     localStorage.removeItem("TOKEN");
     localStorage.removeItem("LOCALUSER");
@@ -28,8 +32,11 @@ function More() {
     <div className="navebarRightMore">
       <Card>
         <CardContent>
-          <div className="userProfile">
-            <img src={contact} alt="" />
+          <div
+            className="userProfile"
+            onClick={() => navigate("/user/" + USER.id)}
+          >
+            <img src={ProfilePic ? ProfilePic : contact} alt="" />
             <div>
               <p>
                 <b>{USER.firstName + " " + USER.lastName}</b>

@@ -11,14 +11,14 @@ import axios from "axios";
 function Friendcard({ type, user, friendRequests }) {
   const CardType = type;
   const request_suggest = user;
-  const friend_requests = friendRequests;
   const URL = process.env.REACT_APP_API_URL;
+  const ProfilePic = user?.profilePic ? URL + "/" + user.profilePic : "";
+  const friend_requests = friendRequests;
   const TOKEN = localStorage.getItem("TOKEN");
   const removeUserRef = useRef(null);
   const [requestSended, setRequesSended] = useState(false);
   const [requestMessage, setRequesMessage] = useState("");
   const [cancleLoading, setCancleLoading] = useState(false);
-
   const [isAddFriendLoading, setIsAddfriendLoading] = useState(false);
   const [isConfirmedLoading, setIsConfirmedLoading] = useState(false);
   useEffect(() => {
@@ -114,7 +114,7 @@ function Friendcard({ type, user, friendRequests }) {
   return (
     <div ref={removeUserRef}>
       <Card className="FriendCard">
-        <img src={content} alt="profile image" />
+        <img src={ProfilePic ? ProfilePic : content} alt="profile image" />
         <div className="FriendCardInfo">
           <h4>{request_suggest.firstName + " " + request_suggest.lastName}</h4>
           <div style={{ height: "20px", margin: "5px 0 10px 0" }}>
