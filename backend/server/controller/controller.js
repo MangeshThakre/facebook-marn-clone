@@ -220,6 +220,41 @@ class controller {
     }
   }
 
+  static async getPhoto(req, res) {
+    const user_id = req.query.user_id;
+    const page = Number(req.query.page);
+    const limit = Number(req.query.limit);
+    const startIndex = (page - 1) * limit;
+    const endEndex = page * limit;
+
+    try {
+      const userResp = await userModel.findById(user_id, { password: 0 });
+      var arr = [];
+      var newLimit = limit;
+
+      if (userResp.profilePic) {
+        newLimit -= 1;
+        arr.push({ _id: userResp._id, photo: userResp.profilePic });
+      }
+      if (userResp.profileBg) {
+        arr.push({ _id: userResp._id, photo: userResp.profileBg });
+        newLimit -= 1;
+      }
+      const userPost = await postModel
+        .aggregate([
+          { $match: { user_id: user_id, photo: { $ne: null } } },
+          { $project: { photo: "$photo" } },
+        ])
+        .skip(startIndex)
+        .limit(newLimit);
+      const photosArr = [...arr, ...userPost];
+      res.json(photosArr);
+    } catch (error) {
+      res.json({ staus: 500 });
+      console.log("getohoto Error", error);
+    }
+  }
+
   static async getFriendsPost(req, res) {
     const user_id = req.user.id;
     const page = Number(req.query.page);
@@ -296,9 +331,6 @@ class controller {
     const likeDislike = req.body.likeDislike;
     const postId = req.body.postId;
     try {
-      // console.log(likeDislike);
-      // console.log(postId);
-
       const saveLike = await postModel.findByIdAndUpdate(postId, {
         like_dislike: likeDislike,
       });
@@ -404,6 +436,7 @@ class controller {
       const response = await frendRequestModel.aggregate([
         { $match: { request_id: user_id } },
         { $project: { userObjId: { $toObjectId: "$user_id" } } },
+
         {
           $lookup: {
             from: "userschemas",
@@ -437,6 +470,63 @@ class controller {
     } catch (error) {
       console.log("Error confirm_friend_request:", error);
       res.json({ status: 500 });
+    }
+  }
+
+  static async get_friends(req, res) {
+    const user_id = req.query.user_id;
+    const page = Number(req.query.page);
+    const limit = Number(req.query.limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    try {
+      const friendsResponse = await friendsModel
+        .aggregate([
+          { $match: { user_id: user_id } },
+          { $addFields: { friend_idObj: { $toObjectId: "$friend_id" } } },
+          {
+            $lookup: {
+              from: "userschemas",
+              localField: "friend_idObj",
+              foreignField: "_id",
+              as: "userData",
+            },
+          },
+          { $unwind: "$userData" },
+          {
+            $project: {
+              _id: 0,
+              _id: "$friend_id",
+              userName: {
+                $concat: ["$userData.firstName", " ", "$userData.lastName"],
+              },
+              prifilePic: "$userData.profilePic",
+            },
+          },
+        ])
+        .skip(startIndex)
+        .limit(limit);
+
+      var result = {};
+      if (startIndex > friendsResponse.length) {
+        result.next = {
+          page: page + 1,
+          limit: limit,
+        };
+      }
+
+      if (endIndex < 0) {
+        result.previous = {
+          page: page - 1,
+          limit: limit,
+        };
+      }
+
+      result.data = friendsResponse;
+      // console.log(result);
+      res.json(result);
+    } catch (error) {
+      console.log("get_Friend Error :", error);
     }
   }
 
@@ -624,12 +714,12 @@ class controller {
     try {
       if (type == "profilePic") {
         const response = await userModel.findByIdAndUpdate(user_id, {
-          profilePic: "",
+          profilePic: null,
         });
         res.json("deleted");
       } else if (type == "profileBg") {
         const response = await userModel.findByIdAndUpdate(user_id, {
-          profileBg: "",
+          profileBg: null,
         });
         res.json("deleted");
       }

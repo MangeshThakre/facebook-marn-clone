@@ -1,0 +1,19 @@
+.PostfriendBody{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    
+    }
+    
+    
+    .PostfriendBox{
+    width: 130px;
+    height: 130px;
+    margin: 3px 3px 0 3px;
+    border-radius: 3px;
+    }
+
+    .PostfriendBody > div{
+    cursor: pointer;
+    }

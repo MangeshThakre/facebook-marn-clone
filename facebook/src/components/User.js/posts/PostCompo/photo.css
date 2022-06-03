@@ -1,0 +1,16 @@
+.PostPhotoBody{
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+box-sizing: border-box;
+width: 424px;
+
+}
+
+
+.PostphotoBox{
+width: 130px;
+height: 130px;
+margin: 3px;
+border-radius: 3px;
+}

@@ -41,6 +41,10 @@ router.get("/getPosts", Authorization, controller.getPosts);
 
 router.get("/delete_post", Authorization, controller.delete_post);
 
+router.get("/getPhoto", Authorization, controller.getPhoto);
+
+router.get("/get_friends", Authorization, controller.get_friends);
+
 router.get("/getFriendsPost", Authorization, controller.getFriendsPost);
 
 router.post("/like_dislike", Authorization, controller.like_dislike);

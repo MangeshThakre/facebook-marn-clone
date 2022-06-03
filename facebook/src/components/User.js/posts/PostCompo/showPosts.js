@@ -25,7 +25,7 @@ function ShowPosts() {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [USERID]);
 
   useEffect(() => {
     setPostDetails([...POSTS, ...postDetail]);

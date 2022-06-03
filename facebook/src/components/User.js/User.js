@@ -48,9 +48,9 @@ function User() {
   const [uploadCover, setUploadCover] = useState(false);
   const [toggleUploadPhotoPopUp, setToggleUploadPhotoPopUp] = useState(false);
   const [uploadPhotoLoading, setUploadPhotoLoading] = useState(false);
-  // const [base64ProfileImage, setBase64ProfileImage] = useState("");
   const [PhotoType, setPhotoType] = useState("");
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
+  const USERDETAIL = useSelector((state) => state.user.userDetail);
   const TOKEN = localStorage.getItem("TOKEN");
   const URL = process.env.REACT_APP_API_URL;
   const page = useSelector((state) => state.user.setPage);
@@ -73,8 +73,6 @@ function User() {
   const togglePostDelete = useSelector(
     (state) => state.globle.togglePostDelete
   );
-  var user;
-  const profilePic = user ? "" : "";
 
   useEffect(() => {
     USERID == USER.id ? setown(true) : setown(false);
@@ -95,43 +93,51 @@ function User() {
   }, [page]);
 
   useEffect(() => {
-    async function getAboutInfo() {
-      try {
-        const response = await axios({
-          method: "get",
-          url: URL + "/api/get_about_info?user=" + USERID,
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${TOKEN}`,
-          },
-        });
-        const data = await response.data;
-        const userDetaile = {
-          DOB: data.DOB,
-          phoneNo: data.phoneNo,
-          lastName: data.lastName,
-          firstName: data.firstName,
-          email: data.email,
-          _id: data._id,
-          created_at: data.created_at,
-        };
-        dispatch(userDetail(userDetaile));
-        dispatch(currentCity(data.currentCity));
-        dispatch(homeTown(data.homeTown));
-        dispatch(workPlace(data.workPlace));
-        dispatch(college(data.college));
-        dispatch(school(data.school));
-        dispatch(familyMember(data.familyMember));
-        if (data.profilePic)
-          dispatch(profilePicture(URL + "/" + data.profilePic));
-        if (data.profileBg) dispatch(profileCover(URL + "/" + data.profileBg));
-      } catch (error) {
-        console.log(error);
-      }
-    }
     getAboutInfo();
-  }, []);
+  }, [USERID]);
 
+  // useEffect(() => {
+  //   getAboutInfo();
+  // }, []);
+
+  async function getAboutInfo() {
+    console.log("in function");
+    try {
+      const response = await axios({
+        method: "get",
+        url: URL + "/api/get_about_info?user=" + USERID,
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
+      const data = await response.data;
+      const userDetaile = {
+        DOB: data.DOB,
+        phoneNo: data.phoneNo,
+        lastName: data.lastName,
+        firstName: data.firstName,
+        email: data.email,
+        _id: data._id,
+        created_at: data.created_at,
+      };
+      dispatch(userDetail(userDetaile));
+      dispatch(currentCity(data.currentCity));
+      dispatch(homeTown(data.homeTown));
+      dispatch(workPlace(data.workPlace));
+      dispatch(college(data.college));
+      dispatch(school(data.school));
+      dispatch(familyMember(data.familyMember));
+      if (data.profilePic) {
+        dispatch(profilePicture(URL + "/" + data.profilePic));
+      } else dispatch(profilePicture(""));
+      if (data.profileBg) {
+        dispatch(profileCover(URL + "/" + data.profileBg));
+      } else dispatch(profileCover(""));
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async function addPhoto(e, type) {
     console.log(type);
 
@@ -350,7 +356,7 @@ function User() {
         <div className="username">
           <div>
             <h1 style={{ marginLeft: "200px" }}>
-              {USER?.firstName + " " + USER?.lastName}
+              {USERDETAIL?.firstName + " " + USERDETAIL?.lastName}
             </h1>
             <div
               className="button"

@@ -51,12 +51,12 @@ function About() {
   const SCHOOL = useSelector((state) => state.user.school);
   const FAMILYMEMBER = useSelector((state) => state.user.familyMember);
 
-  const birthDay = new Date(PROFILEUSER.DOB).toLocaleDateString("en-us", {
+  const birthDay = new Date(PROFILEUSER?.DOB).toLocaleDateString("en-us", {
     day: "numeric",
     month: "long",
   });
-  const BirthYear = new Date(PROFILEUSER.DOB).getFullYear();
-  const joinAt = new Date(PROFILEUSER.created_at).toLocaleDateString("en-us", {
+  const BirthYear = new Date(PROFILEUSER?.DOB).getFullYear();
+  const joinAt = new Date(PROFILEUSER?.created_at).toLocaleDateString("en-us", {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -406,7 +406,7 @@ function About() {
             <CallIcon />
             <div>
               <div>
-                <p>{PROFILEUSER.phoneNo}</p>
+                <p>{PROFILEUSER?.phoneNo}</p>
                 <p className="subStaticP">Mobile</p>
               </div>
             </div>
