@@ -1,6 +1,7 @@
 import React from "react";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
+
+import { Button } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import { setPage } from "../../../../redux/userSplice.js";
 import { useState, useEffect } from "react";
@@ -10,23 +11,46 @@ import contact from "../../../../image/contact.png";
 import "./friends.css";
 import { useParams } from "react-router";
 import axios from "axios";
+import { color } from "@mui/system";
 function Friends({ setPage }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const [friendsData, setFriendsData] = useState([]);
+  const [commanFriend, setCommanFriend] = useState([]);
   const TOKEN = localStorage.getItem("TOKEN");
   const URL = process.env.REACT_APP_API_URL;
   const { USERID } = useParams();
 
   useEffect(() => {
-    fetchFriends();
+    fetchFriends(USERID);
   }, [USERID]);
 
-  async function fetchFriends() {
+  useEffect(() => {
+    async function fetchFrinds() {
+      try {
+        const response = await axios({
+          method: "get",
+          url: URL + "/api/get_friends?user_id=" + USER.id + "&page=1&limit=6",
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${TOKEN}`,
+          },
+        });
+        const data = await response.data.data;
+        setCommanFriend(data);
+      } catch (error) {
+        console.log("Error", error);
+      }
+    }
+    fetchFrinds();
+  }, []);
+
+  async function fetchFriends(id, comment = "") {
     try {
       const response = await axios({
         method: "get",
-        url: URL + "/api/get_friends?user_id=" + USERID + "&page=1&limit=9",
+        url: URL + "/api/get_friends?user_id=" + id + "&page=1&limit=6",
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${TOKEN}`,
@@ -39,14 +63,22 @@ function Friends({ setPage }) {
     }
   }
 
-  console.log(friendsData);
+  function commonFriend(e) {
+    if (USER.id != USERID) {
+      commanFriend.forEach((element) => {
+        if (element._id == e._id) {
+          return <p className="commanFriend">Friend</p>;
+        } else return null;
+      });
+    }
+  }
 
   return (
     <div className="friend">
       <Card>
         <CardContent>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <h3>Photos</h3>
+            <h3>Friends</h3>
             <div
               className="Freind_button"
               onClick={() => dispatch(setPage("FRIENDS"))}
@@ -65,7 +97,20 @@ function Friends({ setPage }) {
                   return (
                     <div onClick={() => navigate("/user/" + e._id)}>
                       <img className="PostphotoBox" src={profile} alt="" />
-                      <p style={{ margin: "3px 0  0 5px" }}>{e.userName}</p>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          position: "relative",
+                        }}
+                      >
+                        <p style={{ margin: "3px 0  0 5px" }}>{e.userName}</p>
+
+                        {commanFriend.some(({ _id: di1 }) => di1 == e._id) &&
+                        USERID != USER.id ? (
+                          <p className="commanFriend">Friend</p>
+                        ) : null}
+                      </div>
                     </div>
                   );
                 })

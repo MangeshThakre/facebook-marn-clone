@@ -500,7 +500,7 @@ class controller {
               userName: {
                 $concat: ["$userData.firstName", " ", "$userData.lastName"],
               },
-              prifilePic: "$userData.profilePic",
+              profilePic: "$userData.profilePic",
             },
           },
         ])

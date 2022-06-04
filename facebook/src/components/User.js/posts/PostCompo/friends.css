@@ -17,3 +17,28 @@
     .PostfriendBody > div{
     cursor: pointer;
     }
+
+
+    .PostFriendBodyTwo > div{
+     display: flex;
+     box-sizing: border-box;
+     justify-content: space-between;
+     align-items: center; 
+    margin: 5px 0 5px 0 ;
+    }
+
+
+    .PostFriendBodyTwoLeft > img{
+     height: 40px;
+     width: 40px;
+     border-radius: 50%;
+     object-fit: cover;
+    }
+    .commanFriend{
+        font-size: 12px;
+color: rgb(5, 112, 231);
+position: absolute;
+right: 9px;
+bottom: 33px;
+font-weight: bold;
+    }
