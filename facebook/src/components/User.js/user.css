@@ -19,12 +19,30 @@
 }
 
 
+.userPage{
+    height: 100%;
+}
+
 .profileBg{
     width: 940Px;
     height: 21.75rem;
     object-fit: cover;
 }
 
+
+.cancleFreindRequestBurron >   button{
+    background-color: #e4e6eb;
+    margin: 3px 0 3px 0;
+    width: 188px;
+    height: 36px;
+    border-radius: 6px;
+    text-transform: lowercase;
+}
+
+
+.cancleFreindRequestBurron> button :hover{
+    background-color:#a9c8ead1 ;
+}
 
 
 .profilePic{
@@ -49,6 +67,8 @@
     display: flex;
     justify-content: space-between;
 }
+
+
 
 .userBodyNav{
 

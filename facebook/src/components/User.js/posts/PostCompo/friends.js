@@ -46,7 +46,7 @@ function Friends({ setPage }) {
     fetchFrinds();
   }, []);
 
-  async function fetchFriends(id, comment = "") {
+  async function fetchFriends(id) {
     try {
       const response = await axios({
         method: "get",

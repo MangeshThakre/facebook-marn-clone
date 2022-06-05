@@ -94,7 +94,7 @@ function Friendcard({ type, user, friendRequests }) {
       if (data == "confirmed")
         setTimeout(() => {
           setIsConfirmedLoading(false);
-        }, 1000);
+        }, 500);
       removeUserRef.current.remove();
     } catch (error) {
       console.log("Error", error);

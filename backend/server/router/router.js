@@ -64,10 +64,17 @@ router.get(
   controller.cancle_friend_request
 );
 
+
 router.get(
   "/get_friend_requests",
   Authorization,
   controller.get_friend_requests
+);
+
+router.get(
+  "/get_friend_requests_user",
+  Authorization,
+  controller.get_friend_requests_user
 );
 
 router.get(

@@ -401,6 +401,7 @@ class controller {
       res.json({ status: 500 });
     }
   }
+
   static async sended_friend_requests(req, res) {
     const user_id = req.user.id;
     try {
@@ -432,6 +433,25 @@ class controller {
 
   static async get_friend_requests(req, res) {
     const user_id = req.user.id;
+    const request_id = req.query.request_id;
+    try {
+      const response = await frendRequestModel.findOne({ user_id, request_id });
+      const requestResponse = await frendRequestModel.findOne({
+        user_id: request_id,
+        request_id: user_id,
+      });
+      var result = {};
+      result.sededRequest = response ? true : false;
+      result.getRequest = requestResponse ? true : false;
+      res.json(result);
+    } catch (error) {
+      res.json({ status: 500 });
+      console.log(" ERROR get_friend_request :", error);
+    }
+  }
+
+  static async get_friend_requests_user(req, res) {
+    const user_id = req.user.id;
     try {
       const response = await frendRequestModel.aggregate([
         { $match: { request_id: user_id } },
@@ -449,7 +469,8 @@ class controller {
       const data = response.length == 0 ? [] : response[0]?.requestDetail;
       res.json(data);
     } catch (error) {
-      console.log(" ERROR get_friend_request :", error);
+      res.json({ status: 500 });
+      console.log(" ERROR get_friend_requests_user :", error);
     }
   }
 
@@ -475,11 +496,23 @@ class controller {
 
   static async get_friends(req, res) {
     const user_id = req.query.user_id;
+    const friend_id = req.query?.friend_id;
     const page = Number(req.query.page);
     const limit = Number(req.query.limit);
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
     try {
+      if (page == 0 && limit == 0) {
+        const response = await friendsModel.findOne({ user_id, friend_id });
+        if (
+          response != null &&
+          response.user_id == user_id &&
+          response.friend_id == friend_id
+        ) {
+          return res.json(true);
+        } else return res.json(false);
+      }
+
       const friendsResponse = await friendsModel
         .aggregate([
           { $match: { user_id: user_id } },

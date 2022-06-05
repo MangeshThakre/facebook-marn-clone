@@ -39,7 +39,7 @@ function FriendsHome() {
     try {
       const response = await axios({
         method: "get",
-        url: URL + "/api/get_friend_requests",
+        url: URL + "/api/get_friend_requests_user",
         headers: {
           "content-type": "application/json",
           Authorization: `Bearer ${TOKEN}`,
