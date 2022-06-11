@@ -47,7 +47,7 @@ function FriendSideBarMenu() {
                   <div className="friends_friendRequestIcon">
                     <div></div>
                   </div>
-                  <p>Friend Request</p>
+                  <p>Friend Requests</p>
                 </div>
                 <ArrowForwardIosIcon />
               </div>
@@ -63,7 +63,7 @@ function FriendSideBarMenu() {
                   <div className="friends_suggestionIcon">
                     <div></div>
                   </div>
-                  <p>Freind suggestion</p>
+                  <p>Suggestions</p>
                 </div>
                 <ArrowForwardIosIcon />
               </div>
@@ -79,7 +79,7 @@ function FriendSideBarMenu() {
                   <div className="friends_AllFriendsIcon">
                     <div></div>
                   </div>
-                  <p>All friend</p>
+                  <p>All friends</p>
                 </div>
 
                 <ArrowForwardIosIcon />

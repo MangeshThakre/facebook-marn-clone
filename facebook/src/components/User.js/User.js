@@ -39,7 +39,7 @@ import {
 import "./user.css";
 import { CardContent } from "@mui/material";
 
-function User() {
+function User({ type }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userNavRef = useRef(null);
@@ -56,8 +56,8 @@ function User() {
 
   const [PhotoType, setPhotoType] = useState("");
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
-  const USERDETAIL = useSelector((state) => state.user.userDetail);
   const TOKEN = localStorage.getItem("TOKEN");
+  const USERDETAIL = useSelector((state) => state.user.userDetail);
   const [cancleLoading, setCancleLoading] = useState(false);
   const [isAddFriendLoading, setIsAddfriendLoading] = useState(false);
   const [isConfirmedLoading, setIsConfirmedLoading] = useState(false);
@@ -525,8 +525,7 @@ function User() {
           }}
         ></div>
       ) : null}
-
-      <Navbar />
+      {type == "own" ? <Navbar /> : null}
       <div style={{ backgroundColor: backgroundColor_sub }}>
         <div style={{ display: "none" }}>
           <input

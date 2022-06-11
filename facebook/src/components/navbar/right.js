@@ -1,11 +1,14 @@
 import React from "react";
 import contact from "../../image/contact.png";
 import "./navBar.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import More from "./NavBarRightComponents/more.js";
+import { deshbordPage } from "../../redux/globleSplice.js";
+
 function Right() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [toggleMenu, setToggleMenu] = useState(false);
   const [toggleMessage, setToggleMessage] = useState(false);
@@ -27,6 +30,7 @@ function Right() {
       <div
         onClick={(e) => {
           navigate("/user/" + USER.id);
+          dispatch(deshbordPage(""));
         }}
       >
         <div className="user">

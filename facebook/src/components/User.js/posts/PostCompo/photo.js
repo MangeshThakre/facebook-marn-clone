@@ -34,6 +34,8 @@ function Photo() {
       console.log("Error", error);
     }
   }
+
+  // console.log(photoData);
   return (
     <div className="photo">
       <Card sx={{ borderRadius: "10px" }}>

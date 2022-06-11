@@ -1,0 +1,51 @@
+.FriendCardSmall{
+    margin: 0 5px 0 5px;
+    border-radius: 6px;
+    border-radius: 6px;
+}
+
+.FriendCardSmall :hover{
+    background-color: #e4e6ebef;
+}
+.card{
+    height: 73.6px;
+    padding:  5px  10px 5px 10px;
+    display: flex;
+    border-radius: 6px;
+    align-items: center;
+}
+.FriendCardSmallImage{
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    margin-right:  20px;
+    cursor: pointer;
+}
+
+.FriendCardSmalright >div {
+    display: flex;
+}
+
+.FriendCardSmalright > p{
+    margin-bottom: 5px;
+}
+
+
+ .FriendCardSmalrightRemove :hover {
+    background-color: #babbbe;
+  }
+  .FriendCardSmalright > div> .FriendCardSmalrightRemove >button {
+      background-color: #e4e6eb;
+      text-transform:none;
+margin-right: 15px;
+width: 106px;
+height: 36px;
+  
+}
+
+.FriendCardSmalright > div> button {
+text-transform:none;
+height: 36px;
+margin-right: 15px;
+width: 106px;
+}

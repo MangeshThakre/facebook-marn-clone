@@ -4,8 +4,11 @@ import Divider from "@mui/material/Divider";
 import Friendcard from "../friendCard/Friendcard";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import { useParams } from "react-router-dom";
+import User from "../../../User.js/User";
 function FriendsHome() {
+  const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
+
   const URL = process.env.REACT_APP_API_URL;
   const TOKEN = localStorage.getItem("TOKEN");
   const [allUsers, setAllUsers] = useState([]);
@@ -17,6 +20,8 @@ function FriendsHome() {
     fetchSendedFriendRequest();
     fetchFriendRequests();
   }, []);
+
+  const { USERID } = useParams();
 
   async function fetchSendedFriendRequest() {
     try {
@@ -46,7 +51,6 @@ function FriendsHome() {
         },
       });
       const data = await response.data;
-      // console.log(data);
       setGetFriendrequests(data);
     } catch (error) {
       console.log("ERROR", error);
@@ -76,47 +80,56 @@ function FriendsHome() {
     }
   }
 
-  // console.log(isLoadingAllUser);
-
   return (
-    <div className="friendsHome">
-      {getFriendRequest.length != 0 ? (
+    <>
+      {USERID && USER.id != USERID ? (
+        <User type={"users"} />
+      ) : (
+        // "kkk"
         <>
-          <div className="friendsHome_friendRequest">
-            <div className="friendsHome_friendRequest_head">
-              <h3>Friend Requests</h3>
-              <p>See All</p>
-            </div>
-            <div className="FriendcardDiv">
-              {getFriendRequest.map((e) => {
-                return <Friendcard key={e._id} type={"request"} user={e} />;
-              })}
+          <div className="friendsHome">
+            {getFriendRequest.length != 0 ? (
+              <>
+                <div className="friendsHome_friendRequest">
+                  <div className="friendsHome_friendRequest_head">
+                    <h3>Friend Requests</h3>
+                    <p>See All</p>
+                  </div>
+                  <div className="FriendcardDiv">
+                    {getFriendRequest.map((e) => {
+                      return (
+                        <Friendcard key={e._id} type={"request"} user={e} />
+                      );
+                    })}
+                  </div>
+                </div>
+                <Divider />
+              </>
+            ) : null}
+            <div className="friendsHome_friendRequest">
+              <div className="friendsHome_friendRequest_head">
+                <h3>People You May Know</h3>
+                <p>See All</p>
+              </div>
+              <div className="FriendcardDiv">
+                {isLoadingAllUser
+                  ? "loading"
+                  : allUsers.map((e) => {
+                      return (
+                        <Friendcard
+                          key={e._id}
+                          type={"suggest"}
+                          friendRequests={friend_requests}
+                          user={e}
+                        />
+                      );
+                    })}
+              </div>
             </div>
           </div>
-          <Divider />
         </>
-      ) : null}
-      <div className="friendsHome_friendRequest">
-        <div className="friendsHome_friendRequest_head">
-          <h3>People You May Know</h3>
-          <p>See All</p>
-        </div>
-        <div className="FriendcardDiv">
-          {isLoadingAllUser
-            ? "loading"
-            : allUsers.map((e) => {
-                return (
-                  <Friendcard
-                    key={e._id}
-                    type={"suggest"}
-                    friendRequests={friend_requests}
-                    user={e}
-                  />
-                );
-              })}
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 

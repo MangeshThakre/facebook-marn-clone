@@ -4,9 +4,11 @@ import contact from "../../../image/contact.png";
 import findFriends from "../../../image/findFriends.png";
 import groups from "../../../image/homePageLeftGroup.png";
 import weather from "../../../image/homePageLeftWeather.png";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { deshbordPage } from "../../../redux/globleSplice.js";
 function HomePageLeft() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
 
@@ -31,6 +33,7 @@ function HomePageLeft() {
         className="findFriends"
         onClick={() => {
           navigate("/friends");
+          dispatch(deshbordPage("FRIENDS"));
         }}
       >
         <div>

@@ -6,6 +6,7 @@ export const globleSplice = createSlice({
   initialState: {
     user: null,
     token: null,
+    deshbordPage: "HOME",
     toggleCreatePost: false,
     togglePhotoVideo: false,
     toggleAboutPopUp: false,
@@ -24,6 +25,10 @@ export const globleSplice = createSlice({
 
     user: (state, action) => {
       state.user = action.payload;
+    },
+
+    deshbordPage: (state, action) => {
+      state.deshbordPage = action.payload;
     },
     toggleCreatePost: (state, action) => {
       state.toggleCreatePost = action.payload;
@@ -56,6 +61,7 @@ export const globleSplice = createSlice({
 });
 
 export const {
+  deshbordPage,
   toggleCreatePost,
   togglePhotoVideo,
   toggleAboutPopUp,

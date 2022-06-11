@@ -116,7 +116,7 @@ function Friendcard({ type, user, friendRequests }) {
       <Card className="FriendCard">
         <img src={ProfilePic ? ProfilePic : content} alt="profile image" />
         <div className="FriendCardInfo">
-          <h4>{request_suggest.firstName + " " + request_suggest.lastName}</h4>
+          <h4>{request_suggest.userName}</h4>
           <div style={{ height: "20px", margin: "5px 0 10px 0" }}>
             {requestMessage}
           </div>

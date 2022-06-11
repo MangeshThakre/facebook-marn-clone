@@ -1,8 +1,13 @@
 import React from "react";
-import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
 import "./navBar.css";
+import { deshbordPage } from "../../redux/globleSplice.js";
+import { useNavigate } from "react-router-dom";
+import { useRef, useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 function Middle() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const home = useSelector((state) => state.icon.home);
   const people = useSelector((state) => state.icon.people);
   const reel = useSelector((state) => state.icon.reel);
@@ -10,22 +15,32 @@ function Middle() {
   const discover = useSelector((state) => state.icon.discover);
   const iconColor = useSelector((state) => state.darkLight.iconColor);
   const burgerMenu = useSelector((state) => state.icon.burgerMenu);
+  const DESHBORDPAGE = useSelector((state) => state.globle.deshbordPage);
   const activeColor = "blue";
-
   const navBarMiddle = useRef(null);
-  const selectPage = (e) => {
-    const target = e.currentTarget.parentNode;
-    const allElement = document.querySelector(".navBarMiddle").childNodes;
+
+  useEffect(() => {
+    const allElement = navBarMiddle.current.childNodes;
+
     for (const element of allElement) {
-      element.className = "";
+      const className = element.className.split(" ");
+      element.className = className[0];
+      if (className[0] == DESHBORDPAGE) {
+        element.className = DESHBORDPAGE + " activee";
+      }
     }
-    target.className = "activee";
-  };
+  }, [DESHBORDPAGE]);
 
   return (
     <div className="navBarMiddle" ref={navBarMiddle}>
-      <div className="activee">
-        <div className="home " id="home" onClick={(e) => selectPage(e)}>
+      <div
+        className="HOME activee"
+        onClick={(e) => {
+          navigate("/");
+          dispatch(deshbordPage("HOME"));
+        }}
+      >
+        <div id="home">
           <svg
             className="icon"
             viewBox="0 0 28 28"
@@ -39,8 +54,14 @@ function Middle() {
         </div>
       </div>
 
-      <div>
-        <div className="people" id="people" onClick={(e) => selectPage(e)}>
+      <div
+        className="FRIENDS"
+        onClick={(e) => {
+          navigate("/friends");
+          dispatch(deshbordPage("FRIENDS"));
+        }}
+      >
+        <div id="people">
           <svg
             viewBox="0 0 28 28"
             fill="currentColor"
@@ -53,8 +74,8 @@ function Middle() {
         </div>
       </div>
 
-      <div>
-        <div className="reel" id="reel" onClick={(e) => selectPage(e)}>
+      <div className="REEL" onClick={(e) => dispatch(deshbordPage("REEL"))}>
+        <div id="reel">
           <svg
             viewBox="0 0 28 28"
             fill="currentColor"
@@ -67,8 +88,8 @@ function Middle() {
         </div>
       </div>
 
-      <div>
-        <div className="market" id="market" onClick={(e) => selectPage(e)}>
+      <div className="MARKET" onClick={(e) => dispatch(deshbordPage("MARKET"))}>
+        <div id="market">
           <svg
             viewBox="0 0 28 28"
             fill="currentColor"
@@ -81,8 +102,11 @@ function Middle() {
         </div>
       </div>
 
-      <div>
-        <div id="discover" className="discover" onClick={(e) => selectPage(e)}>
+      <div
+        className="DISCOVER"
+        onClick={(e) => dispatch(deshbordPage("DISCOVER"))}
+      >
+        <div id="discover">
           <svg
             viewBox="0 0 28 28"
             fill="currentColor"
@@ -95,12 +119,11 @@ function Middle() {
         </div>
       </div>
 
-      <div>
-        <div
-          className="burgerMenu"
-          id="burgerMenu"
-          onClick={(e) => selectPage(e)}
-        >
+      <div
+        className="BURBERMENU"
+        onClick={(e) => dispatch(deshbordPage("BURBERMENU"))}
+      >
+        <div id="burgerMenu">
           <svg
             viewBox="0 0 28 28"
             fill="currentColor"

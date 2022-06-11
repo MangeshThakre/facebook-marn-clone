@@ -343,17 +343,27 @@ class controller {
   }
 
   static async get_all_user(req, res) {
-    const user_id = req.user.id;
-    try {
-      const response = await userModel
-        .find({
-          _id: { $nin: [user_id] },
-        })
-        .select("_id")
-        .select("firstName")
-        .select("lastName")
-        .select("profilePic");
 
+    const user_id = req.user.id;
+   
+    try {
+      const user = await userModel.findById(user_id);
+      const responsee = await userModel.aggregate([
+        {
+          $project: {
+            _id: "$_id",
+            userName: {
+              $concat: ["$firstName", " ", "$lastName"],
+            },
+            profilePic: "$profilePic",
+          },
+        },
+      ]);
+
+      var response = [];
+      responsee.forEach((e) => {
+        if (e._id != user_id) response.push(e);
+      });
       const friends = await friendsModel.find({ user_id });
       var arr = [];
       if (friends.length == 0) {

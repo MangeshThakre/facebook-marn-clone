@@ -10,6 +10,7 @@ import {
   iconColor,
   backgroundColor_sub,
 } from "../../redux/darkLight_mode.js";
+import { deshbordPage } from "../../redux/globleSplice.js";
 import { useSelector, useDispatch } from "react-redux";
 function Navbar() {
   const navigate = useNavigate();
@@ -21,13 +22,14 @@ function Navbar() {
 
   return (
     <div className="navbar" style={{ backgroundColor: SUB_BACKGROUND_COLOR }}>
-      <div className="navBarLeft">
-        <img
-          src={facebook}
-          onClick={() => {
-            navigate("/");
-          }}
-        />
+      <div
+        className="navBarLeft"
+        onClick={() => {
+          navigate("/");
+          dispatch(deshbordPage("HOME"));
+        }}
+      >
+        <img src={facebook} />
         <div className="search" id="search">
           <input type="text" placeholder="Search Facebook" />
         </div>
