@@ -12,9 +12,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import axios from "axios";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import CircularProgress from "@mui/material/CircularProgress";
 import { setPage } from "../../redux/userSplice.js";
+import IconButton from "@mui/material/IconButton";
 import {
   ConfirmDeletPopup,
   AboutPopUp,
@@ -639,6 +641,18 @@ function User() {
                 <p> Photos</p>
               </div>
             </li>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div>
+              <IconButton>
+                <MoreHorizIcon />
+              </IconButton>
+            </div>
           </div>
         </div>
       </div>

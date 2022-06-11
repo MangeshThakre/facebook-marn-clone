@@ -33,11 +33,137 @@ import { setPage } from "../../../../redux/userSplice.js";
 export function AboutPopUp() {
   const dispatch = useDispatch();
 
+  const WORKPLACE = useSelector((state) => state.user.workPlace);
+  const COLLEGE = useSelector((state) => state.user.college);
+  const SCHOOL = useSelector((state) => state.user.school);
+  const HOMETOWN = useSelector((state) => state.user.homeTown);
+  const CURRENTCITY = useSelector((state) => state.user.currentCity);
+  const JOINEDATE = useSelector((state) => state.user.userDetail.created_at);
+
+  const joiningDate = new Date(JOINEDATE).toLocaleDateString("en-us", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
   function setAboutOption_(option) {
     dispatch(setAboutOption(option));
     dispatch(setPage("ABOUT"));
     dispatch(toggleAboutPopUp(false));
   }
+
+  function WorkplaceSwitch(e, i) {
+    return (
+      <div className="switchButtonDiv">
+        <FormControlLabel
+          control={<Switch defaultChecked />}
+          label={"Works at " + e.company}
+        />
+        <IconButton
+          onClick={() => {
+            setAboutOption_("WorkAndEducation");
+          }}
+        >
+          <EditIcon />
+        </IconButton>
+      </div>
+    );
+  }
+
+  function heighSchoolSwitch(e, i) {
+    return (
+      <div className="switchButtonDiv">
+        <FormControlLabel
+          control={<Switch defaultChecked />}
+          label={"Studied  at " + e.school_college_name}
+        />
+        <IconButton
+          onClick={() => {
+            setAboutOption_("WorkAndEducation");
+          }}
+        >
+          <EditIcon />
+        </IconButton>
+      </div>
+    );
+  }
+
+  function collegeSwitch(e, i) {
+    return (
+      <div className="switchButtonDiv">
+        <FormControlLabel
+          control={<Switch defaultChecked />}
+          label={"Works at " + e.school_college_name}
+        />
+        <IconButton
+          onClick={() => {
+            setAboutOption_("WorkAndEducation");
+          }}
+        >
+          <EditIcon />
+        </IconButton>
+      </div>
+    );
+  }
+
+  function currentCitySwitch() {
+    if (Object.keys(CURRENTCITY).length > 0) {
+      return (
+        <div className="switchButtonDiv">
+          <FormControlLabel
+            control={<Switch defaultChecked={CURRENTCITY.showIntro} />}
+            label={"Lives in " + CURRENTCITY.city}
+          />
+          <IconButton
+            onClick={() => {
+              setAboutOption_("Placeslived");
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+        </div>
+      );
+    } else {
+      return (
+        <div onClick={() => setAboutOption_("Placeslived")}>
+          <AddCircleOutlineIcon
+            sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
+          />
+          <p>Add current city</p>
+        </div>
+      );
+    }
+  }
+
+  function homeTownSwitch() {
+    if (Object.keys(HOMETOWN).length > 0) {
+      return (
+        <div className="switchButtonDiv">
+          <FormControlLabel
+            control={<Switch defaultChecked={HOMETOWN.showIntro} />}
+            label={"Works at " + HOMETOWN.city}
+          />
+          <IconButton
+            onClick={() => {
+              setAboutOption_("Placeslived");
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+        </div>
+      );
+    } else {
+      return (
+        <div onClick={() => setAboutOption_("Placeslived")}>
+          <AddCircleOutlineIcon
+            sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
+          />
+          <p>Add HomeTown</p>
+        </div>
+      );
+    }
+  }
+
   return (
     <div
       className="aboutComponentBody"
@@ -68,6 +194,12 @@ export function AboutPopUp() {
               <p className="subStaticP">Details you select will be public.</p>
               <div>
                 <p>Work</p>
+                {WORKPLACE.length > 0
+                  ? WORKPLACE.map((e, i) => {
+                      return WorkplaceSwitch(e, i);
+                    })
+                  : null}
+
                 <div onClick={() => setAboutOption_("WorkAndEducation")}>
                   <AddCircleOutlineIcon
                     sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
@@ -77,16 +209,25 @@ export function AboutPopUp() {
               </div>
               <div>
                 <p>Education</p>
-                <div
-                  onClick={() => {
-                    setAboutOption_("WorkAndEducation");
-                  }}
-                >
+                {SCHOOL.length > 0
+                  ? SCHOOL.map((e, i) => {
+                      return heighSchoolSwitch(e, i);
+                    })
+                  : null}
+
+                <div onClick={() => setAboutOption_("WorkAndEducation")}>
                   <AddCircleOutlineIcon
                     sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
                   />
                   <p>Add a high school</p>
                 </div>
+
+                {SCHOOL.length > 0
+                  ? COLLEGE.map((e, i) => {
+                      return collegeSwitch(e, i);
+                    })
+                  : null}
+
                 <div onClick={() => setAboutOption_("WorkAndEducation")}>
                   <AddCircleOutlineIcon
                     sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
@@ -96,24 +237,12 @@ export function AboutPopUp() {
               </div>
               <div className="AboutSwitch">
                 <p>Current City</p>
-                <div>
-                  <FormControlLabel
-                    control={<Switch defaultChecked />}
-                    label="Single"
-                  />
-                  <IconButton>
-                    <EditIcon />
-                  </IconButton>
-                </div>
+
+                {currentCitySwitch()}
               </div>
               <div>
                 <p>Hometown</p>
-                <div onClick={() => setAboutOption_("Placeslived")}>
-                  <AddCircleOutlineIcon
-                    sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
-                  />
-                  <p>Add hometown</p>
-                </div>
+                {homeTownSwitch()}
               </div>
               <div className="AboutSwitch">
                 <p>Relationship</p>
@@ -132,11 +261,8 @@ export function AboutPopUp() {
                 <div>
                   <FormControlLabel
                     control={<Switch defaultChecked />}
-                    label="Single"
+                    label={joiningDate}
                   />
-                  <IconButton>
-                    <EditIcon />
-                  </IconButton>
                 </div>
               </div>
             </div>

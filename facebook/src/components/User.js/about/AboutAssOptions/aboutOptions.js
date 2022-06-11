@@ -51,7 +51,7 @@ export function PlaceLived({ close, type }) {
       const { city, type } = CURRENTCITY;
       setPlace(city);
     }
-    if ((Object.keys(HOMETOWN).length != 0) & (type == "homeTown")) {
+    if ((Object.keys(HOMETOWN).length != 0) & (type == "Hometown")) {
       const { city, type } = HOMETOWN;
       setPlace(city);
     }

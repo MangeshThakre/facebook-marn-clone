@@ -582,12 +582,12 @@ class controller {
     try {
       if (currentCity) {
         const response = await userModel.findByIdAndUpdate(user_id, {
-          currentCity: { city: currentCity, type: "public" },
+          currentCity: { city: currentCity, type: "public"  , showIntro : 0},
         });
         await res.json(response);
       } else {
         const response = await userModel.findByIdAndUpdate(user_id, {
-          homeTown: { city: homeTown, type: "public" },
+          homeTown: { city: homeTown, type: "public" , showIntro : 0 },
         });
 
         await res.json(response);
