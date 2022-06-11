@@ -1,0 +1,9 @@
+.homePage{
+    display: flex;
+    justify-content: center;
+}
+
+.homePageBody{
+    display: flex;
+    justify-content: space-between;
+}

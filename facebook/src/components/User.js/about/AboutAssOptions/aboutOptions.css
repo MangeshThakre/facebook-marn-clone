@@ -1,0 +1,122 @@
+
+#PlaceLivedTop{
+    padding-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+}
+#PlaceLivedTop > div{
+width:100%;
+margin-bottom: 10px;
+}
+
+#Description >div >div{
+    height: 80px;
+}
+#PlaceLivedBottom{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+#PlaceLivedBottom > div {
+display: flex;
+}
+#PlaceLivedBottom > div > button {
+    margin-right: 5px;
+    }
+
+.Editordiv{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+.list{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0 0 10px;
+}    
+
+
+.listLeft{
+    display:flex;
+    align-items: center;
+}
+.listLeft > div{
+    margin-left: 10px;
+}
+
+.listRight{
+    display: flex;
+align-items: center;
+position: relative;
+}
+
+.pHeading{
+    font-weight: bold;
+}
+
+.DeleteEditPopup{
+    position:absolute;
+    right: 0;
+    top: 41px;
+    z-index: 2;
+width: 344px;
+box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+}
+
+.DeleteEditPopupBody >div{
+    display: flex;
+    align-items: center;
+    height: 36px;
+    cursor: pointer;
+}
+.DeleteEditPopupBody > div > p{
+    margin-left: 10px;
+}
+
+
+
+.timePeriod{
+margin: 20px 0 10px 0;
+}
+
+.timePeriod > p {
+margin: 10px 0 10px 0;
+font-weight: bold;
+
+}
+
+.from{
+    display: flex;
+    align-items: center;
+margin: 20px 0 20px 0;
+}
+.from >p {
+margin-right: 10px;
+font-weight: bold;
+font: 14px;
+}
+
+.to{
+    display: flex;
+    align-items: center;
+    margin: 20px 0 20px 0;
+
+}
+.to >p {
+margin-right: 10px;
+margin-left: 10px;
+font-weight: bold;
+font: 14px
+}
+
+
+.notEdit > p{
+    margin-left: 5px;
+
+}

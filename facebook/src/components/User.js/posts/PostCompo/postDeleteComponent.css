@@ -1,0 +1,72 @@
+.PostDeleteComponentBody{
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    width: 100%;
+}
+.postDeletepopupBox{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width :700px;
+    /* height:428px ; */
+    border-radius: 7px;    
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+
+}
+
+
+.postDeletepopup_head{
+    display :flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    padding: 0 10px 0 10px;
+}
+.postDeletepopup_close{
+    height: 36px;
+    width: 36px;
+    cursor: pointer;
+
+    border-radius: 50%;
+    background-color: #e4e6eb;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+
+
+
+.postDeletePopPuoFooter{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.postDeletePopPuoFooter > .p{
+    height: 36px;
+    width: 182px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #1976d2  ;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
+.postDeletePopPuoFooter > div >  div>button{
+    margin-right: 6px;
+    background-color: #e4e6eb;
+    color: black;
+}
+.postDeletePopPuoFooter > div> div  :hover{
+    background-color: #e4e6eb;
+}
+.postDeletePopPuoFooter > div {
+    display: flex;
+}

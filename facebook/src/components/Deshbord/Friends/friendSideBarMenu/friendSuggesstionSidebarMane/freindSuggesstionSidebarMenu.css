@@ -1,0 +1,15 @@
+
+.FriendsuggesstionSidebarHead{
+    display: flex;
+    align-items: center;
+    margin: 20px;
+}
+
+.FriendsuggesstionSidebarHead > div{
+    margin-left: 10px;
+}
+
+.FriendsuggesstionSidebarHead > div  > p:hover{
+   cursor: pointer;
+   text-decoration: underline;
+}

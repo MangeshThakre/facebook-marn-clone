@@ -1,0 +1,49 @@
+.AddPhoto{
+    width: 100%;
+    height:auto ;
+    border-radius: 5px;
+    border: solid 2px rgb(205, 204, 204);
+   padding: 5px;
+   position: relative;
+
+}
+
+.AddPhoto > div{
+height: 100%;
+border-radius: 5px;
+
+}
+
+.AddPhoto_body{
+    height: 167.6px;
+width: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+text-align: center;
+cursor: pointer;
+position: relative;
+}
+
+.viewPhoto{
+
+    
+}
+.photoClose{
+position: absolute;
+top: 8px;
+right: 8px;
+z-index: 2;
+}
+
+
+.Add_close{
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+       width: 100%;
+}
+
+.Add_close > div{
+margin: 10px;
+}

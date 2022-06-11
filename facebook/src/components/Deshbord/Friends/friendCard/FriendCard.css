@@ -1,0 +1,70 @@
+.FriendCard{
+    height: 365px;
+    width: 214px;
+    margin: 0 4px 0 ;
+    border-radius: 6px;
+}
+
+.FriendCard >img{
+    height: 212.8px;
+    width: 214px;
+    object-fit: cover;
+}
+
+.FriendCardInfo{
+    padding: 0 14px;
+   height: 150px; 
+}
+
+
+
+.FrendRequestButton> button{
+    margin: 3px 0 3px 0;
+    width: 188px;
+    height: 36px;
+    border-radius: 6px;
+}
+
+.FrendRequestButton > div>  button{
+    background-color: #e4e6eb;
+    margin: 3px 0 3px 0;
+    width: 188px;
+    height: 36px;
+    border-radius: 6px;
+}
+
+.FrendRequestButton>  div :hover{
+    background-color: #babbbe;
+}
+
+
+.FriendSuggestButton> button{
+    margin: 3px 0 3px 0;
+    width: 188px;
+    height: 36px;
+    border-radius: 6px;
+    color: #1976d2;
+    background-color:#a9c8ead1 ;
+}
+
+.FriendSuggestButton> button :hover{
+    background-color:#a9c8ead1 ;
+}
+
+.FriendSuggestButton > div>  button{
+    background-color: #e4e6eb;
+    margin: 3px 0 3px 0;
+    width: 188px;
+    height: 36px;
+    border-radius: 6px;
+}
+
+.FriendSuggestButton>  div :hover{
+    background-color: #babbbe;
+}
+
+
+
+
+
+

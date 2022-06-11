@@ -1,0 +1,184 @@
+.profileBackground{
+    display: flex;
+    justify-content: center;
+    height: 21.75rem;
+
+}
+
+.profile{
+    width: 940Px;
+    box-shadow : inset  -1px -80px 50px -50px   rgba(0,0,0,0.5);
+    border-bottom-left-radius:10px ;
+    border-bottom-right-radius: 10px;
+    background-color: #f0f2f5;
+  border: none;
+}
+
+.profileBackground .img{
+    width:940px ;
+}
+
+
+.userPage{
+    height: 100%;
+}
+
+.profileBg{
+    width: 940Px;
+    height: 21.75rem;
+    object-fit: cover;
+}
+
+
+.cancleFreindRequestBurron >   button{
+    background-color: #e4e6eb;
+    margin: 3px 0 3px 0;
+    width: 188px;
+    height: 36px;
+    border-radius: 6px;
+    text-transform: lowercase;
+}
+
+
+.cancleFreindRequestBurron> button :hover{
+    background-color:#a9c8ead1 ;
+}
+
+
+.profilePic{
+    height: 168px;
+    width: 168px;
+    border-radius: 50%;
+    border: solid white 5px;
+}
+.username{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+}
+
+.username > div{
+    width: 875px;
+    height: 84px;
+    display: flex;
+    align-items: center;
+    margin-bottom: "10px";
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.userBodyNav{
+
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.userBodyNav > div {
+  padding-top: 5px;    
+    width: 875px;
+    border-top: solid #c5c7c9 1px;
+    height: 54px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.userBodyNav > div > li {
+    margin: 3px;
+   width: 71.6px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin-left: 2px;
+   cursor: pointer;
+}
+
+.activePage{
+    color: #1976d2;
+    border-bottom: solid #1976d2 ;
+}
+
+
+
+.inactivePage   :hover{
+    background-color: #dcdada54;
+    cursor: pointer;
+    border-radius: 5px;
+   width: 100%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+
+
+
+.userBodydetail{
+display: flex; 
+ justify-content: center; 
+width: 100%;
+
+}
+
+
+.uploadContainer{
+    position: absolute;
+top: 125px;
+right: -106px;
+z-index: 2;
+box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+}
+
+
+.CameraAltIcon {position: absolute;
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 10px;
+    right: 10px;}
+
+ .uplaodPhotoPopup :hover{
+     display: absulate;
+     background-color: #c5c7c9;
+ }
+    .uplaodPhotoPopup > div{
+        display: flex;
+        cursor: pointer;
+        margin: 3px;
+        width: 134px;
+        height: 30px;
+        border-radius: 4px;
+        justify-content: center;
+        align-items: center;
+        margin: 8px 7px 6px 11px;
+       
+    }
+
+    .popupBg{
+        height: 100vh;
+        width: 100%;
+        position: fixed;
+        z-index: 1;
+    }
+
+
+.uploadBgContainer { position: absolute;
+right: 0;
+top: 39px;
+right: -47px;
+z-index: 2;
+
+box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+}
+
+
+.uploadBgContainer > div , .uploadContainer > div{
+    box-shadow:none
+}

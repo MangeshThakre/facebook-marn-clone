@@ -1,0 +1,16 @@
+
+
+.FriendRequestSidebarMenuHead{
+    display: flex;
+    align-items: center;
+    margin: 20px;
+}
+
+.FriendRequestSidebarMenuHead > div{
+    margin-left: 10px;
+}
+
+.FriendRequestSidebarMenuHead > div  > p:hover{
+   cursor: pointer;
+   text-decoration: underline;
+}

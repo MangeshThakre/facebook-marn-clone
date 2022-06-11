@@ -1,0 +1,15 @@
+
+.AllFriendSideBarMenuHead{
+    display: flex;
+    align-items: center;
+    margin: 20px;
+}
+
+.AllFriendSideBarMenuHead > div{
+    margin-left: 10px;
+}
+
+.AllFriendSideBarMenuHead > div  > p:hover{
+   cursor: pointer;
+   text-decoration: underline;
+}

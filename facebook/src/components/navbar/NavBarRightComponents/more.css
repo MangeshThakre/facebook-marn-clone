@@ -1,0 +1,63 @@
+.navebarRightMore{
+    position: absolute;
+    right: 17px;
+    top: 60px;
+    width: 360px;
+}
+ 
+.userProfile{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+
+}
+
+.userProfile > img {
+    height: 62px;
+    width: 62px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.NavbarRightOprionButtons{
+    margin: 10px 0 10px 0;
+}
+
+.NavbarRightOprionButtons :hover{
+    background-color: #e4e6ebed;
+
+}
+
+
+.NavbarRightOprionButtons >div{
+    height: 45px;
+    cursor: pointer;    
+    border-radius: 5px;
+}
+
+.logout{
+    display: flex;
+   align-items: center;
+}
+
+
+.DisplayAndAssibality{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.DisplayAndAssibality > div{
+    display: flex;
+}
+
+/* .NightlightRoundIconBackground{
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: aqua;
+} */

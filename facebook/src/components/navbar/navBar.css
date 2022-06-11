@@ -1,0 +1,203 @@
+.navbar{
+    height: 56px;
+    /* background-color:#ffffff; */
+    width: 100%;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    padding : 0 10px 0 10px;
+    position: fixed;
+    top: 0;
+    z-index: 3;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+/* navbar left */
+ 
+.navBarLeft{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.search{
+    margin-left: 0.625rem;
+    height: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1.25rem;
+    background-color:#f0f2f5 ;
+
+}
+
+.search > input{
+    width: 100%;
+    outline: none;
+    background-color:#f0f2f5 ;
+    border: none;
+    margin:  0 10px 0 10px;
+    font-size: 1rem;
+}
+
+.navBarMiddle{
+    display: flex;
+}
+
+.navBarMiddle > div >div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width : 129.6px;
+     border-radius: 7px;
+    cursor: pointer;
+    }
+   
+
+
+.discover {
+    border-radius: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width : 129.6px;
+}
+
+
+ .navBarMiddle >  div :hover{
+    background-color:#e4e6eb;
+    border-radius: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
+.navBarMiddle{
+    /* background-color: rgb(182, 241, 152); */
+}
+
+
+.activee  {
+    border-bottom: solid #1b74e4;
+    border-radius: 0%;
+  }
+  .activee > div > svg{
+      color: #1b74e4;
+  }
+
+ .navBarMiddle>  .activee  :hover{
+    border-radius: 0;
+    background-color:transparent;
+}
+
+
+.navBarLeft > img{
+    border-radius: 50%;
+    height : 39.7px; 
+    cursor: pointer;
+}
+
+.burgerMenuLeft{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width : 50px;
+     border-radius: 7px;
+    cursor: pointer;
+    margin: 0 0 0 5px ;
+}
+
+.navBarRight{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user{
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    border-radius:1.25rem ;
+    background-color: #e4e6eb;
+    width: 8.75rem;
+    cursor: pointer;
+
+}
+.user > img{
+   height:1.75rem ;
+   width: 1.75rem;
+   border-radius:50% ;
+   margin: 0.25rem;   
+}
+
+.use > p {
+    margin: 0.25rem;   
+}
+
+.navBarRight > div> .button{
+    background-color: #e4e6eb;
+    height: 2.5rem;
+    width: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin: 0 5px 0 ;
+    cursor: pointer;
+} 
+
+
+.activeButton > div > svg {
+    color: #1b74e4;
+}
+
+
+
+
+
+
+@media only screen and (max-width: 1260px) {
+.user {
+    display: none;
+}
+}
+@media only screen and (min-width: 1100px) {
+    #burgerMenu{
+        display: none;
+    }
+    }
+
+@media only screen and (max-width: 1100px) {  
+    #discover{
+        display: none;
+    }
+    #search{
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+  
+    #people{
+        display: none;
+    }
+    #home{
+    display: none;  
+    }
+    #reel  {
+    display: none;
+   }
+    #market {
+    display: none;
+   }
+   #burgerMenu{
+    display: none;
+}
+}
+
+@media only screen and (min-width: 700px) {
+#burgerMenuLeft{
+    display:none
+}
+}

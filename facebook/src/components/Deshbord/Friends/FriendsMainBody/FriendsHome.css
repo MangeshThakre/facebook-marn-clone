@@ -1,0 +1,18 @@
+/* .friendMainBody{
+    overflow: scroll;
+} */
+
+.friendsHome_friendRequest{
+    padding: 10px ;
+}
+
+.friendsHome_friendRequest_head{
+    display: flex;
+    align-items:center ;
+    justify-content: space-between;
+    /* padding: 10px; */
+}
+.FriendcardDiv{
+margin:  15px 0 10px 0;
+display: flex;
+}

@@ -1,0 +1,86 @@
+.friendsSideMenu{
+    position: fixed;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+}
+.friendsLeft{
+    width: 360px;
+    height :100vh;
+    padding-top:56px;
+
+}
+
+
+.Friendshomeee{
+    margin: 10px;
+    padding: 10px;
+   display: flex;
+   align-items: center;
+   border-radius: 5px;
+   background-color: #f0f2f5;
+   height: 48px;
+}
+.homeIcon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color:#1877f2;
+    height: 36px;
+    width: 36px;
+    margin-right: 10px;
+}
+.friendsLeftHead{
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    align-items: center;
+    margin: 10px;
+}
+
+.friendsLefOptions  :hover{
+      background-color:#f0f2f5 ;
+    cursor: pointer;
+    
+}
+.friendsLefOptions> div{
+    display: flex;
+    justify-content: space-between;
+    height: 48px;
+    align-items: center;
+    margin: 10px;
+    border-radius: 7px;
+    padding: 0 5px 0 5px ;
+}
+
+
+.friendsLefOptions> div >div{
+    display: flex;
+    align-items: center;
+
+}
+
+
+
+.friendsLefOptions> div> div> div { display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color:#f0f2f5;
+    height: 36px;
+    width: 36px;
+    margin-right: 10px;
+
+}
+
+
+.friends_friendRequestIcon > div{
+    background-image: url("https://static.xx.fbcdn.net/rsrc.php/v3/yl/r/FAnfqB8__5L.png"); background-position: 0px -118px; background-size: 26px 270px; width: 20px; height: 20px; background-repeat: no-repeat; display: inline-block;
+}
+
+.friends_suggestionIcon > div{
+    background-image: url("https://static.xx.fbcdn.net/rsrc.php/v3/yf/r/FhZO9tOC87D.png"); background-position: -44px -208px; background-size: 74px 368px; width: 20px; height: 20px; background-repeat: no-repeat; display: inline-block;
+}
+.friends_AllFriendsIcon > div{
+    background-image: url("https://static.xx.fbcdn.net/rsrc.php/v3/yl/r/FAnfqB8__5L.png"); background-position: 0px -74px; background-size: 26px 270px; width: 20px; height: 20px; background-repeat: no-repeat; display: inline-block;
+}
