@@ -3,28 +3,37 @@ import "./friendSideBarMenu.css";
 import { Card } from "@mui/material";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
-
+import { FriendHomePage } from "../../../../redux/freindSplice.js";
 import FriendRequestSidebarMenu from "./FriendReauestSidebarmenu/friendRequestSidebarMenu";
 import FriendsuggesstionSidebarMenu from "./friendSuggesstionSidebarMane/FriendsuggesstionSidebarMenu";
 import AllFriendSideBarMenu from "./AllFriendsSideBarMenu/AllFriendSideBarMenu";
-
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 function FriendSideBarMenu() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const backgroundColor_sub = useSelector(
     (state) => state.darkLight.backgroundColor_sub
   );
-  const [home, setHome] = useState(true);
   const [friendRequest, setFriendRequest] = useState(false);
   const [friendSuggesstion, setFriendSuggesstion] = useState(false);
   const [allFriends, setAllFriends] = useState(false);
+  const FREINDHOMEPAGE = useSelector((state) => state.freind.FriendHomePage);
+
+  useEffect(() => {
+    if (FREINDHOMEPAGE) navigate("/friends");
+  }, [FREINDHOMEPAGE]);
+
   return (
     <div className="friendsSideMenu">
       <Card
         className=" friendsLeft"
         sx={{ backgroundColor: backgroundColor_sub }}
       >
-        {home ? (
+        {FREINDHOMEPAGE ? (
           <>
             <div className="friendsLeftHead">
               <h2>Friends</h2>
@@ -39,7 +48,7 @@ function FriendSideBarMenu() {
               <div
                 className="friends_friendRequest"
                 onClick={() => {
-                  setHome(false);
+                  dispatch(FriendHomePage(false));
                   setFriendRequest(true);
                 }}
               >
@@ -55,7 +64,7 @@ function FriendSideBarMenu() {
               <div
                 className="friends_suggestion"
                 onClick={() => {
-                  setHome(false);
+                  dispatch(FriendHomePage(false));
                   setFriendSuggesstion(true);
                 }}
               >
@@ -71,7 +80,7 @@ function FriendSideBarMenu() {
               <div
                 className="friends_AllFriends"
                 onClick={() => {
-                  setHome(false);
+                  dispatch(FriendHomePage(false));
                   setAllFriends(true);
                 }}
               >
@@ -88,22 +97,15 @@ function FriendSideBarMenu() {
           </>
         ) : null}
         {friendRequest ? (
-          <FriendRequestSidebarMenu
-            setFriendRequest={setFriendRequest}
-            setHome={setHome}
-          />
+          <FriendRequestSidebarMenu setFriendRequest={setFriendRequest} />
         ) : null}
         {friendSuggesstion ? (
           <FriendsuggesstionSidebarMenu
             setFriendSuggesstion={setFriendSuggesstion}
-            setHome={setHome}
           />
         ) : null}
         {allFriends ? (
-          <AllFriendSideBarMenu
-            setHome={setHome}
-            setAllFriends={setAllFriends}
-          />
+          <AllFriendSideBarMenu setAllFriends={setAllFriends} />
         ) : null}
       </Card>
     </div>

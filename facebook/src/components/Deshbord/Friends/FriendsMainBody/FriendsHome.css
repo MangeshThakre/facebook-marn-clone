@@ -16,3 +16,17 @@
 margin:  15px 0 10px 0;
 display: flex;
 }
+
+
+.freindhomePageBlank{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 90vh;
+}
+
+.freindhomePageBlank > img{
+    height: 112px;
+    width: 112px;
+}

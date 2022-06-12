@@ -4,15 +4,16 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
 import FriendCardSmall from "../../FriendsCardSmall/FriendCardSmall";
-import { useNavigate } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { FriendHomePage } from "../../../../../redux/freindSplice.js";
 import axios from "axios";
-function AllFriendSideBarMenu({ setHome, setAllFriends }) {
-  const navigate = useNavigate();
+function AllFriendSideBarMenu({ setAllFriends }) {
+  const dispatch = useDispatch();
   const TOKEN = localStorage.getItem("TOKEN");
   const URL = process.env.REACT_APP_API_URL;
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const [Friends, setFriends] = useState([]);
+
   useEffect(() => {
     fetchFreind();
   }, []);
@@ -40,8 +41,7 @@ function AllFriendSideBarMenu({ setHome, setAllFriends }) {
         <IconButton
           onClick={() => {
             setAllFriends(false);
-            setHome(true);
-            navigate("/friends");
+            dispatch(FriendHomePage(true));
           }}
         >
           <ArrowBackIcon />
@@ -50,7 +50,7 @@ function AllFriendSideBarMenu({ setHome, setAllFriends }) {
           <p
             onClick={() => {
               setAllFriends(false);
-              setHome(true);
+              dispatch(FriendHomePage(true));
             }}
           >
             Friends

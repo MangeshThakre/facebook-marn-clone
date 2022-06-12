@@ -20,7 +20,7 @@ export const globleSplice = createSlice({
 
   reducers: {
     token: (state, action) => {
-      state.user = action.payload;
+      state.token = action.payload;
     },
 
     user: (state, action) => {

@@ -1,7 +1,7 @@
 .friendsSideMenu{
-    position: fixed;
+    /* position: fixed; */
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-
+    z-index: 1;
 }
 .friendsLeft{
     width: 360px;
@@ -9,7 +9,6 @@
     padding-top:56px;
 
 }
-
 
 .Friendshomeee{
     margin: 10px;

@@ -4,7 +4,7 @@ import { deshbordPage } from "../../redux/globleSplice.js";
 import { useNavigate } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
+import { FriendHomePage } from "../../redux/freindSplice.js";
 function Middle() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -59,6 +59,7 @@ function Middle() {
         onClick={(e) => {
           navigate("/friends");
           dispatch(deshbordPage("FRIENDS"));
+          dispatch(FriendHomePage(true));
         }}
       >
         <div id="people">

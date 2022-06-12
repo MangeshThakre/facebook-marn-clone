@@ -6,7 +6,10 @@ import Divider from "@mui/material/Divider";
 import { useState, useEffect } from "react";
 import FriendCardSmall from "../../FriendsCardSmall/FriendCardSmall";
 import axios from "axios";
-function FriendRequestSidebarMenu({ setFriendRequest, setHome }) {
+import { useDispatch } from "react-redux";
+import { FriendHomePage } from "../../../../../redux/freindSplice.js";
+function FriendRequestSidebarMenu({ setFriendRequest }) {
+  const dispatch = useDispatch();
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const TOKEN = localStorage.getItem("TOKEN");
   const URL = process.env.REACT_APP_API_URL;
@@ -40,7 +43,7 @@ function FriendRequestSidebarMenu({ setFriendRequest, setHome }) {
         <IconButton
           onClick={() => {
             setFriendRequest(false);
-            setHome(true);
+            dispatch(FriendHomePage(true));
           }}
         >
           <ArrowBackIcon />
@@ -49,7 +52,7 @@ function FriendRequestSidebarMenu({ setFriendRequest, setHome }) {
           <p
             onClick={() => {
               setFriendRequest(false);
-              setHome(true);
+              dispatch(FriendHomePage(true));
             }}
           >
             Friends

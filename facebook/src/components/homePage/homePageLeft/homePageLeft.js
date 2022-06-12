@@ -6,6 +6,7 @@ import groups from "../../../image/homePageLeftGroup.png";
 import weather from "../../../image/homePageLeftWeather.png";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { FriendHomePage } from "../../../redux/freindSplice.js";
 import { deshbordPage } from "../../../redux/globleSplice.js";
 function HomePageLeft() {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ function HomePageLeft() {
         onClick={() => {
           navigate("/friends");
           dispatch(deshbordPage("FRIENDS"));
+          dispatch(FriendHomePage(true));
         }}
       >
         <div>

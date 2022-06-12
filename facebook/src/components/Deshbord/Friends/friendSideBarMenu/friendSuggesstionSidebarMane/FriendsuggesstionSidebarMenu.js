@@ -4,8 +4,11 @@ import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
 import FriendCardSmall from "../../FriendsCardSmall/FriendCardSmall";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import axios from "axios";
+import { FriendHomePage } from "../../../../../redux/freindSplice.js";
 function FriendsuggesstionSidebarMenu({ setHome, setFriendSuggesstion }) {
+  const dispatch = useDispatch();
   const [isLoadingAllUser, setIsLoadingAllUser] = useState(false);
   const [allUser, setAllUsers] = useState([]);
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
@@ -44,7 +47,7 @@ function FriendsuggesstionSidebarMenu({ setHome, setFriendSuggesstion }) {
         <IconButton
           onClick={() => {
             setFriendSuggesstion(false);
-            setHome(true);
+            dispatch(FriendHomePage(true));
           }}
         >
           <ArrowBackIcon />
@@ -53,7 +56,7 @@ function FriendsuggesstionSidebarMenu({ setHome, setFriendSuggesstion }) {
           <p
             onClick={() => {
               setFriendSuggesstion(false);
-              setHome(true);
+              dispatch(FriendHomePage(true));
             }}
           >
             Friends
