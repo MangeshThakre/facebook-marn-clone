@@ -345,6 +345,10 @@ class controller {
   static async get_all_user(req, res) {
 
     const user_id = req.user.id;
+    const page = Number(req.query.page)
+    const limit = Number(req.query.limit)
+    const startIndex = (page - 1) * limit
+    const endIndex = page* limit
    
     try {
       const user = await userModel.findById(user_id);
@@ -390,7 +394,23 @@ class controller {
             )
         );
       }
-      res.json(allUsers);
+   
+     const result = {}
+    
+       if (endIndex < allUsers.length){
+        result.next = {
+          page : page+1,
+            limit : limit
+        }
+       }
+      if (startIndex > 0){
+        result.previous={
+          page : page -1,
+          limit : limit
+        }
+      }
+      result.data = allUsers.slice(startIndex, endIndex)
+      res.json(result);
     } catch (error) {
       res.json({ status: 500 });
       console.log("Error", error);
@@ -462,22 +482,61 @@ class controller {
 
   static async get_friend_requests_user(req, res) {
     const user_id = req.user.id;
+    const page = Number(req.query.page);
+    const limit = Number(req.query.limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
     try {
-      const response = await frendRequestModel.aggregate([
-        { $match: { request_id: user_id } },
-        { $project: { userObjId: { $toObjectId: "$user_id" } } },
+      const requestsLength = await frendRequestModel.find({
+        request_id: user_id,
+      });
+      const response = await frendRequestModel
+        .aggregate([
+          { $match: { request_id: user_id } },
+          { $project: { userObjId: { $toObjectId: "$user_id" } } },
 
-        {
-          $lookup: {
-            from: "userschemas",
-            localField: "userObjId",
-            foreignField: "_id",
-            as: "requestDetail",
+          {
+            $lookup: {
+              from: "userschemas",
+              localField: "userObjId",
+              foreignField: "_id",
+              as: "requestDetail",
+            },
           },
-        },
-      ]);
-      const data = response.length == 0 ? [] : response[0]?.requestDetail;
-      res.json(data);
+          { $unwind: "$requestDetail" },
+          {
+            $project: {
+              _id: "$requestDetail._id",
+              userName: {
+                $concat: [
+                  "$requestDetail.firstName",
+                  " ",
+                  "$requestDetail.lastName",
+                ],
+              },
+              profilePic: "$requestDetail.profilePic",
+            },
+          },
+        ])
+        .skip(startIndex)
+        .limit(limit);
+
+      const result = {};
+      if (endIndex < requestsLength.length) {
+        result.next = {
+          page: page + 1,
+          limit: limit,
+        };
+      }
+
+      if (startIndex > 0) {
+        result.previous = {
+          page: page - 1,
+          limit: limit,
+        };
+      }
+      result.data = response;
+      res.json(result);
     } catch (error) {
       res.json({ status: 500 });
       console.log(" ERROR get_friend_requests_user :", error);

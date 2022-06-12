@@ -11,6 +11,8 @@ function FriendsuggesstionSidebarMenu({ setHome, setFriendSuggesstion }) {
   const dispatch = useDispatch();
   const [isLoadingAllUser, setIsLoadingAllUser] = useState(false);
   const [allUser, setAllUsers] = useState([]);
+  const [friend_requests, setFriend_requests] = useState([]);
+
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const TOKEN = localStorage.getItem("TOKEN");
   const URL = process.env.REACT_APP_API_URL;
@@ -19,18 +21,37 @@ function FriendsuggesstionSidebarMenu({ setHome, setFriendSuggesstion }) {
     fetchAllUser();
   }, []);
 
-  async function fetchAllUser() {
-    setIsLoadingAllUser(true);
+  // sent freind request
+  async function fetchSendedFriendRequest() {
     try {
       const response = await axios({
         method: "get",
-        url: URL + "/api/get_all_user",
+        url: URL + "/api/sended_friend_requests",
         headers: {
           "content-type": "application/json",
           Authorization: `Bearer ${TOKEN}`,
         },
       });
       const data = await response.data;
+      setFriend_requests(data);
+    } catch (error) {
+      console.log("Error", error);
+    }
+  }
+
+  //fetch all user expect own, freind, and who send freind request
+  async function fetchAllUser() {
+    setIsLoadingAllUser(true);
+    try {
+      const response = await axios({
+        method: "get",
+        url: URL + "/api/get_all_user?page=1&limit=10",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
+      const data = await response.data.data;
       if (data.length == 0) {
         setIsLoadingAllUser(false);
       }
@@ -67,7 +88,14 @@ function FriendsuggesstionSidebarMenu({ setHome, setFriendSuggesstion }) {
       <Divider variant="middle" />
       <div style={{ marginTop: "10px" }}>
         {allUser.map((e, i) => {
-          return <FriendCardSmall key={i} type=" USGGESSION" user={e} />;
+          return (
+            <FriendCardSmall
+              key={i}
+              type="SUGGESTION"
+              user={e}
+              friend_requests={friend_requests}
+            />
+          );
         })}
       </div>
     </div>

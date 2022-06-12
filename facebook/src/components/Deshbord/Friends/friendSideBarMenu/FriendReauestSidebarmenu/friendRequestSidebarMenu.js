@@ -24,13 +24,13 @@ function FriendRequestSidebarMenu({ setFriendRequest }) {
     try {
       const response = await axios({
         method: "get",
-        url: URL + "/api/get_friend_requests_user",
+        url: URL + "/api/get_friend_requests_user?page=1&limit=10",
         headers: {
           "content-type": "application/json",
           Authorization: `Bearer ${TOKEN}`,
         },
       });
-      const data = await response.data;
+      const data = await response.data.data;
       setGetFriendrequests(data);
     } catch (error) {
       console.log("ERROR", error);

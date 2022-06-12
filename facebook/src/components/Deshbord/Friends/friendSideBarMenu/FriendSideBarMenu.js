@@ -11,15 +11,18 @@ import FriendsuggesstionSidebarMenu from "./friendSuggesstionSidebarMane/Friends
 import AllFriendSideBarMenu from "./AllFriendsSideBarMenu/AllFriendSideBarMenu";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-function FriendSideBarMenu() {
+function FriendSideBarMenu({
+  setFriendRequest,
+  setFriendSuggesstion,
+  friendRequest,
+  friendSuggesstion,
+}) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const backgroundColor_sub = useSelector(
     (state) => state.darkLight.backgroundColor_sub
   );
-  const [friendRequest, setFriendRequest] = useState(false);
-  const [friendSuggesstion, setFriendSuggesstion] = useState(false);
   const [allFriends, setAllFriends] = useState(false);
   const FREINDHOMEPAGE = useSelector((state) => state.freind.FriendHomePage);
 

@@ -21,6 +21,7 @@ function Friendcard({ type, user, friendRequests }) {
   const [cancleLoading, setCancleLoading] = useState(false);
   const [isAddFriendLoading, setIsAddfriendLoading] = useState(false);
   const [isConfirmedLoading, setIsConfirmedLoading] = useState(false);
+
   useEffect(() => {
     if (type != "request")
       for (const friend_request_id of friend_requests) {

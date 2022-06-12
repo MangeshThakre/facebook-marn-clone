@@ -21,6 +21,8 @@ function Friends() {
   const backgroundColor = useSelector(
     (state) => state.darkLight.backgroundColor
   );
+  const [friendRequest, setFriendRequest] = useState(false);
+  const [friendSuggesstion, setFriendSuggesstion] = useState(false);
 
   const backgroundColor_sub = useSelector(
     (state) => state.darkLight.backgroundColor_sub
@@ -61,10 +63,18 @@ function Friends() {
         <>
           <Navbar />
           <div className="friendsBody">
-            <FriendSideBarMenu />
+            <FriendSideBarMenu
+              setFriendRequest={setFriendRequest}
+              setFriendSuggesstion={setFriendSuggesstion}
+              friendRequest={friendRequest}
+              friendSuggesstion={friendSuggesstion}
+            />
             <div className="friendsRight">
               <div className="friendMainBody">
-                <FriendsHome />
+                <FriendsHome
+                  setFriendRequest={setFriendRequest}
+                  setFriendSuggesstion={setFriendSuggesstion}
+                />
               </div>
             </div>
           </div>

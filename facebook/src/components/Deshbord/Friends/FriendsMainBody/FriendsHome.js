@@ -6,9 +6,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import User from "../../../User.js/User";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import freindHpmepageImg from "../../../../image/freindHpmepageImg.svg";
-function FriendsHome() {
+import { FriendHomePage } from "../../../../redux/freindSplice.js";
+function FriendsHome({ setFriendRequest, setFriendSuggesstion }) {
+  const dispatch = useDispatch();
   const FREINDHOMEPAGE = useSelector((state) => state.freind.FriendHomePage);
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const URL = process.env.REACT_APP_API_URL;
@@ -25,6 +27,7 @@ function FriendsHome() {
 
   const { USERID } = useParams();
 
+  /// get all the sent freindReuest
   async function fetchSendedFriendRequest() {
     try {
       const response = await axios({
@@ -42,35 +45,38 @@ function FriendsHome() {
     }
   }
 
+  //    fetch all freindRequest
   async function fetchFriendRequests() {
     try {
       const response = await axios({
         method: "get",
-        url: URL + "/api/get_friend_requests_user",
+        url: URL + "/api/get_friend_requests_user?page=1&limit=10",
         headers: {
           "content-type": "application/json",
           Authorization: `Bearer ${TOKEN}`,
         },
       });
-      const data = await response.data;
+      const data = await response.data.data;
       setGetFriendrequests(data);
+      // console.log(data);
     } catch (error) {
       console.log("ERROR", error);
     }
   }
 
+  //fetch all user expect own, freind, and who send freind request
   async function fetchAllUser() {
     setIsLoadingAllUser(true);
     try {
       const response = await axios({
         method: "get",
-        url: URL + "/api/get_all_user",
+        url: URL + "/api/get_all_user?page=1&limit=10",
         headers: {
           "content-type": "application/json",
           Authorization: `Bearer ${TOKEN}`,
         },
       });
-      const data = await response.data;
+      const data = await response.data.data;
 
       if (data.length == 0) {
         setIsLoadingAllUser(false);
@@ -102,7 +108,15 @@ function FriendsHome() {
               <div className="friendsHome_friendRequest">
                 <div className="friendsHome_friendRequest_head">
                   <h3>Friend Requests</h3>
-                  <p>See All</p>
+                  <p
+                    style={{ color: "#4083df", cursor: "pointer" }}
+                    onClick={() => {
+                      setFriendRequest(true);
+                      dispatch(FriendHomePage(false));
+                    }}
+                  >
+                    See All
+                  </p>
                 </div>
                 <div className="FriendcardDiv">
                   {getFriendRequest.map((e) => {
@@ -113,10 +127,19 @@ function FriendsHome() {
               <Divider />
             </>
           ) : null}
+
           <div className="friendsHome_friendRequest">
             <div className="friendsHome_friendRequest_head">
               <h3>People You May Know</h3>
-              <p>See All</p>
+              <p
+                style={{ color: "#4083df", cursor: "pointer" }}
+                onClick={() => {
+                  setFriendSuggesstion(true);
+                  dispatch(FriendHomePage(false));
+                }}
+              >
+                See All
+              </p>
             </div>
             <div className="FriendcardDiv">
               {isLoadingAllUser
