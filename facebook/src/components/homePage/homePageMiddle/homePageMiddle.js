@@ -28,7 +28,7 @@ function HomePageMiddle() {
 
   async function fetchPosts() {
     setIsFetchPostLoading(true);
-    console.log(page);
+    // console.log(page);
     try {
       const response = await axios({
         method: "get",

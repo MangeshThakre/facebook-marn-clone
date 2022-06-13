@@ -4,7 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
 import FriendCardSmall from "../../FriendsCardSmall/FriendCardSmall";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { FriendHomePage } from "../../../../../redux/freindSplice.js";
 function FriendsuggesstionSidebarMenu({ setHome, setFriendSuggesstion }) {
@@ -12,14 +12,21 @@ function FriendsuggesstionSidebarMenu({ setHome, setFriendSuggesstion }) {
   const [isLoadingAllUser, setIsLoadingAllUser] = useState(false);
   const [allUser, setAllUsers] = useState([]);
   const [friend_requests, setFriend_requests] = useState([]);
-
+  const SENT_FREINDREQUEST = useSelector(
+    (state) => state.friend.send_freindRequest
+  );
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const TOKEN = localStorage.getItem("TOKEN");
   const URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchAllUser();
+    fetchSendedFriendRequest();
   }, []);
+
+  useEffect(() => {
+    fetchSendedFriendRequest();
+  }, [SENT_FREINDREQUEST]);
 
   // sent freind request
   async function fetchSendedFriendRequest() {

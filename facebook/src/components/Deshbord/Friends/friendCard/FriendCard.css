@@ -23,6 +23,8 @@
     width: 188px;
     height: 36px;
     border-radius: 6px;
+    text-transform: none;
+    font-weight: bold;
 }
 
 .FrendRequestButton > div>  button{
@@ -31,6 +33,9 @@
     width: 188px;
     height: 36px;
     border-radius: 6px;
+    text-transform: none;
+    font-weight: bold;
+
 }
 
 .FrendRequestButton>  div :hover{
@@ -45,6 +50,9 @@
     border-radius: 6px;
     color: #1976d2;
     background-color:#a9c8ead1 ;
+    text-transform: none;
+    font-weight: bold;
+
 }
 
 .FriendSuggestButton> button :hover{
@@ -57,6 +65,8 @@
     width: 188px;
     height: 36px;
     border-radius: 6px;
+    text-transform: none;
+    font-weight: bold;
 }
 
 .FriendSuggestButton>  div :hover{

@@ -145,6 +145,7 @@ function AllPost({ postData }) {
           )}
         </>
       );
+
       if (postData.like_dislike.length > 0) {
         {
           togglelike ? (

@@ -20,6 +20,7 @@ function FriendRequestSidebarMenu({ setFriendRequest }) {
     fetchFriendRequests();
   }, []);
 
+  // fetch freind Requests
   async function fetchFriendRequests() {
     try {
       const response = await axios({

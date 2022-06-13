@@ -24,7 +24,7 @@ function FriendSideBarMenu({
     (state) => state.darkLight.backgroundColor_sub
   );
   const [allFriends, setAllFriends] = useState(false);
-  const FREINDHOMEPAGE = useSelector((state) => state.freind.FriendHomePage);
+  const FREINDHOMEPAGE = useSelector((state) => state.friend.FriendHomePage);
 
   useEffect(() => {
     if (FREINDHOMEPAGE) navigate("/friends");

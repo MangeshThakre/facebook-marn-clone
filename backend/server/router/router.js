@@ -54,6 +54,12 @@ router.get("/get_all_user", Authorization, controller.get_all_user);
 router.get("/friend_request", Authorization, controller.friend_request);
 
 router.get(
+  "/reject_friend_request",
+  Authorization,
+  controller.reject_friend_request
+);
+
+router.get(
   "/sended_friend_requests",
   Authorization,
   controller.sended_friend_requests

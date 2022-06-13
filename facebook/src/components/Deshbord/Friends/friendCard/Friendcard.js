@@ -7,7 +7,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import "./FriendCard.css";
 import { margin } from "@mui/system";
 import axios from "axios";
-
+import { useSelector } from "react-redux";
 function Friendcard({ type, user, friendRequests }) {
   const CardType = type;
   const request_suggest = user;
@@ -21,20 +21,42 @@ function Friendcard({ type, user, friendRequests }) {
   const [cancleLoading, setCancleLoading] = useState(false);
   const [isAddFriendLoading, setIsAddfriendLoading] = useState(false);
   const [isConfirmedLoading, setIsConfirmedLoading] = useState(false);
-
+  const [IsrejectLoading, setIsrejectLoading] = useState(false);
+  const CONFORM_FREINDREQUEST = useSelector(
+    (state) => state.friend.confirm_freindRequest
+  );
+  const REJECT_FRIENDREQUEST = useSelector(
+    (state) => state.friend.usReject_freindRequest
+  );
+  //Toggle freind suggestion action button   bu user.js
   useEffect(() => {
-    if (type != "request")
-      for (const friend_request_id of friend_requests) {
-        if (friend_request_id.request_id === request_suggest._id) {
-          setRequesSended(true);
-          setRequesMessage("Request sent");
-        }
-      }
-  });
+    if (type != "request") {
+      const is_freindRequestSent = friend_requests.some(
+        ({ request_id: id }) => id == request_suggest._id
+      );
 
+      if (is_freindRequestSent) {
+        setRequesSended(true);
+        setRequesMessage("Request sent");
+      } else {
+        setRequesSended(false);
+      }
+    }
+  }, [friend_requests]);
+
+  /// hide freind request  after confirming by user.js
+  useEffect(() => {
+    if (REJECT_FRIENDREQUEST == user._id) removeUserRef.current.remove();
+  }, [REJECT_FRIENDREQUEST]);
+
+  /// remove friend request if rejected
+  useEffect(() => {
+    if (CONFORM_FREINDREQUEST == user._id) removeUserRef.current.remove();
+  }, [CONFORM_FREINDREQUEST]);
+
+  //send freind request
   async function requestSend() {
     setIsAddfriendLoading(true);
-    setRequesMessage("Request sent");
     try {
       const response = await axios({
         method: "get",
@@ -47,6 +69,7 @@ function Friendcard({ type, user, friendRequests }) {
       const data = await response.data;
       if (data == "sended") {
         setTimeout(() => {
+          setRequesMessage("Request sent");
           setIsAddfriendLoading(false);
           setRequesSended(true);
         }, 500);
@@ -56,9 +79,9 @@ function Friendcard({ type, user, friendRequests }) {
     }
   }
 
+  // Cancle freind request
   async function cancleFriendRequest() {
     setCancleLoading(true);
-    setRequesMessage("Request canceled");
     try {
       const response = await axios({
         merhod: "delete",
@@ -72,13 +95,19 @@ function Friendcard({ type, user, friendRequests }) {
         },
       });
       const data = await response.data;
-      setCancleLoading(false);
-      setRequesSended(false);
+
+      setTimeout(() => {
+        setRequesMessage("Request canceled");
+
+        setCancleLoading(false);
+        setRequesSended(false);
+      }, 500);
     } catch (error) {
       console.log("ERROR", error);
     }
   }
 
+  //Conform friend request
   async function handleConfirm() {
     setIsConfirmedLoading(true);
     try {
@@ -102,10 +131,30 @@ function Friendcard({ type, user, friendRequests }) {
     }
   }
 
-  function handleDelete() {
-    removeUserRef.current.remove();
+  /// reject freind request
+  async function handleRejectFreindRequest() {
+    setIsrejectLoading(true);
+
     try {
-    } catch (error) {}
+      const response = await axios({
+        method: "get",
+        url: URL + "/api/reject_friend_request?rejectUser_id=" + user._id,
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
+
+      const data = await response.data;
+      if (data == "rejected") {
+        setTimeout(() => {
+          setIsrejectLoading(false);
+          removeUserRef.current.remove();
+        }, 500);
+      }
+    } catch (error) {
+      console.log("Error", error);
+    }
   }
 
   function removeUser() {
@@ -141,10 +190,17 @@ function Friendcard({ type, user, friendRequests }) {
                     variant="contained"
                     sx={{ color: "black" }}
                     onClick={() => {
-                      handleDelete();
+                      handleRejectFreindRequest();
                     }}
                   >
-                    Delete
+                    {IsrejectLoading ? (
+                      <CircularProgress
+                        sx={{ color: "#1976d2" }}
+                        size="1.6rem"
+                      />
+                    ) : (
+                      "Reject"
+                    )}
                   </Button>
                 </div>
               </div>
@@ -163,7 +219,7 @@ function Friendcard({ type, user, friendRequests }) {
                       >
                         {cancleLoading ? (
                           <CircularProgress
-                            sx={{ color: "white" }}
+                            sx={{ color: "#1976d2" }}
                             size="1.6rem"
                           />
                         ) : (

@@ -7,9 +7,9 @@ function PostMaker({ postDetail }) {
     <>
       {postDetails?.length != 0 ? (
         <>
-          {postDetails?.map((e) => {
+          {postDetails?.map((e, i) => {
             return (
-              <div key={e?._id}>
+              <div key={i}>
                 <AllPost postData={e} />
               </div>
             );

@@ -11,7 +11,7 @@ import freindHpmepageImg from "../../../../image/freindHpmepageImg.svg";
 import { FriendHomePage } from "../../../../redux/freindSplice.js";
 function FriendsHome({ setFriendRequest, setFriendSuggesstion }) {
   const dispatch = useDispatch();
-  const FREINDHOMEPAGE = useSelector((state) => state.freind.FriendHomePage);
+  const FREINDHOMEPAGE = useSelector((state) => state.friend.FriendHomePage);
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const URL = process.env.REACT_APP_API_URL;
   const TOKEN = localStorage.getItem("TOKEN");

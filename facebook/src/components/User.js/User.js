@@ -17,13 +17,17 @@ import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import CircularProgress from "@mui/material/CircularProgress";
 import { setPage } from "../../redux/userSplice.js";
 import IconButton from "@mui/material/IconButton";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import {
+  send_freindRequest,
+  confirm_freindRequest,
+} from "../../redux/freindSplice.js";
 import {
   ConfirmDeletPopup,
   AboutPopUp,
 } from "./about/AboutPopUpcomponent/AboutPopUp.js";
-import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect, useRef } from "react";
 import PostDeleteComponent from "./posts/PostCompo/postDeleteComponent.js";
 import {
   userDetail,
@@ -67,7 +71,15 @@ function User({ type }) {
   const page = useSelector((state) => state.user.setPage);
   const PROFILEPIC = useSelector((state) => state.user.profilePicture);
   const PROFILECOVER = useSelector((state) => state.user.profileCover);
-
+  const SENT_FREINDREQUEST = useSelector(
+    (state) => state.friend.send_freindRequest
+  );
+  const CONFIRM_FREINDREQUEST = useSelector(
+    (state) => state.friend.confirm_freindRequest
+  );
+  const REJECT_FRIENDREQUEST = useSelector(
+    (state) => state.friend.Reject_freindRequest
+  );
   const toggleCreatePost = useSelector(
     (state) => state.globle.toggleCreatePost
   );
@@ -113,6 +125,14 @@ function User({ type }) {
     fetchFriendRequests();
     fetchFrinds();
   }, [USERID]);
+
+  useEffect(() => {
+    fetchFriendRequests();
+  }, [SENT_FREINDREQUEST, REJECT_FRIENDREQUEST]);
+
+  useEffect(() => {
+    fetchFrinds();
+  }, [CONFIRM_FREINDREQUEST]);
 
   async function getAboutInfo() {
     // console.log("in function");
@@ -188,8 +208,8 @@ function User({ type }) {
         },
       });
       const data = await response.data;
-      // console.log(data);
       if (data.sededRequest) setShowButton("FreindRequestCancle");
+      if (!data.sededRequest) setShowButton("addFriend");
       if (data.getRequest) setShowButton("FreindRequestAccept");
     } catch (error) {
       console.log("ERROR", error);
@@ -212,6 +232,7 @@ function User({ type }) {
         setTimeout(() => {
           setIsAddfriendLoading(false);
           setShowButton("FreindRequestCancle");
+          dispatch(send_freindRequest(!SENT_FREINDREQUEST));
         }, 500);
       }
     } catch (error) {
@@ -234,6 +255,7 @@ function User({ type }) {
       setTimeout(() => {
         setCancleLoading(false);
         setShowButton("addFriend");
+        dispatch(send_freindRequest(!SENT_FREINDREQUEST));
       }, 500);
     } catch (error) {
       console.log("ERROR", error);
@@ -257,6 +279,7 @@ function User({ type }) {
         setTimeout(() => {
           setIsConfirmedLoading(false);
           setShowButton("none");
+          dispatch(confirm_freindRequest(USERID));
         }, 500);
     } catch (error) {
       console.log("Error", error);
@@ -506,6 +529,7 @@ function User({ type }) {
         if (showButton == "FreindRequestCancle") return FreindRequestCancle;
         if (showButton == "FreindRequestAccept") return FreindRequestAccept;
         if (showButton == "addFriend") return addFriend;
+        if (CONFIRM_FREINDREQUEST == USERID) return null;
       } else return null;
     }
   }

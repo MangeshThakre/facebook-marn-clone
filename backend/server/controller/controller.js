@@ -343,13 +343,12 @@ class controller {
   }
 
   static async get_all_user(req, res) {
-
     const user_id = req.user.id;
-    const page = Number(req.query.page)
-    const limit = Number(req.query.limit)
-    const startIndex = (page - 1) * limit
-    const endIndex = page* limit
-   
+    const page = Number(req.query.page);
+    const limit = Number(req.query.limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
     try {
       const user = await userModel.findById(user_id);
       const responsee = await userModel.aggregate([
@@ -394,22 +393,22 @@ class controller {
             )
         );
       }
-   
-     const result = {}
-    
-       if (endIndex < allUsers.length){
+
+      const result = {};
+
+      if (endIndex < allUsers.length) {
         result.next = {
-          page : page+1,
-            limit : limit
-        }
-       }
-      if (startIndex > 0){
-        result.previous={
-          page : page -1,
-          limit : limit
-        }
+          page: page + 1,
+          limit: limit,
+        };
       }
-      result.data = allUsers.slice(startIndex, endIndex)
+      if (startIndex > 0) {
+        result.previous = {
+          page: page - 1,
+          limit: limit,
+        };
+      }
+      result.data = allUsers.slice(startIndex, endIndex);
       res.json(result);
     } catch (error) {
       res.json({ status: 500 });
@@ -432,6 +431,21 @@ class controller {
     }
   }
 
+  static async reject_friend_request(req, res) {
+    const user_id = req.query.rejectUser_id;
+    const request_id = req.user.id;
+    try {
+      const response = await frendRequestModel.findOneAndDelete({
+        user_id: { $gte: user_id },
+        request_id: { $gte: request_id },
+      });
+      res.json("rejected");
+    } catch (error) {
+      console.log("reject_friend_request error: ", error);
+      res.json({ status: 500 });
+    }
+  }
+
   static async sended_friend_requests(req, res) {
     const user_id = req.user.id;
     try {
@@ -448,6 +462,7 @@ class controller {
   static async cancle_friend_request(req, res) {
     const user_id = req.user.id;
     const request_id = req.query.requested_id;
+
     try {
       const response = await frendRequestModel.findOneAndDelete({
         user_id: { $gte: user_id },
@@ -651,12 +666,12 @@ class controller {
     try {
       if (currentCity) {
         const response = await userModel.findByIdAndUpdate(user_id, {
-          currentCity: { city: currentCity, type: "public"  , showIntro : 0},
+          currentCity: { city: currentCity, type: "public", showIntro: 0 },
         });
         await res.json(response);
       } else {
         const response = await userModel.findByIdAndUpdate(user_id, {
-          homeTown: { city: homeTown, type: "public" , showIntro : 0 },
+          homeTown: { city: homeTown, type: "public", showIntro: 0 },
         });
 
         await res.json(response);

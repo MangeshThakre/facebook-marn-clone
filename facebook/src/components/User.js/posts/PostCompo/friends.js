@@ -95,7 +95,7 @@ function Friends({ setPage }) {
                     ? URL + "/" + e.profilePic
                     : contact;
                   return (
-                    <div onClick={() => navigate("/user/" + e._id)}>
+                    <div key={i} onClick={() => navigate("/user/" + e._id)}>
                       <img className="PostphotoBox" src={profile} alt="" />
                       <div
                         style={{
