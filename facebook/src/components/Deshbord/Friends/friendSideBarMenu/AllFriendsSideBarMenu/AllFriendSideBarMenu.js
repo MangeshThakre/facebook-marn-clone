@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import "./AllFriendSideBarmenu.css";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import IconButton from "@mui/material/IconButton";
@@ -9,20 +9,32 @@ import { FriendHomePage } from "../../../../../redux/freindSplice.js";
 import axios from "axios";
 function AllFriendSideBarMenu({ setAllFriends }) {
   const dispatch = useDispatch();
+  const allFreindListRef = useRef(null);
   const TOKEN = localStorage.getItem("TOKEN");
   const URL = process.env.REACT_APP_API_URL;
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const [Friends, setFriends] = useState([]);
+  const [isFriendsLoading, setIsFriendsLoading] = useState(false);
+
+  const [page, setPage] = useState(1);
+  const [nextPage, setNextPage] = useState(false);
 
   useEffect(() => {
     fetchFreind();
   }, []);
 
   async function fetchFreind() {
+    setIsFriendsLoading(true);
     try {
       const response = await axios({
         method: "get",
-        url: URL + "/api/get_friends?user_id=" + USER.id + "&page=1&limit=10",
+        url:
+          URL +
+          "/api/get_friends?user_id=" +
+          USER.id +
+          "&page=" +
+          page +
+          "&limit=10",
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${TOKEN}`,
@@ -30,10 +42,30 @@ function AllFriendSideBarMenu({ setAllFriends }) {
       });
       const data = await response.data.data;
       setFriends(data);
+      if (response.data.next) {
+        setNextPage(true);
+      } else setNextPage(false);
+      setIsFriendsLoading(false);
     } catch (error) {
       console.log("error", error);
     }
   }
+
+  useEffect(() => {
+    allFreindListRef.current.addEventListener("scroll", () => {
+      if (
+        allFreindListRef.current.clientHeight +
+          allFreindListRef.current.scrollTop >=
+        allFreindListRef.current.scrollHeight
+      ) {
+        setPage(page + 1);
+      }
+    });
+  });
+
+  useEffect(() => {
+    if (nextPage) fetchFreind();
+  }, [page]);
 
   return (
     <div className="AllFriendSideBarMenu">
@@ -60,10 +92,15 @@ function AllFriendSideBarMenu({ setAllFriends }) {
       </div>
       <Divider variant="middle" />
 
-      <div style={{ marginTop: "20px" }}>
+      <div
+        style={{ marginTop: "10px", overflowY: "scroll", maxHeight: "80vh" }}
+        ref={allFreindListRef}
+      >
         {Friends.map((freind, i) => {
           return <FriendCardSmall key={i} user={freind} type={"FREIND"} />;
         })}
+
+        {isFriendsLoading ? "loading " : null}
       </div>
     </div>
   );
