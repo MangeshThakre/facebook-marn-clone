@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../AboutPopUpcomponent/AboutPopUp.css";
 import Card from "@mui/material/Card";
 import CloseIcon from "@mui/icons-material/Close";
@@ -11,6 +11,7 @@ import Divider from "@mui/material/Divider";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import { Button } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useDispatch, useSelector } from "react-redux";
 import {
   togglseConformDeletePopup,
@@ -32,13 +33,21 @@ import { setPage } from "../../../../redux/userSplice.js";
 
 export function AboutPopUp() {
   const dispatch = useDispatch();
-
+  const TOKEN = localStorage.getItem("TOKEN");
+  const URL = process.env.REACT_APP_API_URL;
   const WORKPLACE = useSelector((state) => state.user.workPlace);
   const COLLEGE = useSelector((state) => state.user.college);
   const SCHOOL = useSelector((state) => state.user.school);
   const HOMETOWN = useSelector((state) => state.user.homeTown);
   const CURRENTCITY = useSelector((state) => state.user.currentCity);
   const JOINEDATE = useSelector((state) => state.user.userDetail.created_at);
+  const [IsCurrentCity, setIsCurrentcity] = useState(CURRENTCITY.showIntro);
+  const [IsHometown, setIsHometown] = useState(HOMETOWN.showIntro);
+  const [isIntroSaveLoading, setIsIntroSaveLoading] = useState(false);
+
+  const [workPlaceForUpdate, setWorkplaceForUpdate] = useState(WORKPLACE);
+  const [collegeUpdate, setCollegeUpdate] = useState(COLLEGE);
+  const [schoolUpdate, setSchoolUpdate] = useState(SCHOOL);
 
   const joiningDate = new Date(JOINEDATE).toLocaleDateString("en-us", {
     day: "numeric",
@@ -53,10 +62,33 @@ export function AboutPopUp() {
   }
 
   function WorkplaceSwitch(e, i) {
+    function updateWorkplaceElement() {
+      const newElement = {
+        company: workPlaceForUpdate[i].company,
+        position: workPlaceForUpdate[i].position,
+        to: workPlaceForUpdate[i].to,
+        from: workPlaceForUpdate[i].from,
+        type: workPlaceForUpdate[i].type,
+        showIntro: !workPlaceForUpdate[i].showIntro,
+      };
+      var newWorkPlace_list = [];
+      workPlaceForUpdate.forEach((e, index) => {
+        if (i === index) {
+          newWorkPlace_list.push(newElement);
+        } else newWorkPlace_list.push(e);
+      });
+      setWorkplaceForUpdate(newWorkPlace_list);
+    }
+
     return (
       <div className="switchButtonDiv">
         <FormControlLabel
-          control={<Switch defaultChecked />}
+          control={
+            <Switch
+              checked={workPlaceForUpdate[i].showIntro}
+              onChange={() => updateWorkplaceElement()}
+            />
+          }
           label={"Works at " + e.company}
         />
         <IconButton
@@ -71,10 +103,33 @@ export function AboutPopUp() {
   }
 
   function heighSchoolSwitch(e, i) {
+    function updateheighSchoolElement() {
+      const newElement = {
+        school_college_name: schoolUpdate[i].school_college_name,
+        Description: schoolUpdate[i].Description,
+        to: schoolUpdate[i].to,
+        from: schoolUpdate[i].from,
+        type: schoolUpdate[i].type,
+        showIntro: !schoolUpdate[i].showIntro,
+      };
+      var newSchool_list = [];
+      schoolUpdate.forEach((e, index) => {
+        if (i === index) {
+          newSchool_list.push(newElement);
+        } else newSchool_list.push(e);
+      });
+      setSchoolUpdate(newSchool_list);
+    }
+
     return (
       <div className="switchButtonDiv">
         <FormControlLabel
-          control={<Switch defaultChecked />}
+          control={
+            <Switch
+              checked={schoolUpdate[i].showIntro}
+              onChange={() => updateheighSchoolElement()}
+            />
+          }
           label={"Studied  at " + e.school_college_name}
         />
         <IconButton
@@ -89,10 +144,33 @@ export function AboutPopUp() {
   }
 
   function collegeSwitch(e, i) {
+    function updatecollegeElement() {
+      const newElement = {
+        school_college_name: collegeUpdate[i].school_college_name,
+        Description: collegeUpdate[i].Description,
+        to: collegeUpdate[i].to,
+        from: collegeUpdate[i].from,
+        type: collegeUpdate[i].type,
+        showIntro: !collegeUpdate[i].showIntro,
+      };
+      var newCollege_list = [];
+      collegeUpdate.forEach((e, index) => {
+        if (i === index) {
+          newCollege_list.push(newElement);
+        } else newCollege_list.push(e);
+      });
+      setCollegeUpdate(newCollege_list);
+    }
+
     return (
       <div className="switchButtonDiv">
         <FormControlLabel
-          control={<Switch defaultChecked />}
+          control={
+            <Switch
+              checked={collegeUpdate[i].showIntro}
+              onChange={() => updatecollegeElement()}
+            />
+          }
           label={"Works at " + e.school_college_name}
         />
         <IconButton
@@ -111,7 +189,14 @@ export function AboutPopUp() {
       return (
         <div className="switchButtonDiv">
           <FormControlLabel
-            control={<Switch defaultChecked={CURRENTCITY.showIntro} />}
+            control={
+              <Switch
+                checked={IsCurrentCity || false}
+                onChange={() =>
+                  setIsCurrentcity((prevIsCurrentCity) => !prevIsCurrentCity)
+                }
+              />
+            }
             label={"Lives in " + CURRENTCITY.city}
           />
           <IconButton
@@ -140,7 +225,14 @@ export function AboutPopUp() {
       return (
         <div className="switchButtonDiv">
           <FormControlLabel
-            control={<Switch defaultChecked={HOMETOWN.showIntro} />}
+            control={
+              <Switch
+                checked={IsHometown || false}
+                onChange={() =>
+                  setIsHometown((prevIsHometowm) => !prevIsHometowm)
+                }
+              />
+            }
             label={"Works at " + HOMETOWN.city}
           />
           <IconButton
@@ -161,6 +253,52 @@ export function AboutPopUp() {
           <p>Add HomeTown</p>
         </div>
       );
+    }
+  }
+
+  async function save() {
+    setIsIntroSaveLoading(true);
+    const hometown = {
+      city: HOMETOWN.city,
+      type: HOMETOWN.type,
+      showIntro: IsHometown,
+    };
+    const currentcity = {
+      city: CURRENTCITY.city,
+      type: CURRENTCITY.type,
+      showIntro: IsCurrentCity,
+    };
+
+    try {
+      const response = await axios({
+        method: "post",
+        url: URL + "/api/intro_Update",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+
+        data: {
+          hometown,
+          currentcity,
+          workPlaceForUpdate,
+          schoolUpdate,
+          collegeUpdate,
+        },
+      });
+      const data = await response.data;
+      if (data == "updated") {
+        dispatch(homeTown(hometown));
+        dispatch(currentCity(currentcity));
+        dispatch(workPlace(workPlaceForUpdate));
+        dispatch(college(collegeUpdate));
+        dispatch(school(schoolUpdate));
+        setIsIntroSaveLoading(false);
+        dispatch(toggleAboutPopUp(false));
+      }
+    } catch (error) {
+      setIsIntroSaveLoading(false);
+      console.log("intro error", error);
     }
   }
 
@@ -289,7 +427,13 @@ export function AboutPopUp() {
                     Cancle
                   </Button>
                 </div>
-                <Button variant="contained">Save</Button>
+                <Button variant="contained" onClick={() => save()}>
+                  {isIntroSaveLoading ? (
+                    <CircularProgress sx={{ color: "white" }} size="1.6rem" />
+                  ) : (
+                    "save"
+                  )}
+                </Button>
               </div>
             </div>
           </CardContent>
@@ -327,7 +471,7 @@ export function ConfirmDeletPopup() {
       if (data == "deleted") {
         if (type == "homeTown") dispatch(homeTown({}));
         if (type == "current City") dispatch(currentCity({}));
-        if (type == "workplace") {
+        if (type == "workPlace") {
           var newWorkPlace = [];
           WORKPLACE.forEach((e, i) => {
             if (i != INDEXNO) newWorkPlace.push(e);
@@ -376,6 +520,8 @@ export function ConfirmDeletPopup() {
             <div className="aboutpopup_close">
               <IconButton
                 onClick={() => {
+                  dispatch(deleteItem(""));
+                  dispatch(indexNo(""));
                   dispatch(togglseConformDeletePopup(false));
                 }}
               >

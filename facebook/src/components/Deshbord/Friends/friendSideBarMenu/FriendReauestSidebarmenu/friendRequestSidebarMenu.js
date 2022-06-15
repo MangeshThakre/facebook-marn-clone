@@ -8,6 +8,7 @@ import FriendCardSmall from "../../FriendsCardSmall/FriendCardSmall";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { FriendHomePage } from "../../../../../redux/freindSplice.js";
+import FreindCardSmallSceleton from "../../FriendsCardSmall/freindCardSmallSceleton";
 function FriendRequestSidebarMenu({ setFriendRequest }) {
   const dispatch = useDispatch();
   const requestListRef = useRef(null);
@@ -16,6 +17,7 @@ function FriendRequestSidebarMenu({ setFriendRequest }) {
   const URL = process.env.REACT_APP_API_URL;
   const [page, setPage] = useState(1);
   const [nextPage, setNextPage] = useState(false);
+
   const [getFriendrequests, setGetFriendrequests] = useState([]);
   const [isgetFriendrequestsLoading, setIsGetFriendrequests] = useState(false);
   useEffect(() => {
@@ -92,7 +94,13 @@ function FriendRequestSidebarMenu({ setFriendRequest }) {
         {getFriendrequests.map((e, i) => {
           return <FriendCardSmall user={e} key={i} type={"FREINDRERQUEST"} />;
         })}
-        {isgetFriendrequestsLoading ? "loading" : null}
+        {isgetFriendrequestsLoading ? (
+          <>
+            <FreindCardSmallSceleton />
+            <FreindCardSmallSceleton />
+            <FreindCardSmallSceleton />
+          </>
+        ) : null}
       </div>
     </div>
   );

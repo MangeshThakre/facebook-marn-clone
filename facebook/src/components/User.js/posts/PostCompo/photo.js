@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Skeleton from "@mui/material/Skeleton";
 function Photo() {
   const dispatch = useDispatch();
   const [photoData, SetPhotoData] = useState([]);
@@ -14,11 +15,13 @@ function Photo() {
   const TOKEN = localStorage.getItem("TOKEN");
   const URL = process.env.REACT_APP_API_URL;
   const { USERID } = useParams();
+  const [isPhotoDataLoading, setIsPhotoDataLoading] = useState(false);
   useEffect(() => {
     fetchPhoto();
   }, [USERID]);
 
   async function fetchPhoto() {
+    setIsPhotoDataLoading(true);
     try {
       const response = await axios({
         method: "get",
@@ -30,6 +33,7 @@ function Photo() {
       });
       const data = await response.data;
       SetPhotoData(data);
+      setIsPhotoDataLoading(false);
     } catch (error) {
       console.log("Error", error);
     }
@@ -53,18 +57,25 @@ function Photo() {
             </div>
           </div>
           <div className="PostPhotoBody">
-            {photoData.length != 0
-              ? photoData.map((e, i) => {
-                  return (
-                    <img
-                      className="PostphotoBox"
-                      src={URL + "/" + e.photo}
-                      key={i}
-                      alt=""
-                    />
-                  );
-                })
-              : null}
+            {isPhotoDataLoading ? (
+              <Skeleton
+                variant="rectangular"
+                width={120}
+                height={120}
+                sx={{ bgcolor: "grey.200", margin: " 5px 0 0 12px " }}
+              />
+            ) : photoData.length != 0 ? (
+              photoData.map((e, i) => {
+                return (
+                  <img
+                    className="PostphotoBox"
+                    src={URL + "/" + e.photo}
+                    key={i}
+                    alt=""
+                  />
+                );
+              })
+            ) : null}
           </div>
         </CardContent>
       </Card>

@@ -17,6 +17,8 @@ import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import CircularProgress from "@mui/material/CircularProgress";
 import { setPage } from "../../redux/userSplice.js";
 import IconButton from "@mui/material/IconButton";
+import Skeleton from "@mui/material/Skeleton";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
@@ -38,6 +40,7 @@ import {
   school,
   familyMember,
   profilePicture,
+  bio,
   profileCover,
 } from "../../redux/userSplice.js";
 import "./user.css";
@@ -61,13 +64,13 @@ function User({ type }) {
   const [PhotoType, setPhotoType] = useState("");
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const TOKEN = localStorage.getItem("TOKEN");
+  const URL = process.env.REACT_APP_API_URL;
   const USERDETAIL = useSelector((state) => state.user.userDetail);
   const [cancleLoading, setCancleLoading] = useState(false);
   const [isAddFriendLoading, setIsAddfriendLoading] = useState(false);
   const [isConfirmedLoading, setIsConfirmedLoading] = useState(false);
-
+  const [IsUserDetailLoading, setIsUserDetailLoading] = useState(false);
   const [showButton, setShowButton] = useState("");
-  const URL = process.env.REACT_APP_API_URL;
   const page = useSelector((state) => state.user.setPage);
   const PROFILEPIC = useSelector((state) => state.user.profilePicture);
   const PROFILECOVER = useSelector((state) => state.user.profileCover);
@@ -135,7 +138,7 @@ function User({ type }) {
   }, [CONFIRM_FREINDREQUEST]);
 
   async function getAboutInfo() {
-    // console.log("in function");
+    setIsUserDetailLoading(true);
     try {
       const response = await axios({
         method: "get",
@@ -157,6 +160,7 @@ function User({ type }) {
       };
       dispatch(userDetail(userDetaile));
       dispatch(currentCity(data.currentCity));
+      dispatch(bio(data.bio));
       dispatch(homeTown(data.homeTown));
       dispatch(workPlace(data.workPlace));
       dispatch(college(data.college));
@@ -168,6 +172,7 @@ function User({ type }) {
       if (data.profileBg) {
         dispatch(profileCover(URL + "/" + data.profileBg));
       } else dispatch(profileCover(""));
+      setIsUserDetailLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -570,7 +575,9 @@ function User({ type }) {
 
         <div className="profileBackground">
           <fieldset className="profile" style={{ position: "relative" }}>
-            {PROFILECOVER ? (
+            {IsUserDetailLoading ? (
+              ""
+            ) : PROFILECOVER ? (
               <img className="profileBg" src={PROFILECOVER} alt="" />
             ) : (
               ""
@@ -593,11 +600,16 @@ function User({ type }) {
                     : { border: "none", position: " relative" }
                 }
               >
-                <img
-                  className="profilePic"
-                  src={PROFILEPIC ? PROFILEPIC : contact}
-                  alt=""
-                />
+                {IsUserDetailLoading ? (
+                  <img className="profilePic" src={contact} alt="image" />
+                ) : (
+                  <img
+                    className="profilePic"
+                    src={PROFILEPIC ? PROFILEPIC : contact}
+                    alt=""
+                  />
+                )}
+
                 {own ? (
                   <div
                     className="CameraAltIcon"
@@ -617,7 +629,16 @@ function User({ type }) {
         <div className="username">
           <div>
             <h1 style={{ marginLeft: "200px" }}>
-              {USERDETAIL?.firstName + " " + USERDETAIL?.lastName}
+              {IsUserDetailLoading ? (
+                <Skeleton
+                  variant="rectangular"
+                  width={200}
+                  height={30}
+                  sx={{ bgcolor: "grey.200" }}
+                />
+              ) : (
+                USERDETAIL?.firstName + " " + USERDETAIL?.lastName
+              )}
             </h1>
             <div
               className="button"

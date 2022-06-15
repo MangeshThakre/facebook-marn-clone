@@ -12,6 +12,7 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import Create from "../../User.js/posts/PostCompo/create.js";
 import PostMaker from "../../User.js/posts/PostCompo/PostMaker";
 import { useSelector } from "react-redux";
+import AllPostSkeleton from "../../AllPostComponent/AllPostSkeleton";
 import axios from "axios";
 function HomePageMiddle() {
   const [toggleStory, setToggleStory] = useState(false);
@@ -113,7 +114,10 @@ function HomePageMiddle() {
           </Card>
           <Create />
           {isFetchPostLoading ? (
-            "loading...."
+            <>
+              <AllPostSkeleton />
+              <AllPostSkeleton />
+            </>
           ) : (
             <>
               <PostMaker postDetail={postDetail} />

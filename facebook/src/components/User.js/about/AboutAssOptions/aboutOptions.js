@@ -282,12 +282,14 @@ export function AddWorkPlace({ setTogglseWorkPlace, type }) {
   const [helperText, setHelperText] = useState("");
   const [update, setUpdate] = useState(false);
   var workPlaceObj = {};
+
   useEffect(() => {
-    if (SELECTEDITEM == "workplace") {
+    if (SELECTEDITEM == "workPlace") {
       setUpdate(true);
       workPlaceObj = WORKPLACELISTARR[INDEXNO];
     }
   });
+
   useEffect(() => {
     if (Object.keys(workPlaceObj).length != 0 && workPlaceObj.to == "present") {
       toggleCurrentlyWorking(true);
@@ -319,6 +321,7 @@ export function AddWorkPlace({ setTogglseWorkPlace, type }) {
         to: String(To),
         from: String(From),
         type: "public",
+        showIntro: false,
       };
       if (!update) {
         newWorkplace.push(...WORKPLACELISTARR, single);
@@ -341,6 +344,7 @@ export function AddWorkPlace({ setTogglseWorkPlace, type }) {
         to: To,
         from: String(From),
         type: "public",
+        showIntro: false,
       };
       if (!update) {
         newWorkplace.push(...WORKPLACELISTARR, single);
@@ -358,6 +362,7 @@ export function AddWorkPlace({ setTogglseWorkPlace, type }) {
     }
   }
   async function insert(newData) {
+    console.log(type);
     try {
       const response = await axios({
         method: "post",
@@ -511,6 +516,7 @@ export function AddStudiedAt({ close, type }) {
         to: String(To),
         from: String(From),
         type: "public",
+        showIntro: false,
       };
       if (!update) {
         if (type == "college") {
@@ -549,6 +555,7 @@ export function AddStudiedAt({ close, type }) {
         to: String(To),
         from: String(From),
         type: "public",
+        showIntro: false,
       };
       if (!update) {
         if (type == "college") {

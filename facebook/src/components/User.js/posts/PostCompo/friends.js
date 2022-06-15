@@ -11,13 +11,14 @@ import contact from "../../../../image/contact.png";
 import "./friends.css";
 import { useParams } from "react-router";
 import axios from "axios";
-import { color } from "@mui/system";
+import Skeleton from "@mui/material/Skeleton";
 function Friends({ setPage }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const [friendsData, setFriendsData] = useState([]);
   const [commanFriend, setCommanFriend] = useState([]);
+  const [isCommanFriendLoading, setIsCommanFrindLoading] = useState(false);
   const TOKEN = localStorage.getItem("TOKEN");
   const URL = process.env.REACT_APP_API_URL;
   const { USERID } = useParams();
@@ -28,6 +29,7 @@ function Friends({ setPage }) {
 
   useEffect(() => {
     async function fetchFrinds() {
+      setIsCommanFrindLoading(true);
       try {
         const response = await axios({
           method: "get",
@@ -39,6 +41,7 @@ function Friends({ setPage }) {
         });
         const data = await response.data.data;
         setCommanFriend(data);
+        setIsCommanFrindLoading(false);
       } catch (error) {
         console.log("Error", error);
       }
@@ -75,7 +78,7 @@ function Friends({ setPage }) {
 
   return (
     <div className="friend">
-      <Card>
+      <Card sx={{ borderRadius: "10px" }}>
         <CardContent>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <h3>Friends</h3>
@@ -89,32 +92,47 @@ function Friends({ setPage }) {
             </div>
           </div>
           <div className="PostfriendBody">
-            {friendsData.length != 0
-              ? friendsData.map((e, i) => {
-                  const profile = e.profilePic
-                    ? URL + "/" + e.profilePic
-                    : contact;
-                  return (
-                    <div key={i} onClick={() => navigate("/user/" + e._id)}>
-                      <img className="PostphotoBox" src={profile} alt="" />
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          position: "relative",
-                        }}
-                      >
-                        <p style={{ margin: "3px 0  0 5px" }}>{e.userName}</p>
+            {isCommanFriendLoading ? (
+              <div>
+                <Skeleton
+                  variant="rectangular"
+                  width={120}
+                  height={110}
+                  sx={{ bgcolor: "grey.200", margin: " 5px 0 0 12px " }}
+                />
+                <Skeleton
+                  variant="rectangular"
+                  width={50}
+                  height={15}
+                  sx={{ bgcolor: "grey.200", margin: " 5px 0 0 12px " }}
+                />
+              </div>
+            ) : friendsData.length != 0 ? (
+              friendsData.map((e, i) => {
+                const profile = e.profilePic
+                  ? URL + "/" + e.profilePic
+                  : contact;
+                return (
+                  <div key={i} onClick={() => navigate("/user/" + e._id)}>
+                    <img className="PostphotoBox" src={profile} alt="" />
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        position: "relative",
+                      }}
+                    >
+                      <p style={{ margin: "3px 0  0 5px" }}>{e.userName}</p>
 
-                        {commanFriend.some(({ _id: di1 }) => di1 == e._id) &&
-                        USERID != USER.id ? (
-                          <p className="commanFriend">Friend</p>
-                        ) : null}
-                      </div>
+                      {commanFriend.some(({ _id: di1 }) => di1 == e._id) &&
+                      USERID != USER.id ? (
+                        <p className="commanFriend">Friend</p>
+                      ) : null}
                     </div>
-                  );
-                })
-              : null}
+                  </div>
+                );
+              })
+            ) : null}
           </div>
         </CardContent>
       </Card>

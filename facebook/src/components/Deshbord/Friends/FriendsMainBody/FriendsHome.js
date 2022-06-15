@@ -9,6 +9,7 @@ import User from "../../../User.js/User";
 import { useSelector, useDispatch } from "react-redux";
 import freindHpmepageImg from "../../../../image/freindHpmepageImg.svg";
 import { FriendHomePage } from "../../../../redux/freindSplice.js";
+import FreindCardSkeleton from "../friendCard/FreindCardSkeleton.js";
 function FriendsHome({ setFriendRequest, setFriendSuggesstion }) {
   const dispatch = useDispatch();
   const FREINDHOMEPAGE = useSelector((state) => state.friend.FriendHomePage);
@@ -142,18 +143,27 @@ function FriendsHome({ setFriendRequest, setFriendSuggesstion }) {
               </p>
             </div>
             <div className="FriendcardDiv">
-              {isLoadingAllUser
-                ? "loading"
-                : allUsers.map((e) => {
-                    return (
-                      <Friendcard
-                        key={e._id}
-                        type={"suggest"}
-                        friendRequests={friend_requests}
-                        user={e}
-                      />
-                    );
-                  })}
+              {isLoadingAllUser ? (
+                <>
+                  <FreindCardSkeleton />
+                  <FreindCardSkeleton />
+                  <FreindCardSkeleton />
+                  <FreindCardSkeleton />
+                  <FreindCardSkeleton />
+                  <FreindCardSkeleton />
+                </>
+              ) : (
+                allUsers.map((e) => {
+                  return (
+                    <Friendcard
+                      key={e._id}
+                      type={"suggest"}
+                      friendRequests={friend_requests}
+                      user={e}
+                    />
+                  );
+                })
+              )}
             </div>
           </div>
         </div>

@@ -14,11 +14,15 @@ export const userSplice = createSlice({
     setPage: "POST",
     profilePicture: "",
     profileCover: "",
+    bio: "",
   },
 
   reducers: {
     userDetail: (state, action) => {
       state.userDetail = action.payload;
+    },
+    bio: (state, action) => {
+      state.bio = action.payload;
     },
     homeTown: (state, action) => {
       action.payload
@@ -70,6 +74,7 @@ export const {
   familyMember,
   profilePicture,
   profileCover,
+  bio,
 } = userSplice.actions;
 
 export default userSplice.reducer;

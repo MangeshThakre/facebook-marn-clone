@@ -6,8 +6,8 @@ import FriendCardSmall from "../../FriendsCardSmall/FriendCardSmall";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import FreindCardSmallSceleton from "../../FriendsCardSmall/freindCardSmallSceleton.js";
 import { FriendHomePage } from "../../../../../redux/freindSplice.js";
-import Skeleton from "@mui/material/Skeleton";
 function FriendsuggesstionSidebarMenu({ setHome, setFriendSuggesstion }) {
   const [page, setPage] = useState(1);
   const [nextPage, setNextPage] = useState(false);
@@ -135,28 +135,11 @@ function FriendsuggesstionSidebarMenu({ setHome, setFriendSuggesstion }) {
         })}
 
         {isLoadingAllUser ? (
-          <div style={{ display: "flex" }}>
-            <Skeleton
-              variant="circular"
-              width={60}
-              height={60}
-              sx={{ bgcolor: "grey.200", marginLeft: "12px" }}
-            />
-            <div>
-              <Skeleton
-                variant="rectangular"
-                width={100}
-                height={10}
-                sx={{ bgcolor: "grey.200", margin: " 12px 0 0 12px " }}
-              />
-              <Skeleton
-                variant="rectangular"
-                width={200}
-                height={20}
-                sx={{ bgcolor: "grey.200", margin: " 5px 0 0 12px " }}
-              />
-            </div>
-          </div>
+          <>
+            <FreindCardSmallSceleton />
+            <FreindCardSmallSceleton />
+            <FreindCardSmallSceleton />
+          </>
         ) : null}
       </div>
     </div>

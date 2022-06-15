@@ -10,6 +10,8 @@ import PostMaker from "./PostMaker.js";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { posts, UpdatedPost } from "../../../../redux/globleSplice.js";
+import AllPostSkeleton from "../../../AllPostComponent/AllPostSkeleton";
+
 function ShowPosts() {
   const dispatch = useDispatch();
   const { USERID } = useParams();
@@ -82,7 +84,10 @@ function ShowPosts() {
         </CardContent>
       </Card>
       {isFetchPostLoading ? (
-        "loading...."
+        <>
+          <AllPostSkeleton />
+          <AllPostSkeleton />
+        </>
       ) : (
         <PostMaker postDetail={postDetail} />
       )}

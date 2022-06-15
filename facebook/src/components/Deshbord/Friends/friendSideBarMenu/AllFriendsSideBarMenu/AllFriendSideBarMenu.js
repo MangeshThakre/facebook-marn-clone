@@ -6,6 +6,7 @@ import Divider from "@mui/material/Divider";
 import FriendCardSmall from "../../FriendsCardSmall/FriendCardSmall";
 import { useDispatch } from "react-redux";
 import { FriendHomePage } from "../../../../../redux/freindSplice.js";
+import FreindCardSmallSceleton from "../../FriendsCardSmall/freindCardSmallSceleton";
 import axios from "axios";
 function AllFriendSideBarMenu({ setAllFriends }) {
   const dispatch = useDispatch();
@@ -100,7 +101,13 @@ function AllFriendSideBarMenu({ setAllFriends }) {
           return <FriendCardSmall key={i} user={freind} type={"FREIND"} />;
         })}
 
-        {isFriendsLoading ? "loading " : null}
+        {isFriendsLoading ? (
+          <>
+            <FreindCardSmallSceleton />
+            <FreindCardSmallSceleton />
+            <FreindCardSmallSceleton />
+          </>
+        ) : null}
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ const userSchema = new Schema({
   firstName: { type: String },
   lastName: { type: String },
   phoneNo: { type: Number },
+  bio: { type: String },
   profilePic: { type: String },
   password: { type: String, require: true },
   DOB: { type: Date },

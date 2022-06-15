@@ -128,6 +128,18 @@ class controller {
     }
   };
 
+  static bio = async (req, res) => {
+    const user_id = req.user.id;
+    const bio = req.body.text_bio;
+    try {
+      const response = await userModel.findByIdAndUpdate(user_id, { bio });
+      res.json("updated");
+    } catch (error) {
+      console.log("Bio Error", error);
+      res.json(error);
+    }
+  };
+
   static async insertPost(req, res) {
     const user_id = req.user.id;
     const text = req.body.text != "" ? req.body.text : null;
@@ -303,7 +315,6 @@ class controller {
         },
         { $sort: { posted_at: -1 } },
       ]);
-
 
       const result = {};
       if (endIndex < postResponse.length) {
@@ -659,6 +670,29 @@ class controller {
     }
   }
 
+  static async intro_Update(req, res) {
+    const user_id = req.user.id;
+    const homeTown = req.body.hometown;
+    const currentCity = req.body.currentcity;
+    const school = req.body.schoolUpdate;
+    const college = req.body.collegeUpdate;
+    const workPlace = req.body.workPlaceForUpdate;
+
+    try {
+      const response = await userModel.findByIdAndUpdate(user_id, {
+        homeTown,
+        currentCity,
+        school,
+        college,
+        workPlace,
+      });
+      res.json("updated");
+    } catch (error) {
+      console.log("Intro_update Error", error);
+      res.json(error);
+    }
+  }
+
   static async about_info(req, res) {
     const user_id = req.user.id;
     const currentCity = req.query?.CurrentCity;
@@ -667,12 +701,12 @@ class controller {
     try {
       if (currentCity) {
         const response = await userModel.findByIdAndUpdate(user_id, {
-          currentCity: { city: currentCity, type: "public", showIntro: 0 },
+          currentCity: { city: currentCity, type: "public", showIntro: false },
         });
         await res.json(response);
       } else {
         const response = await userModel.findByIdAndUpdate(user_id, {
-          homeTown: { city: homeTown, type: "public", showIntro: 0 },
+          homeTown: { city: homeTown, type: "public", showIntro: false },
         });
 
         await res.json(response);
@@ -699,7 +733,7 @@ class controller {
         });
         res.json("deleted");
       }
-      if (type == "workplace") {
+      if (type == "workPlace") {
         const { _id, workPlace } = await userModel
           .findById(user_id)
           .select("workPlace");
@@ -771,7 +805,7 @@ class controller {
         });
         res.json("updated");
       }
-      if (type == "workPlace") {
+      if (type == "workplace") {
         await userModel.findByIdAndUpdate(user_id, {
           workPlace: list_arr,
         });
