@@ -7,10 +7,14 @@ import Button from "@mui/material/Button";
 import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleAboutPopUp } from "../../../../redux/globleSplice.js";
+import { bio } from "../../../../redux/userSplice.js";
 import { useParams } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
-
+import WorkOutlinedIcon from "@mui/icons-material/WorkOutlined";
+import SchoolIcon from "@mui/icons-material/School";
+import HomeIcon from "@mui/icons-material/Home";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 function Info() {
   const dispatch = useDispatch();
   const { USERID } = useParams();
@@ -19,15 +23,21 @@ function Info() {
   const URL = process.env.REACT_APP_API_URL;
   const [bio_button, setInfo_button] = useState(false);
   const [text_bio, setText_bio] = useState("");
-  const [bio, setBio] = useState("");
   const [isBioTextLoading, setIsBioTextLoading] = useState(false);
   const BIO = useSelector((state) => state.user.bio);
+  const WORKPLACE = useSelector((state) => state.user.workPlace);
+  const COLLEGE = useSelector((state) => state.user.college);
+  const SCHOOL = useSelector((state) => state.user.school);
+  const HOMETOWN = useSelector((state) => state.user.homeTown);
+  const CURRENTCITY = useSelector((state) => state.user.currentCity);
+
+  useEffect(() => {});
 
   useEffect(() => {
-    setBio(BIO);
     setText_bio(BIO);
     setInfo_button(false);
   }, []);
+
   //   save bio text
   async function bioSave() {
     setIsBioTextLoading(true);
@@ -43,7 +53,7 @@ function Info() {
       });
       const data = response.data;
       if (data === "updated") {
-        setBio(text_bio);
+        dispatch(bio(text_bio));
         setInfo_button(false);
         setIsBioTextLoading(false);
       }
@@ -63,7 +73,7 @@ function Info() {
           onChange={(e) => setText_bio(e.target.value)}
         />
         <div>
-          <p>{101 - text_bio.length} characters remaining</p>
+          <p>{101 - text_bio?.length} characters remaining</p>
         </div>
       </div>
       <div className="info_component_lower">
@@ -72,7 +82,13 @@ function Info() {
           <p>Public</p>
         </div>
         <div>
-          <Button variant="contained" onClick={() => setInfo_button(false)}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setInfo_button(false);
+              setText_bio(BIO);
+            }}
+          >
             cancle
           </Button>
           <Button
@@ -94,7 +110,7 @@ function Info() {
   ) : (
     <>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <p style={{ wordBreak: "break-all" }}>{bio}</p>
+        <p style={{ wordBreak: "break-all" }}>{BIO}</p>
       </div>
       {USERID == USER.id ? (
         <button
@@ -110,6 +126,58 @@ function Info() {
 
   const userDetail = (
     <>
+      <div className="introUserDetail">
+        {WORKPLACE.map((e, i) => {
+          if (e.showIntro)
+            return (
+              <div key={i} style={{ display: "flex", marginTop: "15px" }}>
+                <WorkOutlinedIcon sx={{ marginRight: "10px" }} />
+                <p>
+                  Works at <b> {e.company}</b>
+                </p>
+              </div>
+            );
+        })}
+        {COLLEGE.map((e, i) => {
+          if (e.showIntro)
+            return (
+              <div key={i} style={{ display: "flex", marginTop: "15px" }}>
+                <SchoolIcon sx={{ marginRight: "10px" }} />
+                <p>
+                  went to <b> {e.school_college_name}</b>
+                </p>
+              </div>
+            );
+        })}
+        {SCHOOL.map((e, i) => {
+          if (e.showIntro)
+            return (
+              <div key={i} style={{ display: "flex", marginTop: "15px" }}>
+                <SchoolIcon sx={{ marginRight: "10px" }} />
+                <p>
+                  studied at <b> {e.school_college_name}</b>
+                </p>
+              </div>
+            );
+        })}
+        {CURRENTCITY.showIntro ? (
+          <div style={{ display: "flex", marginTop: "15px" }}>
+            <HomeIcon sx={{ marginRight: "10px" }} />
+            <p>
+              Lives in <b> {CURRENTCITY.city}</b>
+            </p>
+          </div>
+        ) : null}
+        {HOMETOWN.showIntro ? (
+          <div style={{ display: "flex", marginTop: "15px" }}>
+            <LocationOnIcon sx={{ marginRight: "10px" }} />
+            <p>
+              From <b> {HOMETOWN.city}</b>
+            </p>
+          </div>
+        ) : null}
+      </div>
+
       {USERID == USER.id ? (
         <button onClick={() => dispatch(toggleAboutPopUp(true))}>
           <p>Edit Detail</p>

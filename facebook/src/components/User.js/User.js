@@ -160,18 +160,16 @@ function User({ type }) {
       };
       dispatch(userDetail(userDetaile));
       dispatch(currentCity(data.currentCity));
-      dispatch(bio(data.bio));
+      dispatch(bio(data.bio ? data.bio : ""));
       dispatch(homeTown(data.homeTown));
       dispatch(workPlace(data.workPlace));
       dispatch(college(data.college));
       dispatch(school(data.school));
       dispatch(familyMember(data.familyMember));
-      if (data.profilePic) {
-        dispatch(profilePicture(URL + "/" + data.profilePic));
-      } else dispatch(profilePicture(""));
-      if (data.profileBg) {
-        dispatch(profileCover(URL + "/" + data.profileBg));
-      } else dispatch(profileCover(""));
+      dispatch(
+        profilePicture(data.profilePic ? URL + "/" + data.profilePic : "")
+      );
+      dispatch(profileCover(data.profileBg ? URL + "/" + data.profileBg : ""));
       setIsUserDetailLoading(false);
     } catch (error) {
       console.log(error);
