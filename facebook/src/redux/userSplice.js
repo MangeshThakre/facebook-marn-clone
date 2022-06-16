@@ -15,6 +15,7 @@ export const userSplice = createSlice({
     profilePicture: "",
     profileCover: "",
     bio: "",
+    relationship: {},
   },
 
   reducers: {
@@ -23,6 +24,9 @@ export const userSplice = createSlice({
     },
     bio: (state, action) => {
       state.bio = action.payload;
+    },
+    relationship: (state, action) => {
+      state.relationship = action.payload;
     },
     homeTown: (state, action) => {
       action.payload
@@ -75,6 +79,7 @@ export const {
   profilePicture,
   profileCover,
   bio,
+  relationship,
 } = userSplice.actions;
 
 export default userSplice.reducer;

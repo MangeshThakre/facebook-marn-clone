@@ -6,6 +6,7 @@ export const aboutSplice = createSlice({
   initialState: {
     setAboutOption: "Overview",
     togglseConformDeletePopup: false,
+    toggleDropdown: false,
     deleteItem: "",
     indexNo: "",
   },
@@ -17,6 +18,10 @@ export const aboutSplice = createSlice({
     togglseConformDeletePopup: (state, action) => {
       state.togglseConformDeletePopup = action.payload;
     },
+    toggleDropdown: (state, action) => {
+      state.toggleDropdown = action.payload;
+    },
+
     deleteItem: (state, action) => {
       state.deleteItem = action.payload;
     },
@@ -31,6 +36,7 @@ export const {
   togglseConformDeletePopup,
   deleteItem,
   indexNo,
+  toggleDropdown,
 } = aboutSplice.actions;
 
 export default aboutSplice.reducer;

@@ -26,6 +26,7 @@ import {
   ShowWorkEduList,
   ShowCollegeSchoollist,
   ShowList,
+  RelationShipEditor,
 } from "./AboutAssOptions/aboutOptions.js";
 import "./About.css";
 
@@ -40,6 +41,7 @@ function About() {
   const [togglefamilyMember, setTogglefamilyMember] = useState(false);
   const [toggleCollege, setTogglecollege] = useState(false);
   const [toggleSchool, setTogglseSchool] = useState(false);
+  const [toggleRelationShip, setToggleRelationShip] = useState(false);
   const PROFILEUSER = useSelector((state) => state.user.userDetail);
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
 
@@ -486,6 +488,28 @@ function About() {
         </div>
       );
     }
+
+    function showEditorRelationShip() {
+      return (
+        <RelationShipEditor
+          close={setToggleRelationShip}
+          type={"relationShip"}
+        />
+      );
+    }
+
+    function showEditRelationShip() {
+      return (
+        <div
+          className="aboutEditDiv"
+          onClick={() => setToggleRelationShip(true)}
+        >
+          <AddCircleOutlineIcon />
+          <p>Add RelationShip Status</p>
+        </div>
+      );
+    }
+
     function familyMember() {
       if (USERID == USER.id) {
         if (togglefamilyMember) {
@@ -504,11 +528,19 @@ function About() {
       } else return showList();
     }
 
+    function relationship() {
+      if (USERID == USER.id) {
+        if (toggleRelationShip) {
+          return showEditorRelationShip();
+        } else return showEditRelationShip();
+      }
+    }
+
     return (
       <>
-        <div className="aboutStatic">
+        <div className="aboutEdit">
           <p>Relationship</p>
-          <div>
+          {/* <div>
             <FavoriteIcon />
             <div>
               <div>
@@ -516,7 +548,8 @@ function About() {
                 <p className="subStaticP"></p>
               </div>
             </div>
-          </div>
+          </div> */}
+          {relationship()}
         </div>
         <div className="aboutEdit">
           <p>Family members</p>

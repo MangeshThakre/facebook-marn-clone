@@ -18,7 +18,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { setPage } from "../../redux/userSplice.js";
 import IconButton from "@mui/material/IconButton";
 import Skeleton from "@mui/material/Skeleton";
-
+import { toggleDropdown } from "../../redux/aboutPAgeSplice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
@@ -42,6 +42,7 @@ import {
   profilePicture,
   bio,
   profileCover,
+  relationship,
 } from "../../redux/userSplice.js";
 import "./user.css";
 import { CardContent } from "@mui/material";
@@ -104,6 +105,7 @@ function User({ type }) {
   const togglePostDelete = useSelector(
     (state) => state.globle.togglePostDelete
   );
+  const TOGGLEDROPDOWN = useSelector((state) => state.about.toggleDropdown);
 
   useEffect(() => {
     USERID == USER.id ? setown(true) : setown(false);
@@ -166,6 +168,13 @@ function User({ type }) {
       dispatch(college(data.college));
       dispatch(school(data.school));
       dispatch(familyMember(data.familyMember));
+      dispatch(
+        relationship(
+          data.relationship
+            ? data.relationship
+            : { relation: "", showIntro: false }
+        )
+      );
       dispatch(
         profilePicture(data.profilePic ? URL + "/" + data.profilePic : "")
       );
@@ -543,12 +552,14 @@ function User({ type }) {
       {toggleAboutPopUp ? <AboutPopUp /> : null}
       {togglseConformDeletePopup ? <ConfirmDeletPopup /> : null}
       {togglePostDelete ? <PostDeleteComponent /> : null}
-      {(toggleUploadPhotoPopUp || uploadCover) && USERID == USER.id ? (
+      {(toggleUploadPhotoPopUp || uploadCover || TOGGLEDROPDOWN) &&
+      USERID == USER.id ? (
         <div
           className="popupBg"
           onClick={() => {
             setToggleUploadPhotoPopUp(false);
             setUploadCover(false);
+            dispatch(toggleDropdown(false));
           }}
         ></div>
       ) : null}

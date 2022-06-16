@@ -16,6 +16,7 @@ const userSchema = new Schema({
   college: { type: Array },
   school: { type: Array },
   familyMember: { type: Array },
+  relationship: { type: Object },
   created_at: { type: Date },
   profilePic: { type: String },
   profileBg: { type: String },

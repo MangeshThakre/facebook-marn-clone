@@ -120,3 +120,33 @@ font: 14px
     margin-left: 5px;
 
 }
+
+
+.DropDownSelector{
+        height: 36px;
+        width: 100%;
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 7px;
+        cursor: pointer;
+}
+
+
+.selector :hover{
+    background-color: #264594;
+}
+
+
+.dropDownOption {
+    position: absolute;
+    z-index: 1;
+}
+
+/* .dropDownOption > ul   { */
+    /* background-color: "gray"; */
+    /* } */
+
+.dropDownOption > ul  :hover {
+background-color: "gray";
+}

@@ -15,13 +15,14 @@ import FormHelperText from "@mui/material/FormHelperText";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import HomeIcon from "@mui/icons-material/Home";
 import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
-
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SchoolIcon from "@mui/icons-material/School";
 import { useParams } from "react-router-dom";
 import {
   togglseConformDeletePopup,
   deleteItem,
   indexNo,
+  toggleDropdown,
 } from "../../../../redux/aboutPAgeSplice.js";
 import WorkIcon from "@mui/icons-material/Work";
 import { Card, CardContent } from "@mui/material";
@@ -114,6 +115,91 @@ export function PlaceLived({ close, type }) {
     </div>
   );
 }
+
+export function RelationShipEditor({ close, type }) {
+  const dispatch = useDispatch();
+  const [relationStatus, setRelationStatus] = useState("");
+  const TOGGLEDROPDOWN = useSelector((state) => state.about.toggleDropdown);
+  return (
+    <div className="Editordiv">
+      <div className="Dropdown">
+        <div className="selector">
+          <div
+            className="DropDownSelector"
+            style={{ backgroundColor: "#e4e6eb" }}
+            onClick={() => dispatch(toggleDropdown(!TOGGLEDROPDOWN))}
+          >
+            <p>{relationStatus}</p>
+            <ArrowDropDownIcon />
+          </div>
+        </div>
+        {TOGGLEDROPDOWN ? (
+          <Card>
+            <div className="dropDownOption">
+              <ul>
+                <li>
+                  <p>Status</p>
+                </li>
+                <li>
+                  <p>Single</p>
+                </li>
+                <li>
+                  <p>In a relationship</p>
+                </li>
+                <li>
+                  <p>Engaged</p>
+                </li>
+                <li>
+                  <p>Married</p>
+                </li>
+                <li>
+                  <p>In a civil union</p>
+                </li>
+                <li>
+                  <p>In a domestic partnership</p>
+                </li>
+                <li>
+                  <p>In an open relationship</p>
+                </li>
+                <li>
+                  <p>It's complicated</p>
+                </li>
+                <li>
+                  <p>Separated</p>
+                </li>
+                <li>
+                  <p>Divorced</p>
+                </li>
+                <li>
+                  <p>Widowed</p>
+                </li>
+              </ul>
+            </div>
+          </Card>
+        ) : null}
+      </div>
+      <Divider />
+      <div id="PlaceLivedBottom">
+        <Button variant="contained">
+          <PublicIcon />
+        </Button>
+        <div>
+          <Button variant="contained" onClick={() => close(false)}>
+            Cancle
+          </Button>
+          <div>
+            <Button variant="contained" disabled={relationStatus == ""}>
+              Save
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
 
 export function Familymembers({ setTogglefamilyMember, type }) {
   const dispatch = useDispatch();
