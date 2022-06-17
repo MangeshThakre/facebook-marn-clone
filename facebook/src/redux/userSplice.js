@@ -16,6 +16,7 @@ export const userSplice = createSlice({
     profileCover: "",
     bio: "",
     relationship: {},
+    created_at: {},
   },
 
   reducers: {
@@ -25,6 +26,10 @@ export const userSplice = createSlice({
     bio: (state, action) => {
       state.bio = action.payload;
     },
+    created_at: (state, action) => {
+      state.created_at = action.payload;
+    },
+
     relationship: (state, action) => {
       state.relationship = action.payload;
     },
@@ -75,6 +80,7 @@ export const {
   workPlace,
   college,
   school,
+  created_at,
   familyMember,
   profilePicture,
   profileCover,

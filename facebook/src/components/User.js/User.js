@@ -43,6 +43,7 @@ import {
   bio,
   profileCover,
   relationship,
+  created_at,
 } from "../../redux/userSplice.js";
 import "./user.css";
 import { CardContent } from "@mui/material";
@@ -158,9 +159,9 @@ function User({ type }) {
         firstName: data.firstName,
         email: data.email,
         _id: data._id,
-        created_at: data.created_at,
       };
       dispatch(userDetail(userDetaile));
+      dispatch(created_at(data.created_at));
       dispatch(currentCity(data.currentCity));
       dispatch(bio(data.bio ? data.bio : ""));
       dispatch(homeTown(data.homeTown));

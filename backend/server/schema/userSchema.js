@@ -17,7 +17,7 @@ const userSchema = new Schema({
   school: { type: Array },
   familyMember: { type: Array },
   relationship: { type: Object },
-  created_at: { type: Date },
+  created_at: { type: Object },
   profilePic: { type: String },
   profileBg: { type: String },
 });

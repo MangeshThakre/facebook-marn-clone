@@ -28,6 +28,7 @@ import {
   school,
   familyMember,
   relationship,
+  created_at,
 } from "../../../../redux/userSplice.js";
 import { setAboutOption } from "../../../../redux/aboutPAgeSplice.js";
 import { setPage } from "../../../../redux/userSplice.js";
@@ -42,17 +43,17 @@ export function AboutPopUp() {
   const HOMETOWN = useSelector((state) => state.user.homeTown);
   const CURRENTCITY = useSelector((state) => state.user.currentCity);
   const RELSTIONSHIP = useSelector((state) => state.user.relationship);
-
-  const JOINEDATE = useSelector((state) => state.user.userDetail.created_at);
+  const JOINEDAT = useSelector((state) => state.user.created_at);
   const [IsCurrentCity, setIsCurrentcity] = useState(CURRENTCITY.showIntro);
   const [IsHometown, setIsHometown] = useState(HOMETOWN.showIntro);
+  const [IsJoin_at, setIsJoin_at] = useState(JOINEDAT.showIntro);
   const [isIntroSaveLoading, setIsIntroSaveLoading] = useState(false);
   const [isRelationship, setIsRelaionship] = useState(RELSTIONSHIP.showIntro);
   const [workPlaceForUpdate, setWorkplaceForUpdate] = useState(WORKPLACE);
   const [collegeUpdate, setCollegeUpdate] = useState(COLLEGE);
   const [schoolUpdate, setSchoolUpdate] = useState(SCHOOL);
 
-  const joiningDate = new Date(JOINEDATE).toLocaleDateString("en-us", {
+  const joiningDate = new Date(JOINEDAT.joined_at).toLocaleDateString("en-us", {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -285,7 +286,7 @@ export function AboutPopUp() {
       );
     } else {
       return (
-        <div onClick={() => setAboutOption_("Placeslived")}>
+        <div onClick={() => setAboutOption_("FamilyAndRelation")}>
           <AddCircleOutlineIcon
             sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
           />
@@ -293,6 +294,23 @@ export function AboutPopUp() {
         </div>
       );
     }
+  }
+
+  function joined_atSwitch() {
+    return (
+      <div className="switchButtonDiv">
+        <FormControlLabel
+          control={
+            <Switch
+              checked={IsJoin_at || false}
+              onChange={() => setIsJoin_at((prevIsJoin_at) => !prevIsJoin_at)}
+            />
+          }
+          label={joiningDate}
+        />
+        <div></div>
+      </div>
+    );
   }
 
   async function save() {
@@ -312,6 +330,10 @@ export function AboutPopUp() {
       relation: RELSTIONSHIP.relation,
       showIntro: isRelationship,
     };
+    const created_at_ = {
+      joined_at: JOINEDAT.joined_at,
+      showIntro: IsJoin_at,
+    };
 
     try {
       const response = await axios({
@@ -329,6 +351,7 @@ export function AboutPopUp() {
           schoolUpdate,
           collegeUpdate,
           relationship: relationship_,
+          created_at: created_at_,
         },
       });
       const data = await response.data;
@@ -341,6 +364,7 @@ export function AboutPopUp() {
         dispatch(relationship(relationship_));
         setIsIntroSaveLoading(false);
         dispatch(toggleAboutPopUp(false));
+        dispatch(created_at(created_at_));
       }
     } catch (error) {
       setIsIntroSaveLoading(false);
@@ -431,24 +455,10 @@ export function AboutPopUp() {
               <div className="AboutSwitch">
                 <p>Relationship</p>
                 {relationshipSwitch()}
-                {/* <div>
-                  <FormControlLabel
-                    control={<Switch defaultChecked />}
-                    label="Single"
-                  />
-                  <IconButton>
-                    <EditIcon />
-                  </IconButton>
-                </div> */}
               </div>
               <div className="AboutSwitch">
                 <p>Joined Facebook</p>
-                <div>
-                  <FormControlLabel
-                    control={<Switch defaultChecked />}
-                    label={joiningDate}
-                  />
-                </div>
+                {joined_atSwitch()}
               </div>
             </div>
           </CardContent>

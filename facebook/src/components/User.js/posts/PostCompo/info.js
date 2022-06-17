@@ -32,7 +32,12 @@ function Info() {
   const HOMETOWN = useSelector((state) => state.user.homeTown);
   const CURRENTCITY = useSelector((state) => state.user.currentCity);
   const RELSTIONSHIP = useSelector((state) => state.user.relationship);
-
+  const JOINEDAT = useSelector((state) => state.user.created_at);
+  const joiningDate = new Date(JOINEDAT.joined_at).toLocaleDateString("en-us", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
   useEffect(() => {});
 
   useEffect(() => {
@@ -182,8 +187,14 @@ function Info() {
           <div style={{ display: "flex", marginTop: "15px" }}>
             <FavoriteIcon sx={{ marginRight: "10px" }} />
             <p>
-              From <b> {RELSTIONSHIP.relation}</b>
+              <b> {RELSTIONSHIP.relation}</b>
             </p>
+          </div>
+        ) : null}
+        {JOINEDAT.showIntro ? (
+          <div style={{ display: "flex", marginTop: "15px" }}>
+            <FavoriteIcon sx={{ marginRight: "10px" }} />
+            <p>joined {joiningDate}</p>
           </div>
         ) : null}
       </div>

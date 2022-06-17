@@ -44,6 +44,8 @@ function About() {
   const [toggleSchool, setTogglseSchool] = useState(false);
   const [toggleRelationShip, setToggleRelationShip] = useState(false);
   const PROFILEUSER = useSelector((state) => state.user.userDetail);
+  const JOINEDAT = useSelector((state) => state.user.created_at);
+
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
 
   const setAboutOption_ = useSelector((state) => state.about.setAboutOption);
@@ -60,7 +62,7 @@ function About() {
     month: "long",
   });
   const BirthYear = new Date(PROFILEUSER?.DOB).getFullYear();
-  const joinAt = new Date(PROFILEUSER?.created_at).toLocaleDateString("en-us", {
+  const joinAt = new Date(JOINEDAT.joined_at).toLocaleDateString("en-us", {
     day: "numeric",
     month: "long",
     year: "numeric",

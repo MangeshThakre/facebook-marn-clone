@@ -48,7 +48,7 @@ class controller {
         phoneNo,
         password,
         DOB,
-        created_at: new Date(),
+        created_at: { joined_at: new Date(), showIntro: false },
       });
       const result = await saveUserInfo.save();
       // console.log(result);
@@ -678,6 +678,8 @@ class controller {
     const college = req.body.collegeUpdate;
     const workPlace = req.body.workPlaceForUpdate;
     const relationship = req.body.relationship;
+    const created_at = req.body.created_at;
+
 
     try {
       const response = await userModel.findByIdAndUpdate(user_id, {
@@ -686,7 +688,8 @@ class controller {
         school,
         college,
         workPlace,
-        relationship
+        relationship,
+        created_at,
       });
       res.json("updated");
     } catch (error) {
