@@ -26,6 +26,7 @@ import {
   ShowWorkEduList,
   ShowCollegeSchoollist,
   ShowList,
+  ShowRelation,
   RelationShipEditor,
 } from "./AboutAssOptions/aboutOptions.js";
 import "./About.css";
@@ -52,6 +53,7 @@ function About() {
   const COLLEGE = useSelector((state) => state.user.college);
   const SCHOOL = useSelector((state) => state.user.school);
   const FAMILYMEMBER = useSelector((state) => state.user.familyMember);
+  const RELSTIONSHIP = useSelector((state) => state.user.relationship);
 
   const birthDay = new Date(PROFILEUSER?.DOB).toLocaleDateString("en-us", {
     day: "numeric",
@@ -452,6 +454,16 @@ function About() {
         </div>
       );
     }
+
+    function showRelationNotAdded() {
+      return (
+        <div className="notEdit">
+          <FamilyRestroomIcon />
+          <p> relation not Added</p>
+        </div>
+      );
+    }
+
     function showList() {
       return (
         <>
@@ -498,6 +510,10 @@ function About() {
       );
     }
 
+    function showRelation() {
+      return <ShowRelation obj={RELSTIONSHIP} open={setToggleRelationShip} />;
+    }
+
     function showEditRelationShip() {
       return (
         <div
@@ -532,7 +548,11 @@ function About() {
       if (USERID == USER.id) {
         if (toggleRelationShip) {
           return showEditorRelationShip();
-        } else return showEditRelationShip();
+        } else if (RELSTIONSHIP.relation == "") {
+          return showEditRelationShip();
+        } else return showRelation();
+      } else if (RELSTIONSHIP.relation == "") {
+        return showRelationNotAdded();
       }
     }
 

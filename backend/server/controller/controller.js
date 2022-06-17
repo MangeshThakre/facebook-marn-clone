@@ -677,6 +677,7 @@ class controller {
     const school = req.body.schoolUpdate;
     const college = req.body.collegeUpdate;
     const workPlace = req.body.workPlaceForUpdate;
+    const relationship = req.body.relationship;
 
     try {
       const response = await userModel.findByIdAndUpdate(user_id, {
@@ -685,6 +686,7 @@ class controller {
         school,
         college,
         workPlace,
+        relationship
       });
       res.json("updated");
     } catch (error) {
@@ -814,6 +816,13 @@ class controller {
       if (type == "school") {
         await userModel.findByIdAndUpdate(user_id, {
           school: list_arr,
+        });
+        res.json("updated");
+      }
+
+      if (type == "relationShip") {
+        await userModel.findByIdAndUpdate(user_id, {
+          relationship: list_arr,
         });
         res.json("updated");
       }

@@ -18,6 +18,9 @@ import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SchoolIcon from "@mui/icons-material/School";
 import { useParams } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+
 import {
   togglseConformDeletePopup,
   deleteItem,
@@ -26,13 +29,14 @@ import {
 } from "../../../../redux/aboutPAgeSplice.js";
 import WorkIcon from "@mui/icons-material/Work";
 import { Card, CardContent } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   currentCity,
   homeTown,
   workPlace,
   college,
   school,
+  relationship,
   familyMember,
 } from "../../../../redux/userSplice";
 import { useSelector, useDispatch } from "react-redux";
@@ -118,8 +122,57 @@ export function PlaceLived({ close, type }) {
 
 export function RelationShipEditor({ close, type }) {
   const dispatch = useDispatch();
+  const optionsRef = useRef(null);
   const [relationStatus, setRelationStatus] = useState("");
   const TOGGLEDROPDOWN = useSelector((state) => state.about.toggleDropdown);
+  const RELSTIONSHIP = useSelector((state) => state.user.relationship);
+  const [isRelationLoading, setIsRelationLoading] = useState(false);
+  useEffect(() => {
+    setRelationStatus(
+      RELSTIONSHIP.relation == "" ? "Status" : RELSTIONSHIP.relation
+    );
+  }, []);
+
+  useEffect(() => {
+    const options = optionsRef.current.childNodes;
+    for (const li of options) {
+      const className = li.className;
+      li.id = "";
+      if (className == relationStatus.replace(/ /g, "_")) {
+        li.id = "activee";
+      } else {
+        li.id = "inActive";
+      }
+    }
+  }, [TOGGLEDROPDOWN]);
+
+  async function save() {
+    setIsRelationLoading(true);
+    const newData = {
+      relation: relationStatus == "Status" ? "" : relationStatus,
+      showIntro: RELSTIONSHIP.showIntro,
+    };
+    try {
+      const response = await axios({
+        method: "post",
+        url: URL + "/api/about_info_workPlace",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        data: { newData, type },
+      });
+      const data = await response.data;
+      if (data == "updated") {
+        dispatch(relationship(newData));
+        close(false);
+      }
+    } catch (error) {
+      setIsRelationLoading(true);
+      console.log(error);
+    }
+  }
+
   return (
     <div className="Editordiv">
       <div className="Dropdown">
@@ -129,56 +182,136 @@ export function RelationShipEditor({ close, type }) {
             style={{ backgroundColor: "#e4e6eb" }}
             onClick={() => dispatch(toggleDropdown(!TOGGLEDROPDOWN))}
           >
-            <p>{relationStatus}</p>
+            <p style={{ marginLeft: "20px", fontWeight: "bold" }}>
+              {relationStatus}
+            </p>
             <ArrowDropDownIcon />
           </div>
         </div>
         {TOGGLEDROPDOWN ? (
-          <Card>
-            <div className="dropDownOption">
-              <ul>
-                <li>
+          <div className="dropDownOption">
+            <Card>
+              <ul ref={optionsRef}>
+                <li
+                  className="Status"
+                  onClick={() => {
+                    dispatch(toggleDropdown(!TOGGLEDROPDOWN));
+                    setRelationStatus("Status");
+                  }}
+                >
                   <p>Status</p>
                 </li>
-                <li>
+                <li
+                  className="Single"
+                  onClick={() => {
+                    dispatch(toggleDropdown(!TOGGLEDROPDOWN));
+                    setRelationStatus("Single");
+                  }}
+                >
                   <p>Single</p>
                 </li>
-                <li>
+                <li
+                  className="In_a_relationship"
+                  onClick={() => {
+                    dispatch(toggleDropdown(!TOGGLEDROPDOWN));
+                    setRelationStatus("In a relationship");
+                  }}
+                >
                   <p>In a relationship</p>
                 </li>
-                <li>
+                <li
+                  className="Engaged"
+                  onClick={() => {
+                    dispatch(toggleDropdown(!TOGGLEDROPDOWN));
+                    setRelationStatus("Engaged");
+                  }}
+                >
                   <p>Engaged</p>
                 </li>
-                <li>
+                <li
+                  className="Married"
+                  onClick={() => {
+                    dispatch(toggleDropdown(!TOGGLEDROPDOWN));
+                    setRelationStatus("Married");
+                  }}
+                >
                   <p>Married</p>
                 </li>
-                <li>
+                <li
+                  className="In_a_civil_union"
+                  onClick={() => {
+                    dispatch(toggleDropdown(!TOGGLEDROPDOWN));
+                    setRelationStatus("In a civil union");
+                  }}
+                >
                   <p>In a civil union</p>
                 </li>
-                <li>
+                <li
+                  className="In_a_domestic_partnership"
+                  onClick={() => {
+                    dispatch(toggleDropdown(!TOGGLEDROPDOWN));
+                    setRelationStatus("In a domestic partnership");
+                  }}
+                >
                   <p>In a domestic partnership</p>
                 </li>
-                <li>
+                <li
+                  className="In_an_open_relationship"
+                  onClick={() => {
+                    dispatch(toggleDropdown(!TOGGLEDROPDOWN));
+                    setRelationStatus("In an open relationship");
+                  }}
+                >
                   <p>In an open relationship</p>
                 </li>
-                <li>
+                <li
+                  className="It's_complicated"
+                  onClick={() => {
+                    dispatch(toggleDropdown(!TOGGLEDROPDOWN));
+                    setRelationStatus("It's complicated");
+                  }}
+                >
                   <p>It's complicated</p>
                 </li>
-                <li>
+                <li
+                  className="Separated"
+                  onClick={() => {
+                    dispatch(toggleDropdown(!TOGGLEDROPDOWN));
+                    setRelationStatus("Separated");
+                  }}
+                >
                   <p>Separated</p>
                 </li>
-                <li>
+                <li
+                  className="Divorced"
+                  onClick={() => {
+                    dispatch(toggleDropdown(!TOGGLEDROPDOWN));
+                    setRelationStatus("Divorced");
+                  }}
+                >
                   <p>Divorced</p>
                 </li>
-                <li>
+                <li
+                  className="Widowed"
+                  onClick={() => {
+                    dispatch(toggleDropdown(!TOGGLEDROPDOWN));
+                    setRelationStatus("Widowed");
+                  }}
+                >
                   <p>Widowed</p>
                 </li>
               </ul>
-            </div>
-          </Card>
-        ) : null}
+            </Card>
+          </div>
+        ) : (
+          <div className="dropDownOption" style={{ display: "none" }}>
+            <ul ref={optionsRef}>
+              <li></li>
+            </ul>
+          </div>
+        )}
       </div>
-      <Divider />
+      <Divider sx={{ marginTop: "10px" }} />
       <div id="PlaceLivedBottom">
         <Button variant="contained">
           <PublicIcon />
@@ -188,7 +321,13 @@ export function RelationShipEditor({ close, type }) {
             Cancle
           </Button>
           <div>
-            <Button variant="contained" disabled={relationStatus == ""}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                save();
+              }}
+              disabled={relationStatus == RELSTIONSHIP.relation}
+            >
               Save
             </Button>
           </div>
@@ -197,9 +336,6 @@ export function RelationShipEditor({ close, type }) {
     </div>
   );
 }
-
-
-
 
 export function Familymembers({ setTogglefamilyMember, type }) {
   const dispatch = useDispatch();
@@ -350,10 +486,6 @@ export function ShowList({ obj, itemType, indexNo, open }) {
     </>
   );
 }
-  
-
-
-
 
 export function AddWorkPlace({ setTogglseWorkPlace, type }) {
   const dispatch = useDispatch();
@@ -809,6 +941,37 @@ export function ShowCity({ obj, Citytype, open }) {
     </>
   );
 }
+
+export function ShowRelation({ obj, open }) {
+  const { USERID } = useParams();
+  const { relation, showIntro } = obj;
+  return (
+    <>
+      <div className="list">
+        <div className="listLeft">
+          <FavoriteIcon />
+          <div>
+            <p className="pHeading">{relation}</p>
+          </div>
+        </div>
+        <div className="listRight">
+          {USER.id == USERID ? (
+            <>
+              <IconButton onClick={() => open(true)}>
+                <EditIcon />
+              </IconButton>
+            </>
+          ) : null}
+        </div>
+      </div>
+    </>
+  );
+}
+
+
+
+
+
 
 function DeleteEditPopup(Toggle, type, indexNO = "") {
   const dispatch = useDispatch();

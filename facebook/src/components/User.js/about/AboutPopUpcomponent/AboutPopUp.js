@@ -27,6 +27,7 @@ import {
   college,
   school,
   familyMember,
+  relationship,
 } from "../../../../redux/userSplice.js";
 import { setAboutOption } from "../../../../redux/aboutPAgeSplice.js";
 import { setPage } from "../../../../redux/userSplice.js";
@@ -40,11 +41,13 @@ export function AboutPopUp() {
   const SCHOOL = useSelector((state) => state.user.school);
   const HOMETOWN = useSelector((state) => state.user.homeTown);
   const CURRENTCITY = useSelector((state) => state.user.currentCity);
+  const RELSTIONSHIP = useSelector((state) => state.user.relationship);
+
   const JOINEDATE = useSelector((state) => state.user.userDetail.created_at);
   const [IsCurrentCity, setIsCurrentcity] = useState(CURRENTCITY.showIntro);
   const [IsHometown, setIsHometown] = useState(HOMETOWN.showIntro);
   const [isIntroSaveLoading, setIsIntroSaveLoading] = useState(false);
-
+  const [isRelationship, setIsRelaionship] = useState(RELSTIONSHIP.showIntro);
   const [workPlaceForUpdate, setWorkplaceForUpdate] = useState(WORKPLACE);
   const [collegeUpdate, setCollegeUpdate] = useState(COLLEGE);
   const [schoolUpdate, setSchoolUpdate] = useState(SCHOOL);
@@ -256,6 +259,42 @@ export function AboutPopUp() {
     }
   }
 
+  function relationshipSwitch() {
+    if (RELSTIONSHIP.relation !== "") {
+      return (
+        <div className="switchButtonDiv">
+          <FormControlLabel
+            control={
+              <Switch
+                checked={isRelationship || false}
+                onChange={() =>
+                  setIsRelaionship((prevIsRelationship) => !prevIsRelationship)
+                }
+              />
+            }
+            label={RELSTIONSHIP.relation}
+          />
+          <IconButton
+            onClick={() => {
+              setAboutOption_("FamilyAndRelation");
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+        </div>
+      );
+    } else {
+      return (
+        <div onClick={() => setAboutOption_("Placeslived")}>
+          <AddCircleOutlineIcon
+            sx={{ color: "#1976d2 ", height: "32px", width: "32px" }}
+          />
+          <p>Add Relationship</p>
+        </div>
+      );
+    }
+  }
+
   async function save() {
     setIsIntroSaveLoading(true);
     const hometown = {
@@ -267,6 +306,11 @@ export function AboutPopUp() {
       city: CURRENTCITY.city,
       type: CURRENTCITY.type,
       showIntro: IsCurrentCity,
+    };
+
+    const relationship_ = {
+      relation: RELSTIONSHIP.relation,
+      showIntro: isRelationship,
     };
 
     try {
@@ -284,6 +328,7 @@ export function AboutPopUp() {
           workPlaceForUpdate,
           schoolUpdate,
           collegeUpdate,
+          relationship: relationship_,
         },
       });
       const data = await response.data;
@@ -293,6 +338,7 @@ export function AboutPopUp() {
         dispatch(workPlace(workPlaceForUpdate));
         dispatch(college(collegeUpdate));
         dispatch(school(schoolUpdate));
+        dispatch(relationship(relationship_));
         setIsIntroSaveLoading(false);
         dispatch(toggleAboutPopUp(false));
       }
@@ -384,7 +430,8 @@ export function AboutPopUp() {
               </div>
               <div className="AboutSwitch">
                 <p>Relationship</p>
-                <div>
+                {relationshipSwitch()}
+                {/* <div>
                   <FormControlLabel
                     control={<Switch defaultChecked />}
                     label="Single"
@@ -392,7 +439,7 @@ export function AboutPopUp() {
                   <IconButton>
                     <EditIcon />
                   </IconButton>
-                </div>
+                </div> */}
               </div>
               <div className="AboutSwitch">
                 <p>Joined Facebook</p>

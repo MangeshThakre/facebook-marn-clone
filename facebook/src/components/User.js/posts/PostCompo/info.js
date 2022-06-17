@@ -15,6 +15,7 @@ import WorkOutlinedIcon from "@mui/icons-material/WorkOutlined";
 import SchoolIcon from "@mui/icons-material/School";
 import HomeIcon from "@mui/icons-material/Home";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 function Info() {
   const dispatch = useDispatch();
   const { USERID } = useParams();
@@ -30,6 +31,7 @@ function Info() {
   const SCHOOL = useSelector((state) => state.user.school);
   const HOMETOWN = useSelector((state) => state.user.homeTown);
   const CURRENTCITY = useSelector((state) => state.user.currentCity);
+  const RELSTIONSHIP = useSelector((state) => state.user.relationship);
 
   useEffect(() => {});
 
@@ -173,6 +175,14 @@ function Info() {
             <LocationOnIcon sx={{ marginRight: "10px" }} />
             <p>
               From <b> {HOMETOWN.city}</b>
+            </p>
+          </div>
+        ) : null}
+        {RELSTIONSHIP.showIntro ? (
+          <div style={{ display: "flex", marginTop: "15px" }}>
+            <FavoriteIcon sx={{ marginRight: "10px" }} />
+            <p>
+              From <b> {RELSTIONSHIP.relation}</b>
             </p>
           </div>
         ) : null}
