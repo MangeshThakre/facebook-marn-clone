@@ -99,6 +99,8 @@ router.post("/intro_Update", Authorization, controller.intro_Update);
 
 router.post("/remove", Authorization, controller.remove);
 
+router.get("/is_friend", Authorization, controller.is_friend);
+
 router.post(
   "/about_info_workPlace",
   Authorization,

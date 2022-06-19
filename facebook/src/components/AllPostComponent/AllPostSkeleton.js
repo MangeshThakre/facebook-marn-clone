@@ -6,7 +6,7 @@ import Divider from "@mui/material/Divider";
 
 function AllPostSkeleton() {
   return (
-    <div style={{ marginTop: "10px" }}>
+    <div style={{ marginTop: "10px", width: "100%" }}>
       <Card>
         <CardContent>
           <div style={{ display: "flex", marginTop: "5px" }}>
@@ -34,19 +34,16 @@ function AllPostSkeleton() {
           <Divider variant="middle" sx={{ marginTop: "10px" }} />
           <Skeleton
             variant="rectangular"
-            width={450}
             height={200}
             sx={{ bgcolor: "grey.200", margin: " 5px 0 0 12px " }}
           />
           <Skeleton
             variant="rectangular"
-            width={450}
             height={10}
             sx={{ bgcolor: "grey.200", margin: " 5px 0 0 12px " }}
           />
           <Skeleton
             variant="rectangular"
-            width={450}
             height={10}
             sx={{ bgcolor: "grey.200", margin: " 5px 0 0 12px " }}
           />

@@ -19,10 +19,23 @@ import { useSelector } from "react-redux";
 function Create() {
   const dispatch = useDispatch();
   const PROFILEPIC = useSelector((state) => state.user.profilePicture);
+  const SUB_BACKGROUND_COLOR = useSelector(
+    (state) => state.darkLight.backgroundColor_sub
+  );
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
 
+  const BACKGROUNDCOLOR_SUB_FANT = useSelector(
+    (state) => state.darkLight.backgroundColor_sub_fant
+  );
   return (
     <div className="Create">
-      <Card sx={{ height: "122.8px", borderRadius: "10px" }}>
+      <Card
+        sx={{
+          height: "122.8px",
+          borderRadius: "10px",
+          backgroundColor: SUB_BACKGROUND_COLOR,
+        }}
+      >
         <CardContent>
           <div
             className="Create_upper"
@@ -34,15 +47,19 @@ function Create() {
               onClick={() => {
                 dispatch(toggleCreatePost(true));
               }}
-              style={{ cursor: "pointer", backgroundColor: "#f0f2f5" }}
+              style={{
+                cursor: "pointer",
+                backgroundColor: BACKGROUNDCOLOR_SUB_FANT,
+              }}
             >
               <p
                 style={{
-                  backgroundColor: "#f0f2f5",
+                  backgroundColor: BACKGROUNDCOLOR_SUB_FANT,
                   width: "80%",
                   border: "none",
                   outline: "none",
                   fontSize: "1.063rem",
+                  color: ICONCOLOR,
                 }}
               >
                 What's on your mind?

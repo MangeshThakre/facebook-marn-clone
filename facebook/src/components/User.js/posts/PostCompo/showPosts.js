@@ -12,7 +12,7 @@ import { useParams } from "react-router-dom";
 import { posts, UpdatedPost } from "../../../../redux/globleSplice.js";
 import AllPostSkeleton from "../../../AllPostComponent/AllPostSkeleton";
 
-function ShowPosts() {
+function ShowPosts({ scrollPostRef }) {
   const dispatch = useDispatch();
   const { USERID } = useParams();
   const [postDetail, setPostDetails] = useState([]);
@@ -21,6 +21,8 @@ function ShowPosts() {
   const TOKEN = localStorage.getItem("TOKEN");
   const POSTS = useSelector((state) => state.globle.posts);
   const UPDATEDPOST = useSelector((state) => state.globle.UpdatedPost);
+  const [nextPage, setNextPage] = useState(false);
+  const [page, setPage] = useState(1);
   const ACTUALDELETEPOSTID = useSelector(
     (state) => state.globle.ActualdeletePostId
   );
@@ -60,19 +62,46 @@ function ShowPosts() {
     try {
       const response = await axios({
         method: "get",
-        url: URL + "/api/getPosts?user_id=" + USERID,
+        url:
+          URL +
+          "/api/getPosts?user_id=" +
+          USERID +
+          "&page=" +
+          page +
+          "&limit=5",
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${TOKEN}`,
         },
       });
       const data = await response.data;
-      setPostDetails(data);
+      setPostDetails([...postDetail, ...data.data]);
+      if (response.data.next) {
+        setNextPage(true);
+      } else setNextPage(false);
       setIsFetchPostLoading(false);
     } catch (error) {
       console.log("Error", error);
     }
   }
+
+  useEffect(() => {
+    scrollPostRef.current.addEventListener("scroll", () => {
+      if (
+        scrollPostRef.current.clientHeight + scrollPostRef.current.scrollTop >=
+        scrollPostRef.current.scrollHeight
+      ) {
+        setPage(page + 1);
+      }
+    });
+  });
+
+  useEffect(() => {
+    if (nextPage) {
+      fetchPosts();
+    }
+  }, [page]);
+
   return (
     <div className="showPosts">
       <Card sx={{ borderRadius: "10px" }}>
@@ -83,14 +112,25 @@ function ShowPosts() {
           <div className="showPots_lower"></div>
         </CardContent>
       </Card>
-      {isFetchPostLoading ? (
+      {
         <>
-          <AllPostSkeleton />
-          <AllPostSkeleton />
+          <PostMaker postDetail={postDetail} />
+          {isFetchPostLoading ? (
+            <div>
+              <AllPostSkeleton />
+              <AllPostSkeleton />
+            </div>
+          ) : null}
+          <div className="loadMore">
+            {nextPage ? (
+              <>
+                <AllPostSkeleton />
+                <AllPostSkeleton />
+              </>
+            ) : null}
+          </div>
         </>
-      ) : (
-        <PostMaker postDetail={postDetail} />
-      )}
+      }
     </div>
   );
 }

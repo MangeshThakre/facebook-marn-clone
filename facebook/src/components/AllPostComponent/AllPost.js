@@ -43,6 +43,16 @@ function AllPost({ postData }) {
   const [togglelike, setToggleLike] = useState(false);
   const [toggleDeleteEdit, setToggleDeleteEdit] = useState(false);
   const profilePic = postData.profilePic ? URL + "/" + postData.profilePic : "";
+  const BACKGROUNDCOLOR_SUB_FANT = useSelector(
+    (state) => state.darkLight.backgroundColor_sub_fant
+  );
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+
+  const SUB_BACKGROUND_COLOR = useSelector(
+    (state) => state.darkLight.backgroundColor_sub
+  );
 
   const text = postData.text;
   const photo = postData.photo;
@@ -138,7 +148,10 @@ function AllPost({ postData }) {
           {togglelike ? (
             <>
               <img src={like} alt="like" />
-              <p> {USER?.firstName + " " + USER?.lastName}</p>
+              <p style={{ color: ICONCOLOR }}>
+                {" "}
+                {USER?.firstName + " " + USER?.lastName}
+              </p>
             </>
           ) : (
             ""
@@ -183,7 +196,7 @@ function AllPost({ postData }) {
     }
     return (
       <div className="DeleteEditPopup">
-        <Card>
+        <Card sx={{ backgroundColor: SUB_BACKGROUND_COLOR }}>
           <CardContent>
             <div className="DeleteEditPopupBody">
               <div
@@ -213,7 +226,9 @@ function AllPost({ postData }) {
 
   return (
     <div className="AddPost">
-      <Card sx={{ borderRadius: "10px" }}>
+      <Card
+        sx={{ borderRadius: "10px", backgroundColor: SUB_BACKGROUND_COLOR }}
+      >
         <CardContent>
           <div className="AllPost_upper">
             <div>
@@ -227,8 +242,14 @@ function AllPost({ postData }) {
                 )}
               </div>
               <div>
-                <h5>{Name}</h5>
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <h5 style={{ color: FONTCOLOR }}>{Name}</h5>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: ICONCOLOR,
+                  }}
+                >
                   <p> {posted_at}</p>
                   <PublicOutlinedIcon sx={{ fontSize: "20px" }} />
                 </div>
@@ -265,13 +286,13 @@ function AllPost({ postData }) {
                   {togglelike ? (
                     <ThumbUpAltIcon sx={{ color: "#0570e7" }} />
                   ) : (
-                    <ThumbUpAltOutlinedIcon />
+                    <ThumbUpAltOutlinedIcon sx={{ color: ICONCOLOR }} />
                   )}
                 </IconButton>
               </div>
               <div>
                 <IconButton onClick={() => console.log(commentInput.current)}>
-                  <ChatBubbleOutlineOutlinedIcon />
+                  <ChatBubbleOutlineOutlinedIcon sx={{ color: ICONCOLOR }} />
                 </IconButton>
               </div>
             </div>
@@ -287,7 +308,9 @@ function AllPost({ postData }) {
                 placeholder="Type a message"
               />
 
-              <p style={{ fontSize: "10px" }}> Press Enter to post.</p>
+              <p style={{ fontSize: "10px", color: ICONCOLOR }}>
+                Press Enter to post.
+              </p>
             </div>
           </div>
         </CardContent>

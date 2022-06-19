@@ -28,26 +28,26 @@ function Friends({ setPage }) {
   }, [USERID]);
 
   useEffect(() => {
-    async function fetchFrinds() {
-      setIsCommanFrindLoading(true);
-      try {
-        const response = await axios({
-          method: "get",
-          url: URL + "/api/get_friends?user_id=" + USER.id + "&page=1&limit=6",
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${TOKEN}`,
-          },
-        });
-        const data = await response.data.data;
-        setCommanFriend(data);
-        setIsCommanFrindLoading(false);
-      } catch (error) {
-        console.log("Error", error);
-      }
-    }
     fetchFrinds();
   }, []);
+  async function fetchFrinds() {
+    setIsCommanFrindLoading(true);
+    try {
+      const response = await axios({
+        method: "get",
+        url: URL + "/api/get_friends?user_id=" + USER.id + "&page=1&limit=6",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
+      const data = await response.data.data;
+      setCommanFriend(data);
+      setIsCommanFrindLoading(false);
+    } catch (error) {
+      console.log("Error", error);
+    }
+  }
 
   async function fetchFriends(id) {
     try {

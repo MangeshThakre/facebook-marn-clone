@@ -1,0 +1,25 @@
+.userFreindHeader{
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    margin-bottom:  10px;
+}
+
+.userFreindBody{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.userFriendBox{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+width: 530px;
+}
+
+.userFriendBox >  div> img{
+   width: 80px;
+   height: 80px;
+   border-radius: 5px;
+}

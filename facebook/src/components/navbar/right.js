@@ -22,9 +22,12 @@ function Right() {
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const URL = process.env.REACT_APP_API_URL;
   const ProfilePic = USER?.profilePic ? URL + "/" + USER.profilePic : "";
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
 
   const navRight = useRef(null);
-
+  const BACKGROUNDCOLOR_SUB_FANT = useSelector(
+    (state) => state.darkLight.backgroundColor_sub_fant
+  );
   return (
     <div className="navBarRight" ref={navRight}>
       <div
@@ -33,15 +36,20 @@ function Right() {
           dispatch(deshbordPage(""));
         }}
       >
-        <div className="user">
+        <div
+          className="user"
+          style={{ backgroundColor: BACKGROUNDCOLOR_SUB_FANT }}
+        >
           <img src={ProfilePic ? ProfilePic : contact} alt="" />
-          <p>
+          <p style={{ color: FONTCOLOR }}>
             <b>{USER?.firstName}</b>
           </p>
         </div>
       </div>
 
       <div
+        // className="button"
+        // style={{ backgroundColor: BACKGROUNDCOLOR_SUB_FANT }}
         onClick={(e) => {
           const allElement = navRight.current.childNodes;
           for (const element of allElement) {
@@ -56,7 +64,10 @@ function Right() {
             : (e.currentTarget.className = "");
         }}
       >
-        <div className="menu button">
+        <div
+          className="menu button"
+          style={{ backgroundColor: BACKGROUNDCOLOR_SUB_FANT }}
+        >
           <svg
             viewBox="0 0 28 28"
             fill="currentColor"
@@ -83,7 +94,10 @@ function Right() {
             : (e.currentTarget.className = "");
         }}
       >
-        <div className="messanger button">
+        <div
+          className="messanger button"
+          style={{ backgroundColor: BACKGROUNDCOLOR_SUB_FANT }}
+        >
           <svg
             viewBox="0 0 28 28"
             fill="currentColor"
@@ -110,7 +124,10 @@ function Right() {
             : (e.currentTarget.className = "");
         }}
       >
-        <div className="notification button">
+        <div
+          className="notification button"
+          style={{ backgroundColor: BACKGROUNDCOLOR_SUB_FANT }}
+        >
           <svg
             viewBox="0 0 28 28"
             fill="currentColor"
@@ -139,7 +156,10 @@ function Right() {
             : (e.currentTarget.className = "");
         }}
       >
-        <div className="more button">
+        <div
+          className="more button"
+          style={{ backgroundColor: BACKGROUNDCOLOR_SUB_FANT }}
+        >
           <svg
             viewBox="0 0 20 20"
             fill="currentColor"

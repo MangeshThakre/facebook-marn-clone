@@ -3,7 +3,7 @@ import "../homePageMiddle/homePageMiddle.css";
 import { Card } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import Divider from "@mui/material/Divider";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import contact from "../../../image/contact.png";
 import AddIcon from "@mui/icons-material/Add";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import AllPostSkeleton from "../../AllPostComponent/AllPostSkeleton";
 import axios from "axios";
 function HomePageMiddle() {
+  const homePageMiddleRef = useRef(null);
   const [toggleStory, setToggleStory] = useState(false);
   const [postDetail, setPostDetails] = useState([]);
   const [isFetchPostLoading, setIsFetchPostLoading] = useState(false);
@@ -23,13 +24,18 @@ function HomePageMiddle() {
   const URL = process.env.REACT_APP_API_URL;
   const TOKEN = localStorage.getItem("TOKEN");
 
+  const SUB_BACKGROUND_COLOR = useSelector(
+    (state) => state.darkLight.backgroundColor_sub
+  );
+
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+
   useEffect(() => {
     fetchPosts();
   }, []);
 
   async function fetchPosts() {
     setIsFetchPostLoading(true);
-    // console.log(page);
     try {
       const response = await axios({
         method: "get",
@@ -40,13 +46,10 @@ function HomePageMiddle() {
         },
       });
       const data = await response.data;
-      if (data.next) {
-        setPage(data.next.page);
+
+      if (response.data.next) {
         setNextPage(true);
-      } else {
-        setNextPage(false);
-      }
-      data?.next ? setPage(data.next.page) : setPage(page);
+      } else setNextPage(false);
       const postData = [...postDetail, ...data.data];
       setPostDetails(postData);
       setIsFetchPostLoading(false);
@@ -55,7 +58,23 @@ function HomePageMiddle() {
     }
   }
 
-  // console.log(page);
+  useEffect(() => {
+    homePageMiddleRef.current.addEventListener("scroll", () => {
+      if (
+        homePageMiddleRef.current.clientHeight +
+          homePageMiddleRef.current.scrollTop >=
+        homePageMiddleRef.current.scrollHeight
+      ) {
+        setPage(page + 1);
+      }
+    });
+  });
+
+  useEffect(() => {
+    if (nextPage) {
+      fetchPosts();
+    }
+  }, [page]);
 
   function storyComponent() {
     return toggleStory ? (
@@ -92,10 +111,17 @@ function HomePageMiddle() {
   }
 
   return (
-    <div className="homePageMiddle">
+    <div className="homePageMiddle" ref={homePageMiddleRef}>
       <div className="homePageBoby">
         <div className="StoryComponent">
-          <Card sx={{ borderRadius: "10px", height: "290.8px" }}>
+          <Card
+            sx={{
+              borderRadius: "10px",
+              height: "290.8px",
+              backgroundColor: SUB_BACKGROUND_COLOR,
+              color: ICONCOLOR,
+            }}
+          >
             <CardContent>
               <div className="StoryComponentNav">
                 <div onClick={() => setToggleStory(true)}>
@@ -112,34 +138,27 @@ function HomePageMiddle() {
               <div>{storyComponent()}</div>
             </CardContent>
           </Card>
-          <Create />
-          {isFetchPostLoading ? (
-            <>
-              <AllPostSkeleton />
-              <AllPostSkeleton />
-            </>
-          ) : (
-            <>
-              <PostMaker postDetail={postDetail} />
-              <div className="loadMore">
-                {nextPage ? (
-                  isFetchPostLoading ? (
-                    "loading"
-                  ) : (
-                    <p
-                      style={{ color: "#297ce5" }}
-                      onClick={() => {
-                        fetchPosts();
-                      }}
-                    >
-                      Load more
-                    </p>
-                  )
-                ) : null}
-              </div>
-            </>
-          )}
         </div>
+        <Create />
+        {
+          <>
+            <PostMaker postDetail={postDetail} />
+            {isFetchPostLoading ? (
+              <div>
+                <AllPostSkeleton />
+                {/* <AllPostSkeleton /> */}
+              </div>
+            ) : null}
+            <div className="loadMore">
+              {nextPage ? (
+                <>
+                  <AllPostSkeleton />
+                  {/* <AllPostSkeleton /> */}
+                </>
+              ) : null}
+            </div>
+          </>
+        }
       </div>
     </div>
   );

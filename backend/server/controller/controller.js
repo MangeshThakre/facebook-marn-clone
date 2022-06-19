@@ -9,6 +9,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import { Console } from "console";
 const __filenamee = fileURLToPath(import.meta.url);
 const __dirnamee = dirname(__filenamee);
 
@@ -181,7 +182,14 @@ class controller {
 
   static async getPosts(req, res) {
     const user_id = req.query.user_id;
+    const page = Number(req.query.page);
+    const limit = Number(req.query.limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
     try {
+      console.log(user_id);
+      const responseLength = await postModel.find({ user_id }).count();
       const response = await postModel
         .aggregate([
           { $match: { user_id: user_id } },
@@ -213,8 +221,26 @@ class controller {
             },
           },
         ])
-        .sort({ posted_at: -1 });
-      res.json(response);
+        .sort({ posted_at: -1 })
+        .skip(startIndex)
+        .limit(limit);
+
+      const result = {};
+      if (endIndex < responseLength) {
+        result.next = {
+          page: page + 1,
+          limit: limit,
+        };
+      }
+
+      if (startIndex > 0) {
+        result.previous = {
+          page: page - 1,
+          limit: limit,
+        };
+      }
+      result.data = response;
+      res.json(result);
     } catch (error) {
       res.json({
         status: 500,
@@ -659,6 +685,21 @@ class controller {
     }
   }
 
+  static async is_friend(req, res) {
+    const user_id = req.user.id;
+    const friend_id = req.query.friend_id;
+
+    try {
+      const response = await friendsModel.findOne({ user_id, friend_id });
+      if (response) {
+        res.json("freind");
+      } else res.json("notFreind");
+    } catch (error) {
+      res.json({ status: 500 });
+      console.log("is_friend Error :", error);
+    }
+  }
+
   static async get_about_info(req, res) {
     const user_id = req.query.user;
     try {
@@ -679,7 +720,6 @@ class controller {
     const workPlace = req.body.workPlaceForUpdate;
     const relationship = req.body.relationship;
     const created_at = req.body.created_at;
-
 
     try {
       const response = await userModel.findByIdAndUpdate(user_id, {

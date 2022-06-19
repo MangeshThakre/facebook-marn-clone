@@ -145,6 +145,7 @@ function Signin() {
                       error={passWarnint}
                       defaultValue={password}
                       id="outlined-basic"
+                      type="password"
                       placeholder="Password"
                       variant="outlined"
                       onChange={(e) => {

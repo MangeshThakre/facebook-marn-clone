@@ -52,7 +52,7 @@ function Post({ setPage }) {
               </Grid>
               <Grid>
                 <div>
-                  <ShowPosts />
+                  <ShowPosts scrollPostRef={scrollPostRef} />
                 </div>
               </Grid>
             </div>

@@ -18,6 +18,11 @@ function Navbar() {
   const SUB_BACKGROUND_COLOR = useSelector(
     (state) => state.darkLight.backgroundColor_sub
   );
+
+  const BACKGROUNDCOLOR_SUB_FANT = useSelector(
+    (state) => state.darkLight.backgroundColor_sub_fant
+  );
+
   const burgerMenu = useSelector((state) => state.icon.burgerMenu);
 
   return (
@@ -30,8 +35,16 @@ function Navbar() {
         }}
       >
         <img src={facebook} />
-        <div className="search" id="search">
-          <input type="text" placeholder="Search Facebook" />
+        <div
+          className="search"
+          id="search"
+          style={{ backgroundColor: BACKGROUNDCOLOR_SUB_FANT }}
+        >
+          <input
+            type="text"
+            placeholder="Search Facebook"
+            style={{ backgroundColor: BACKGROUNDCOLOR_SUB_FANT }}
+          />
         </div>
         <div className="burgerMenuLeft" id="burgerMenuLeft">
           <svg

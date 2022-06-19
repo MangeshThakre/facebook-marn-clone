@@ -92,7 +92,8 @@ function User({ type }) {
   const backgroundColor = useSelector(
     (state) => state.darkLight.backgroundColor
   );
-
+  document.getElementsByTagName("body")[0].style.backgroundColor =
+    backgroundColor;
   const backgroundColor_sub = useSelector(
     (state) => state.darkLight.backgroundColor_sub
   );
@@ -161,7 +162,13 @@ function User({ type }) {
         _id: data._id,
       };
       dispatch(userDetail(userDetaile));
-      dispatch(created_at(data.created_at));
+      dispatch(
+        created_at(
+          data.created_at
+            ? data.created_at
+            : { joined_at: "", showIntro: false }
+        )
+      );
       dispatch(currentCity(data.currentCity));
       dispatch(bio(data.bio ? data.bio : ""));
       dispatch(homeTown(data.homeTown));
@@ -548,7 +555,7 @@ function User({ type }) {
   }
 
   return (
-    <div className="userPage" style={{ backgroundColor: backgroundColor }}>
+    <div className="userPage">
       {toggleCreatePost ? <NewPosts /> : null}
       {toggleAboutPopUp ? <AboutPopUp /> : null}
       {togglseConformDeletePopup ? <ConfirmDeletPopup /> : null}
