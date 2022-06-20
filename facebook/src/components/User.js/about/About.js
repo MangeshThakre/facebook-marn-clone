@@ -57,6 +57,12 @@ function About() {
   const FAMILYMEMBER = useSelector((state) => state.user.familyMember);
   const RELSTIONSHIP = useSelector((state) => state.user.relationship);
 
+  const SUB_BACKGROUND_COLOR = useSelector(
+    (state) => state.darkLight.backgroundColor_sub
+  );
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+
   const birthDay = new Date(PROFILEUSER?.DOB).toLocaleDateString("en-us", {
     day: "numeric",
     month: "long",
@@ -68,6 +74,13 @@ function About() {
     year: "numeric",
   });
   // console.log(PROFILEUSER);
+
+  const p = {
+    color: FONTCOLOR,
+  };
+  const icon = {
+    color: ICONCOLOR,
+  };
 
   useEffect(() => {
     const options = aboutLeftOptionsRef.current.childNodes;
@@ -186,7 +199,7 @@ function About() {
         return (
           <div className="notEdit">
             <WorkIcon />
-            <p> {type} not Added</p>
+            <p style={p}> {type} not Added</p>
           </div>
         );
       }
@@ -194,7 +207,7 @@ function About() {
         return (
           <div className="notEdit">
             <SchoolIcon />
-            <p> {type} not Added</p>
+            <p style={p}> {type} not Added</p>
           </div>
         );
       }
@@ -202,7 +215,7 @@ function About() {
         return (
           <div className="notEdit">
             <SchoolIcon />
-            <p> {type} not Added</p>
+            <p style={p}> {type} not Added</p>
           </div>
         );
       }
@@ -308,15 +321,15 @@ function About() {
     return (
       <>
         <div className="aboutEdit">
-          <p>Work</p>
+          <p style={p}> Work</p>
           {WorkPlace()}
         </div>
         <div className="aboutEdit">
-          <p>College</p>
+          <p style={p}>College</p>
           {college()}
         </div>
         <div className="aboutEdit">
-          <p>High School</p>
+          <p style={p}>High School</p>
           {school()}
         </div>
       </>
@@ -396,7 +409,7 @@ function About() {
 
     return (
       <div className="aboutEdit">
-        <p>Places lived</p>
+        <p style={p}>Places lived</p>
         {addCurrentCity()}
         {addHomeTown()}
       </div>
@@ -407,37 +420,37 @@ function About() {
     return (
       <>
         <div className="aboutStatic">
-          <p>Contact info</p>
+          <p style={p}>Contact info</p>
           <div>
-            <CallIcon />
+            <CallIcon sx={icon} />
             <div>
               <div>
-                <p>{PROFILEUSER?.phoneNo}</p>
+                <p style={p}>{PROFILEUSER?.phoneNo}</p>
                 <p className="subStaticP">Mobile</p>
               </div>
             </div>
           </div>
         </div>
         <div className="aboutStatic">
-          <p>Basic info</p>
+          <p style={p}>Basic info</p>
           <div>
-            <PersonIcon />
+            <PersonIcon sx={icon} />
             <div>
               <div>
-                <p>{joinAt}</p>
+                <p style={p}> {joinAt}</p>
                 <p className="subStaticP">Join at</p>
               </div>
             </div>
           </div>
           <div>
-            <CakeIcon />
+            <CakeIcon sx={icon} />
             <div>
               <div>
-                <p>{birthDay}</p>
+                <p style={p}>{birthDay}</p>
                 <p className="subStaticP">Birth Date</p>
               </div>
               <div>
-                <p>{BirthYear}</p>
+                <p style={p}> {BirthYear}</p>
                 <p className="subStaticP">Birth year</p>
               </div>
             </div>
@@ -451,8 +464,8 @@ function About() {
     function showNotAdded(type) {
       return (
         <div className="notEdit">
-          <FamilyRestroomIcon />
-          <p> {type} not Added</p>
+          <FamilyRestroomIcon sx={icon} />
+          <p style={p}> {type} not Added</p>
         </div>
       );
     }
@@ -460,8 +473,8 @@ function About() {
     function showRelationNotAdded() {
       return (
         <div className="notEdit">
-          <FamilyRestroomIcon />
-          <p> relation not Added</p>
+          <FamilyRestroomIcon sx={icon} />
+          <p style={p}> relation not Added</p>
         </div>
       );
     }
@@ -561,20 +574,12 @@ function About() {
     return (
       <>
         <div className="aboutEdit">
-          <p>Relationship</p>
-          {/* <div>
-            <FavoriteIcon />
-            <div>
-              <div>
-                <p>Single</p>
-                <p className="subStaticP"></p>
-              </div>
-            </div>
-          </div> */}
+          <p style={p}>Relationship</p>
+
           {relationship()}
         </div>
         <div className="aboutEdit">
-          <p>Family members</p>
+          <p style={p}>Family members</p>
 
           {familyMember()}
         </div>
@@ -584,7 +589,7 @@ function About() {
 
   return (
     <div className="About">
-      <Card>
+      <Card sx={{ backgroundColor: SUB_BACKGROUND_COLOR }}>
         <Grid container>
           <Grid xs={12} md={4}>
             <CardContent>

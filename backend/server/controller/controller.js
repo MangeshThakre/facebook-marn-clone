@@ -158,14 +158,14 @@ class controller {
       };
       console.log(update);
       if (update == "true") {
-        console.log("update");
-        console.log(id);
+        // console.log("update");
+        // console.log(id);
         const posts = await postModel.findByIdAndUpdate(
           { _id: id },
           { text: text, bg: bg, photo: photo }
         );
         const updatedPost = await postModel.findById(id);
-        console.log();
+        // console.log();
         res.json(updatedPost);
       } else if (update == "false") {
         const posts = new postModel(postData);
@@ -188,7 +188,7 @@ class controller {
     const endIndex = page * limit;
 
     try {
-      console.log(user_id);
+      // console.log(user_id);
       const responseLength = await postModel.find({ user_id }).count();
       const response = await postModel
         .aggregate([
@@ -622,10 +622,12 @@ class controller {
     const page = Number(req.query.page);
     const limit = Number(req.query.limit);
     const startIndex = (page - 1) * limit;
+    const match =  String(req.query.match) 
     const endIndex = page * limit;
     try {
       if (page == 0 && limit == 0) {
         const response = await friendsModel.findOne({ user_id, friend_id });
+
         if (
           response != null &&
           response.user_id == user_id &&
@@ -635,6 +637,33 @@ class controller {
         } else return res.json(false);
       }
 
+      const collectionLength = await friendsModel.aggregate([
+        { $addFields: { friend_idObj: { $toObjectId: "$friend_id" } } },
+        {
+          $lookup: {
+            from: "userschemas",
+            localField: "friend_idObj",
+            foreignField: "_id",
+            as: "userData",
+          },
+        },
+        { $unwind: "$userData" },
+        {
+          $addFields: {
+            username: {
+              $concat: ["$userData.firstName", " ", "$userData.lastName"],
+            },
+          },
+        },
+
+        { $match: { user_id: user_id, username: { $regex: match } } },
+        {
+          $count: "totalCount",
+        },
+      ]);
+      const freindLengt = await collectionLength[0];
+      // console.log(freindLengt);
+      console.log(page);
       const friendsResponse = await friendsModel
         .aggregate([
           { $match: { user_id: user_id } },
@@ -649,6 +678,15 @@ class controller {
           },
           { $unwind: "$userData" },
           {
+            $addFields: {
+              username: {
+                $concat: ["$userData.firstName", " ", "$userData.lastName"],
+              },
+            },
+          },
+
+          { $match: { user_id: user_id, username: { $regex: match } } },
+          {
             $project: {
               _id: 0,
               _id: "$friend_id",
@@ -662,15 +700,18 @@ class controller {
         .skip(startIndex)
         .limit(limit);
 
+      // console.log(friendsResponse);
+
       var result = {};
-      if (startIndex > friendsResponse.length) {
+
+      if (endIndex < freindLengt.totalCount) {
         result.next = {
           page: page + 1,
           limit: limit,
         };
       }
 
-      if (endIndex < 0) {
+      if (startIndex > 0) {
         result.previous = {
           page: page - 1,
           limit: limit,

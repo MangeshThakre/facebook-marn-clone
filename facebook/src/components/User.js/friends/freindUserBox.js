@@ -32,6 +32,17 @@ function FreindUserBox({ e }) {
   const REJECT_FRIENDREQUEST = useSelector(
     (state) => state.friend.Reject_freindRequest
   );
+
+  const SUB_BACKGROUND_COLOR = useSelector(
+    (state) => state.darkLight.backgroundColor_sub
+  );
+
+  const BACKGROUND_COLOR_SUB = useSelector(
+    (state) => state.darkLight.backgroundColor_sub
+  );
+
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+
   useEffect(() => {
     fetchCommonFreind();
   }, []);
@@ -250,7 +261,7 @@ function FreindUserBox({ e }) {
   }
 
   return (
-    <Card style={{ marginTop: " 6px" }}>
+    <Card style={{ marginTop: "15px", backgroundColor: BACKGROUND_COLOR_SUB }}>
       <CardContent>
         <div className="userFriendBox">
           <div
@@ -263,7 +274,7 @@ function FreindUserBox({ e }) {
               src={e.profilePic ? URL + "/" + e.profilePic : contact}
               alt=""
             />
-            <p style={{ marginLeft: " 6px" }}>
+            <p style={{ marginLeft: " 6px", color: FONTCOLOR }}>
               {e.userName == USER.firstName + " " + USER.lastName
                 ? "You"
                 : e.userName}

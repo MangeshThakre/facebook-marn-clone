@@ -5,11 +5,11 @@
     margin-bottom:  10px;
 }
 
-.userFreindBody{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
+/* .userFreindBody{
+    display: flex; 
+     flex-wrap: wrap; 
+     justify-content: space-between;
+} */
 
 .userFriendBox{
     display: flex;
