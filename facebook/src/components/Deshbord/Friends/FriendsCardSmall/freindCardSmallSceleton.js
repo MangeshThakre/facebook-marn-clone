@@ -3,7 +3,7 @@ import Skeleton from "@mui/material/Skeleton";
 
 function FreindCardSmallSceleton() {
   return (
-    <div style={{ display: "flex", marginTop: "5px" }}>
+    <div style={{ display: "flex", marginTop: "5px", width: "530px" }}>
       <Skeleton
         variant="circular"
         width={60}

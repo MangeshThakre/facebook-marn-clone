@@ -40,10 +40,10 @@ function Post({ setPage }) {
               </Grid>
             </div>
           </Grid>
-          <Grid xs={12} md={6}>
+          <Grid xs={12} md={6} sx={{ height: "140vh" }}>
             <div
               ref={scrollPostRef}
-              style={{ height: "100vh", overflowY: "auto" }}
+              style={{ height: "100%", overflowY: "auto" }}
             >
               <Grid>
                 <div>

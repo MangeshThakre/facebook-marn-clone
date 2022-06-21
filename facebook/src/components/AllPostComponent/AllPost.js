@@ -112,7 +112,9 @@ function AllPost({ postData }) {
     if (bg == null && photo == null) {
       return (
         <div>
-          <p>{text}</p>
+          <CardContent>
+            <p>{text}</p>
+          </CardContent>
         </div>
       );
     }
@@ -122,14 +124,18 @@ function AllPost({ postData }) {
           className="AllPost_bodyBackground"
           style={{ backgroundImage: `url(  ${bg})`, color: "white" }}
         >
-          <h2>{text}</h2>
+          <CardContent>
+            <h2>{text}</h2>
+          </CardContent>
         </div>
       );
     }
     if (photo != null) {
       return (
         <>
-          <div>{text}</div>
+          <CardContent>
+            <div>{text}</div>
+          </CardContent>
           <div className="AllPost_body_photo">
             <img src={URL + "/" + photo} alt="" />
           </div>
@@ -149,7 +155,6 @@ function AllPost({ postData }) {
             <>
               <img src={like} alt="like" />
               <p style={{ color: ICONCOLOR }}>
-                {" "}
                 {USER?.firstName + " " + USER?.lastName}
               </p>
             </>
@@ -269,8 +274,9 @@ function AllPost({ postData }) {
               )}
             </div>
           </div>
-          <div className="AllPost_body">{PostBodyFun()}</div>
-
+        </CardContent>
+        <div className="AllPost_body">{PostBodyFun()}</div>
+        <CardContent>
           <div className="AllPost_lower">
             <div className="LikeCommentsCounts">{LikeCommentSCounts()}</div>
             <Divider variant="middle" />

@@ -53,7 +53,7 @@ function Friends({ setPage }) {
     try {
       const response = await axios({
         method: "get",
-        url: URL + "/api/get_friends?user_id=" + id + "&page=1&limit=6",
+        url: URL + "/api/get_friends?user_id=" + id + "&page=1&limit=6&match=",
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${TOKEN}`,

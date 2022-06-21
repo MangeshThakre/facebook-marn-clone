@@ -263,30 +263,57 @@ class controller {
     const page = Number(req.query.page);
     const limit = Number(req.query.limit);
     const startIndex = (page - 1) * limit;
-    const endEndex = page * limit;
+    const endIndex = page * limit;
 
     try {
+      let photoDataLength = await postModel.find({ user_id: user_id, photo: { $ne: null }}).count()
       const userResp = await userModel.findById(user_id, { password: 0 });
+      
       var arr = [];
       var newLimit = limit;
 
       if (userResp.profilePic) {
         newLimit -= 1;
         arr.push({ _id: userResp._id, photo: userResp.profilePic });
+        photoDataLength += 1
       }
       if (userResp.profileBg) {
         arr.push({ _id: userResp._id, photo: userResp.profileBg });
         newLimit -= 1;
+        photoDataLength += 1
       }
-      const userPost = await postModel
-        .aggregate([
-          { $match: { user_id: user_id, photo: { $ne: null } } },
-          { $project: { photo: "$photo" } },
-        ])
-        .skip(startIndex)
-        .limit(newLimit);
-      const photosArr = [...arr, ...userPost];
-      res.json(photosArr);
+     
+   let photosArr=[]
+      if (newLimit >= 1){
+        const userPost = await postModel
+          .aggregate([
+            { $match: { user_id: user_id, photo: { $ne: null } } },
+            { $project: { photo: "$photo" } },
+          ])
+          .skip(startIndex)
+          .limit(newLimit);
+           photosArr = [ ...arr, ...userPost]
+      }else  photosArr = arr.slice(startIndex,endIndex)  
+   
+        const result ={}
+        if (endIndex <  photoDataLength){
+          result.next={
+         page : page+1,
+         limit: limit
+          }
+        }
+           if( startIndex > 0  ){
+             result.previous={
+              page :page -1,
+              limit : limit
+             }
+           }
+           result.data= photosArr
+          //  console.log(newLimit)
+          //  console.log(photoDataLength)
+           console.log(result)
+      await res.json(result);
+
     } catch (error) {
       res.json({ staus: 500 });
       console.log("getohoto Error", error);
@@ -622,7 +649,7 @@ class controller {
     const page = Number(req.query.page);
     const limit = Number(req.query.limit);
     const startIndex = (page - 1) * limit;
-    const match =  String(req.query.match) 
+    const match = req.query.match ? String(req.query.match) : "";
     const endIndex = page * limit;
     try {
       if (page == 0 && limit == 0) {
@@ -656,14 +683,22 @@ class controller {
           },
         },
 
-        { $match: { user_id: user_id, username: { $regex: match } } },
+        {
+          $match: {
+            user_id: user_id,
+            username: { $regex: match, $options: "i" },
+          },
+        },
         {
           $count: "totalCount",
         },
       ]);
-      const freindLengt = await collectionLength[0];
-      // console.log(freindLengt);
-      console.log(page);
+      if (collectionLength.length < 1) return res.json([]);
+      // const freindLengt = await collectionLength[0].totaoCount;
+      // console.log("collectionLength", collectionLength);
+      // console.log("freindLengt", freindLengt);
+      // console.log("page", page);
+      // console.log("match", match);
       const friendsResponse = await friendsModel
         .aggregate([
           { $match: { user_id: user_id } },
@@ -685,7 +720,12 @@ class controller {
             },
           },
 
-          { $match: { user_id: user_id, username: { $regex: match } } },
+          {
+            $match: {
+              user_id: user_id,
+              username: { $regex: match, $options: "i" },
+            },
+          },
           {
             $project: {
               _id: 0,
@@ -700,11 +740,9 @@ class controller {
         .skip(startIndex)
         .limit(limit);
 
-      // console.log(friendsResponse);
-
       var result = {};
 
-      if (endIndex < freindLengt.totalCount) {
+      if (endIndex < (await collectionLength[0].totalCount)) {
         result.next = {
           page: page + 1,
           limit: limit,
@@ -719,7 +757,6 @@ class controller {
       }
 
       result.data = friendsResponse;
-      // console.log(result);
       res.json(result);
     } catch (error) {
       console.log("get_Friend Error :", error);

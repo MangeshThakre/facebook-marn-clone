@@ -31,7 +31,7 @@ function Photo() {
           Authorization: `Bearer ${TOKEN}`,
         },
       });
-      const data = await response.data;
+      const data = await response.data.data;
       SetPhotoData(data);
       setIsPhotoDataLoading(false);
     } catch (error) {

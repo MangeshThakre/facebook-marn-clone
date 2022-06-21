@@ -5,11 +5,11 @@
     margin-bottom:  10px;
 }
 
-/* .userFreindBody{
+.userFreindBody{
     display: flex; 
      flex-wrap: wrap; 
      justify-content: space-between;
-} */
+}
 
 .userFriendBox{
     display: flex;
@@ -22,4 +22,15 @@ width: 530px;
    width: 80px;
    height: 80px;
    border-radius: 5px;
+}
+
+
+
+
+.noResult {
+    display: flex;
+    justify-content: center;
+    height: 103px;
+    align-items: center;
+    width: 100%;
 }

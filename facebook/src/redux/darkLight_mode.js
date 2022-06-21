@@ -4,16 +4,17 @@ export const darkLightMode = createSlice({
   name: "darkLightMode",
   initialState: {
     isDarkMode: true,
-    // backgroundColor: "#f0f2f5",
-    // backgroundColor_sub: "#ffffff",
-    // iconColor: "#65676b",
-    // backgroundColor_sub_fant: "#f0f2f5",
+    backgroundColor: "#f0f2f5",
+    backgroundColor_sub: "#ffffff",
+    iconColor: "#65676b",
+    fontColor: "#242526",
+    backgroundColor_sub_fant: "#f0f2f5",
 
-    backgroundColor_sub: "#242526",
-    backgroundColor: "#18191a",
-    iconColor: "#b0b3b8",
-    fontColor: "#ffffff",
-    backgroundColor_sub_fant: "#3a3b3c",
+    // backgroundColor_sub: "#242526",
+    // backgroundColor: "#18191a",
+    // iconColor: "#b0b3b8",
+    // fontColor: "#ffffff",
+    // backgroundColor_sub_fant: "#3a3b3c",
   },
   reducers: {
     isDarkMode: (state, action) => {

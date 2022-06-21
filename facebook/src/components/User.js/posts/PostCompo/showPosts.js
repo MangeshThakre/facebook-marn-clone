@@ -85,13 +85,16 @@ function ShowPosts({ scrollPostRef }) {
     }
   }
 
+  
   useEffect(() => {
+    // console.log(scrollPostRef);
     scrollPostRef.current.addEventListener("scroll", () => {
       if (
         scrollPostRef.current.clientHeight + scrollPostRef.current.scrollTop >=
         scrollPostRef.current.scrollHeight
       ) {
         setPage(page + 1);
+        console.log("hello");
       }
     });
   });

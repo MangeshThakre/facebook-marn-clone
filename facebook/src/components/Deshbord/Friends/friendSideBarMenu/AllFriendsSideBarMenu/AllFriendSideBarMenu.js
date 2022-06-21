@@ -35,7 +35,8 @@ function AllFriendSideBarMenu({ setAllFriends }) {
           USER.id +
           "&page=" +
           page +
-          "&limit=10",
+          "&limit=10&match=",
+
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${TOKEN}`,
