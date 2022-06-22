@@ -28,6 +28,12 @@ function Friendcard({ type, user, friendRequests }) {
   const REJECT_FRIENDREQUEST = useSelector(
     (state) => state.friend.usReject_freindRequest
   );
+
+  const SUB_BACKGROUND_COLOR = useSelector(
+    (state) => state.darkLight.backgroundColor_sub
+  );
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+
   //Toggle freind suggestion action button   bu user.js
   useEffect(() => {
     if (type != "request") {
@@ -163,10 +169,13 @@ function Friendcard({ type, user, friendRequests }) {
 
   return (
     <div ref={removeUserRef}>
-      <Card className="FriendCard">
+      <Card
+        className="FriendCard"
+        sx={{ backgroundColor: SUB_BACKGROUND_COLOR }}
+      >
         <img src={ProfilePic ? ProfilePic : content} alt="profile image" />
         <div className="FriendCardInfo">
-          <h4>{request_suggest.userName}</h4>
+          <h4 style={{ color: FONTCOLOR }}>{request_suggest.userName}</h4>
           <div style={{ height: "20px", margin: "5px 0 10px 0" }}>
             {requestMessage}
           </div>

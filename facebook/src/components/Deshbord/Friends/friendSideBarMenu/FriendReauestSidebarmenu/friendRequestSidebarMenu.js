@@ -6,7 +6,7 @@ import Divider from "@mui/material/Divider";
 import { useRef, useState, useEffect } from "react";
 import FriendCardSmall from "../../FriendsCardSmall/FriendCardSmall";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FriendHomePage } from "../../../../../redux/freindSplice.js";
 import FreindCardSmallSceleton from "../../FriendsCardSmall/freindCardSmallSceleton";
 function FriendRequestSidebarMenu({ setFriendRequest }) {
@@ -17,7 +17,8 @@ function FriendRequestSidebarMenu({ setFriendRequest }) {
   const URL = process.env.REACT_APP_API_URL;
   const [page, setPage] = useState(1);
   const [nextPage, setNextPage] = useState(false);
-
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
   const [getFriendrequests, setGetFriendrequests] = useState([]);
   const [isgetFriendrequestsLoading, setIsGetFriendrequests] = useState(false);
   useEffect(() => {
@@ -76,6 +77,7 @@ function FriendRequestSidebarMenu({ setFriendRequest }) {
         </IconButton>
         <div>
           <p
+            style={{ color: ICONCOLOR }}
             onClick={() => {
               setFriendRequest(false);
               dispatch(FriendHomePage(true));
@@ -83,7 +85,7 @@ function FriendRequestSidebarMenu({ setFriendRequest }) {
           >
             Friends
           </p>
-          <h2>Friend requests</h2>
+          <h2 style={{ color: FONTCOLOR }}>Friend requests</h2>
         </div>
       </div>
       <Divider variant="middle" />

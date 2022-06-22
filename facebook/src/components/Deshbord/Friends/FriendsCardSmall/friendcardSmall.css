@@ -1,4 +1,4 @@
-.FriendCardSmall{
+.FriendCardSmall  + .FriendCardSmallon  {
     margin: 0 5px 0 5px;
     border-radius: 6px;
     border-radius: 6px;
@@ -6,6 +6,9 @@
 
 .FriendCardSmall :hover{
     background-color: #e4e6ebef;
+}
+.FriendCardSmallon  :hover{
+    background-color: #3a3b3c;
 }
 .card{
     height: 73.6px;

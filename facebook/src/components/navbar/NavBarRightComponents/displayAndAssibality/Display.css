@@ -1,0 +1,13 @@
+.moreDisplayHeader{
+    display: flex;
+    align-items: center;
+
+}
+
+
+.DisplayredioButton{
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -12,13 +12,18 @@ function HomePageLeft() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
-
   const URL = process.env.REACT_APP_API_URL;
-
   const ProfilePic = USER?.profilePic ? URL + "/" + USER.profilePic : "";
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const ISDARK = useSelector((state) => state.darkLight.isDarkMode);
 
   return (
-    <div className="homePageLeftOptions">
+    <div
+      className={
+        ISDARK === "on" ? "homePageLeftOptions" + ISDARK : "homePageLeftOptions"
+      }
+      style={{ color: FONTCOLOR }}
+    >
       <div
         className="userProfile"
         onClick={() => {

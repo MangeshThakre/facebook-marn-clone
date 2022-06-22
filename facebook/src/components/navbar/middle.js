@@ -16,7 +16,8 @@ function Middle() {
   const iconColor = useSelector((state) => state.darkLight.iconColor);
   const burgerMenu = useSelector((state) => state.icon.burgerMenu);
   const DESHBORDPAGE = useSelector((state) => state.globle.deshbordPage);
-  const activeColor = "blue";
+  const ISDARK = useSelector((state) => state.darkLight.isDarkMode);
+
   const navBarMiddle = useRef(null);
 
   useEffect(() => {
@@ -32,7 +33,10 @@ function Middle() {
   }, [DESHBORDPAGE]);
 
   return (
-    <div className="navBarMiddle" ref={navBarMiddle}>
+    <div
+      className={ISDARK === "on" ? "navBarMiddle" + ISDARK : "navBarMiddle"}
+      ref={navBarMiddle}
+    >
       <div
         className="HOME activee"
         onClick={(e) => {

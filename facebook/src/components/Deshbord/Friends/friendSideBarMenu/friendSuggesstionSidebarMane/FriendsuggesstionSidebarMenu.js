@@ -20,6 +20,8 @@ function FriendsuggesstionSidebarMenu({ setHome, setFriendSuggesstion }) {
     (state) => state.friend.send_freindRequest
   );
 
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const TOKEN = localStorage.getItem("TOKEN");
   const URL = process.env.REACT_APP_API_URL;
@@ -107,6 +109,7 @@ function FriendsuggesstionSidebarMenu({ setHome, setFriendSuggesstion }) {
         </IconButton>
         <div>
           <p
+            style={{ color: ICONCOLOR }}
             onClick={() => {
               setFriendSuggesstion(false);
               dispatch(FriendHomePage(true));
@@ -114,7 +117,7 @@ function FriendsuggesstionSidebarMenu({ setHome, setFriendSuggesstion }) {
           >
             Friends
           </p>
-          <h2>Suggestions</h2>
+          <h2 style={{ color: FONTCOLOR }}>Suggestions</h2>
         </div>
       </div>
       <Divider variant="middle" />

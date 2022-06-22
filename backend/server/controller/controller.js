@@ -205,6 +205,7 @@ class controller {
           { $unwind: "$userDetails" },
           {
             $project: {
+              user_id: user_id,
               userName: {
                 $concat: [
                   "$userDetails.firstName",

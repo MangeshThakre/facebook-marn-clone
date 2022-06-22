@@ -93,6 +93,7 @@ function Photos() {
                       height: "193px",
                       width: "193px",
                       borderRadius: "6px",
+                      margin: "10px",
                     }}
                     key={i}
                     src={URL + "/" + e.photo}
@@ -107,6 +108,8 @@ function Photos() {
                       height: "193px",
                       width: "193px",
                       borderRadius: "6px",
+                      margin: "10px",
+                    
                     }}
                     key={i}
                     src={URL + "/" + e.photo}

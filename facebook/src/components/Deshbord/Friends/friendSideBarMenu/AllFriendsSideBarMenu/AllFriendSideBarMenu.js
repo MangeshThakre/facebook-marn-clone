@@ -4,7 +4,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
 import FriendCardSmall from "../../FriendsCardSmall/FriendCardSmall";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FriendHomePage } from "../../../../../redux/freindSplice.js";
 import FreindCardSmallSceleton from "../../FriendsCardSmall/freindCardSmallSceleton";
 import axios from "axios";
@@ -16,6 +16,8 @@ function AllFriendSideBarMenu({ setAllFriends }) {
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const [Friends, setFriends] = useState([]);
   const [isFriendsLoading, setIsFriendsLoading] = useState(false);
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
 
   const [page, setPage] = useState(1);
   const [nextPage, setNextPage] = useState(false);
@@ -82,6 +84,7 @@ function AllFriendSideBarMenu({ setAllFriends }) {
         </IconButton>
         <div>
           <p
+            style={{ color: ICONCOLOR }}
             onClick={() => {
               setAllFriends(false);
               dispatch(FriendHomePage(true));
@@ -89,7 +92,7 @@ function AllFriendSideBarMenu({ setAllFriends }) {
           >
             Friends
           </p>
-          <h2>All friends</h2>
+          <h2 style={{ color: FONTCOLOR }}>All friends</h2>
         </div>
       </div>
       <Divider variant="middle" />

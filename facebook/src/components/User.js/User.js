@@ -59,6 +59,8 @@ function User({ type }) {
   const [uploadCover, setUploadCover] = useState(false);
   const [toggleUploadPhotoPopUp, setToggleUploadPhotoPopUp] = useState(false);
   const [uploadPhotoLoading, setUploadPhotoLoading] = useState(false);
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
 
   const [getFriendRequest, setGetFriendrequests] = useState({});
   const [friendsData, setFriendsData] = useState(false);
@@ -162,13 +164,7 @@ function User({ type }) {
         _id: data._id,
       };
       dispatch(userDetail(userDetaile));
-      dispatch(
-        created_at(
-          data.created_at
-            ? data.created_at
-            : { joined_at: "", showIntro: false }
-        )
-      );
+      dispatch(created_at(data.created_at));
       dispatch(currentCity(data.currentCity));
       dispatch(bio(data.bio ? data.bio : ""));
       dispatch(homeTown(data.homeTown));
@@ -645,7 +641,7 @@ function User({ type }) {
 
         <div className="username">
           <div>
-            <h1 style={{ marginLeft: "200px" }}>
+            <h1 style={{ marginLeft: "200px", color: FONTCOLOR }}>
               {IsUserDetailLoading ? (
                 <Skeleton
                   variant="rectangular"
@@ -668,7 +664,7 @@ function User({ type }) {
             </div>
           </div>
         </div>
-        <div className="userBodyNav">
+        <div className="userBodyNav" style={{ color: ICONCOLOR }}>
           <div ref={userNavRef}>
             <li
               className="POST activePage"

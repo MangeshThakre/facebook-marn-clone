@@ -53,6 +53,12 @@ export function AboutPopUp() {
   const [collegeUpdate, setCollegeUpdate] = useState(COLLEGE);
   const [schoolUpdate, setSchoolUpdate] = useState(SCHOOL);
 
+  ///   dark light mode
+  const SUB_BACKGROUND_COLOR = useSelector(
+    (state) => state.darkLight.backgroundColor_sub
+  );
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
   const joiningDate = new Date(JOINEDAT.joined_at).toLocaleDateString("en-us", {
     day: "numeric",
     month: "long",
@@ -87,6 +93,7 @@ export function AboutPopUp() {
     return (
       <div className="switchButtonDiv">
         <FormControlLabel
+          sx={{ color: ICONCOLOR }}
           control={
             <Switch
               checked={workPlaceForUpdate[i].showIntro}
@@ -100,7 +107,7 @@ export function AboutPopUp() {
             setAboutOption_("WorkAndEducation");
           }}
         >
-          <EditIcon />
+          <EditIcon sx={{ color: ICONCOLOR }} />
         </IconButton>
       </div>
     );
@@ -128,6 +135,7 @@ export function AboutPopUp() {
     return (
       <div className="switchButtonDiv">
         <FormControlLabel
+          sx={{ color: ICONCOLOR }}
           control={
             <Switch
               checked={schoolUpdate[i].showIntro}
@@ -141,7 +149,7 @@ export function AboutPopUp() {
             setAboutOption_("WorkAndEducation");
           }}
         >
-          <EditIcon />
+          <EditIcon sx={{ color: ICONCOLOR }} />
         </IconButton>
       </div>
     );
@@ -169,6 +177,7 @@ export function AboutPopUp() {
     return (
       <div className="switchButtonDiv">
         <FormControlLabel
+          sx={{ color: ICONCOLOR }}
           control={
             <Switch
               checked={collegeUpdate[i].showIntro}
@@ -182,7 +191,7 @@ export function AboutPopUp() {
             setAboutOption_("WorkAndEducation");
           }}
         >
-          <EditIcon />
+          <EditIcon sx={{ color: ICONCOLOR }} />
         </IconButton>
       </div>
     );
@@ -193,6 +202,7 @@ export function AboutPopUp() {
       return (
         <div className="switchButtonDiv">
           <FormControlLabel
+            sx={{ color: ICONCOLOR }}
             control={
               <Switch
                 checked={IsCurrentCity || false}
@@ -208,7 +218,7 @@ export function AboutPopUp() {
               setAboutOption_("Placeslived");
             }}
           >
-            <EditIcon />
+            <EditIcon sx={{ color: ICONCOLOR }} />
           </IconButton>
         </div>
       );
@@ -229,6 +239,7 @@ export function AboutPopUp() {
       return (
         <div className="switchButtonDiv">
           <FormControlLabel
+            sx={{ color: ICONCOLOR }}
             control={
               <Switch
                 checked={IsHometown || false}
@@ -244,7 +255,7 @@ export function AboutPopUp() {
               setAboutOption_("Placeslived");
             }}
           >
-            <EditIcon />
+            <EditIcon sx={{ color: ICONCOLOR }} />
           </IconButton>
         </div>
       );
@@ -265,6 +276,7 @@ export function AboutPopUp() {
       return (
         <div className="switchButtonDiv">
           <FormControlLabel
+            sx={{ color: ICONCOLOR }}
             control={
               <Switch
                 checked={isRelationship || false}
@@ -280,7 +292,7 @@ export function AboutPopUp() {
               setAboutOption_("FamilyAndRelation");
             }}
           >
-            <EditIcon />
+            <EditIcon sx={{ color: ICONCOLOR }} />
           </IconButton>
         </div>
       );
@@ -300,6 +312,7 @@ export function AboutPopUp() {
     return (
       <div className="switchButtonDiv">
         <FormControlLabel
+          sx={{ color: ICONCOLOR }}
           control={
             <Switch
               checked={IsJoin_at || false}
@@ -378,10 +391,18 @@ export function AboutPopUp() {
       style={{ backgroundColor: "rgba(250, 252, 252, 0.689)" }}
     >
       <div className="aboutpopupBox">
-        <Card sx={{ borderRadius: "7px" }}>
+        <Card
+          sx={{ borderRadius: "7px", backgroundColor: SUB_BACKGROUND_COLOR }}
+        >
           <div className="aboutpopup_head">
             <div></div>
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                color: FONTCOLOR,
+              }}
+            >
               <h3>Create Post</h3>
             </div>
             <div className="aboutpopup_close">
@@ -397,7 +418,7 @@ export function AboutPopUp() {
           <Divider />
 
           <CardContent>
-            <div className="AboutPopPuoBody">
+            <div className="AboutPopPuoBody" style={{ color: FONTCOLOR }}>
               <h3> Customize your intro</h3>
               <p className="subStaticP">Details you select will be public.</p>
               <div>

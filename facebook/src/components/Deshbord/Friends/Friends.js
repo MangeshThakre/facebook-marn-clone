@@ -23,10 +23,11 @@ function Friends() {
   );
   const [friendRequest, setFriendRequest] = useState(false);
   const [friendSuggesstion, setFriendSuggesstion] = useState(false);
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
 
-  const backgroundColor_sub = useSelector(
-    (state) => state.darkLight.backgroundColor_sub
-  );
+  // const backgroundColor_sub = useSelector(
+  //   (state) => state.darkLight.backgroundColor_sub
+  // );
   useEffect(() => {
     getUser();
   }, []);
@@ -62,14 +63,14 @@ function Friends() {
       ) : (
         <>
           <Navbar />
-          <div className="friendsBody">
+          <div className="friendsBody" style={{ color: FONTCOLOR }}>
             <FriendSideBarMenu
               setFriendRequest={setFriendRequest}
               setFriendSuggesstion={setFriendSuggesstion}
               friendRequest={friendRequest}
               friendSuggesstion={friendSuggesstion}
             />
-            <div className="friendsRight">
+            <div className="friendsRight" style={{ color: FONTCOLOR }}>
               <div className="friendMainBody">
                 <FriendsHome
                   setFriendRequest={setFriendRequest}

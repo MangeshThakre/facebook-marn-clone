@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const darkLightMode = createSlice({
   name: "darkLightMode",
   initialState: {
-    isDarkMode: true,
+    isDarkMode: "off",
     backgroundColor: "#f0f2f5",
     backgroundColor_sub: "#ffffff",
     iconColor: "#65676b",
@@ -18,7 +18,21 @@ export const darkLightMode = createSlice({
   },
   reducers: {
     isDarkMode: (state, action) => {
-      state.isDarkMode = action.payload;
+      if (action.payload == "on") {
+        state.isDarkMode = "on";
+        state.backgroundColor = "#18191a";
+        state.backgroundColor_sub = "#242526";
+        state.iconColor = "#b0b3b8";
+        state.backgroundColor_sub_fant = "#3a3b3c";
+        state.fontColor = "#E4E6EB";
+      } else {
+        state.isDarkMode = "off";
+        state.backgroundColor = "#f0f2f5";
+        state.backgroundColor_sub = "#ffffff";
+        state.iconColor = "#65676b";
+        state.fontColor = "#242526";
+        state.backgroundColor_sub_fant = "#f0f2f5";
+      }
     },
 
     backgroundColor: (state, action) => {

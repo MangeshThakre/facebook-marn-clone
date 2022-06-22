@@ -1,12 +1,10 @@
 import React from "react";
 import Card from "@mui/material/Card";
 
-import { Button } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
-import { setPage } from "../../../../redux/userSplice.js";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import contact from "../../../../image/contact.png";
 import "./friends.css";
 import { useParams } from "react-router";
@@ -22,6 +20,11 @@ function Friends({ setPage }) {
   const TOKEN = localStorage.getItem("TOKEN");
   const URL = process.env.REACT_APP_API_URL;
   const { USERID } = useParams();
+  const SUB_BACKGROUND_COLOR = useSelector(
+    (state) => state.darkLight.backgroundColor_sub
+  );
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
 
   useEffect(() => {
     fetchFriends(USERID);
@@ -78,10 +81,12 @@ function Friends({ setPage }) {
 
   return (
     <div className="friend">
-      <Card sx={{ borderRadius: "10px" }}>
+      <Card
+        sx={{ borderRadius: "10px", backgroundColor: SUB_BACKGROUND_COLOR }}
+      >
         <CardContent>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <h3>Friends</h3>
+            <h3 style={{ color: FONTCOLOR }}>Friends</h3>
             <div
               className="Freind_button"
               onClick={() => dispatch(setPage("FRIENDS"))}
@@ -122,7 +127,9 @@ function Friends({ setPage }) {
                         position: "relative",
                       }}
                     >
-                      <p style={{ margin: "3px 0  0 5px" }}>{e.userName}</p>
+                      <p style={{ margin: "3px 0  0 5px", color: ICONCOLOR }}>
+                        {e.userName}
+                      </p>
 
                       {commanFriend.some(({ _id: di1 }) => di1 == e._id) &&
                       USERID != USER.id ? (

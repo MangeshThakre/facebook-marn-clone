@@ -1,10 +1,10 @@
-.homePageLeftOptions{
+.homePageLeftOptions , .homePageLeftOptionson  {
     width: 360px;
     /* height: 100vh; */
     padding: 10px 0 10px 0;
 }
 
-.homePageLeftOptions > div{
+.homePageLeftOptions  > div  , .homePageLeftOptionson > div{
     margin: 0 8px 0 8px;
     padding: 0 8px 0 8px;
     cursor: pointer;
@@ -14,15 +14,18 @@
     align-items: center;
 }
 .homePageLeftOptions :hover{
-background-color:#e4e6ebed ;
-} 
-
-.homePageLeftOptions > div > div{
+    background-color:#e4e6ebed ;
+    } 
+    .homePageLeftOptionson :hover{
+        background-color:#3a3b3c;
+        } 
+            
+.homePageLeftOptions > div > div  ,  .homePageLeftOptionson > div > div{
     display: flex;
     align-items: center;
 }
 
-.homePageLeftOptions > div> div> img{
+.homePageLeftOptions > div> div> img  , .homePageLeftOptionson > div> div> img{
 height: 36px;
 width: 36px;
 border-radius: 50%;

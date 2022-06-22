@@ -27,8 +27,14 @@ function ShowPosts({ scrollPostRef }) {
     (state) => state.globle.ActualdeletePostId
   );
 
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+
+  const SUB_BACKGROUND_COLOR = useSelector(
+    (state) => state.darkLight.backgroundColor_sub
+  );
+
   useEffect(() => {
-    fetchPosts();
+    fetchPosts(true);
   }, [USERID]);
 
   useEffect(() => {
@@ -57,7 +63,8 @@ function ShowPosts({ scrollPostRef }) {
     setPostDetails(arr);
   }, [ACTUALDELETEPOSTID]);
 
-  async function fetchPosts() {
+  async function fetchPosts(newFetch = false) {
+    const pageNumber = newFetch ? 1 : page;
     setIsFetchPostLoading(true);
     try {
       const response = await axios({
@@ -67,7 +74,7 @@ function ShowPosts({ scrollPostRef }) {
           "/api/getPosts?user_id=" +
           USERID +
           "&page=" +
-          page +
+          pageNumber +
           "&limit=5",
         headers: {
           "Content-type": "application/json",
@@ -75,7 +82,12 @@ function ShowPosts({ scrollPostRef }) {
         },
       });
       const data = await response.data;
-      setPostDetails([...postDetail, ...data.data]);
+
+      if (newFetch) {
+        setPostDetails([...data.data]);
+      } else setPostDetails([...postDetail, ...data.data]);
+
+      // setPostDetails([...postDetail, ...data.data]);
       if (response.data.next) {
         setNextPage(true);
       } else setNextPage(false);
@@ -85,7 +97,6 @@ function ShowPosts({ scrollPostRef }) {
     }
   }
 
-  
   useEffect(() => {
     // console.log(scrollPostRef);
     scrollPostRef.current.addEventListener("scroll", () => {
@@ -94,7 +105,6 @@ function ShowPosts({ scrollPostRef }) {
         scrollPostRef.current.scrollHeight
       ) {
         setPage(page + 1);
-        console.log("hello");
       }
     });
   });
@@ -107,10 +117,12 @@ function ShowPosts({ scrollPostRef }) {
 
   return (
     <div className="showPosts">
-      <Card sx={{ borderRadius: "10px" }}>
+      <Card
+        sx={{ borderRadius: "10px", backgroundColor: SUB_BACKGROUND_COLOR }}
+      >
         <CardContent>
           <div className="showePosts_upper">
-            <h2>Posts</h2>
+            <h2 style={{ color: FONTCOLOR }}>Posts</h2>
           </div>
           <div className="showPots_lower"></div>
         </CardContent>

@@ -113,7 +113,7 @@ function AllPost({ postData }) {
       return (
         <div>
           <CardContent>
-            <p>{text}</p>
+            <p style={{ color: ICONCOLOR }}>{text}</p>
           </CardContent>
         </div>
       );
@@ -134,7 +134,7 @@ function AllPost({ postData }) {
       return (
         <>
           <CardContent>
-            <div>{text}</div>
+            <p style={{ color: ICONCOLOR }}>{text}</p>
           </CardContent>
           <div className="AllPost_body_photo">
             <img src={URL + "/" + photo} alt="" />

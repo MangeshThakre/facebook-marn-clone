@@ -36,11 +36,11 @@
     font-size: 1rem;
 }
 
-.navBarMiddle{
+.navBarMiddle ,.navBarMiddleon {
     display: flex;
 }
 
-.navBarMiddle > div >div{
+.navBarMiddle > div >div , .navBarMiddleon > div >div{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -62,17 +62,22 @@
 }
 
 
- .navBarMiddle >  div :hover{
+.navBarMiddle >  div :hover{
     background-color:#e4e6eb;
     border-radius: 7px;
     display: flex;
     justify-content: center;
     align-items: center;
 } 
+.navBarMiddleon >  div :hover{
+   background-color:#3a3b3c;
+   border-radius: 7px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+} 
 
-.navBarMiddle{
-    /* background-color: rgb(182, 241, 152); */
-}
+
 
 
 .activee  {
@@ -83,13 +88,13 @@
       color: #1b74e4;
   }
 
- .navBarMiddle>  .activee  :hover{
+ .navBarMiddle>  .activee  :hover ,  .navBarMiddleon>  .activee :hover  {
     border-radius: 0;
     background-color:transparent;
 }
 
 
-.navBarLeft > img{
+.navBarLeft >  div>img{
     border-radius: 50%;
     height : 39.7px; 
     cursor: pointer;

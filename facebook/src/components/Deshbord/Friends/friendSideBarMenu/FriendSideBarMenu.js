@@ -25,6 +25,11 @@ function FriendSideBarMenu({
   );
   const [allFriends, setAllFriends] = useState(false);
   const FREINDHOMEPAGE = useSelector((state) => state.friend.FriendHomePage);
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const BACKGROUNDCOLOR_SUB_FANT = useSelector(
+    (state) => state.darkLight.backgroundColor_sub_fant
+  );
+  const ISDARK = useSelector((state) => state.darkLight.isDarkMode);
 
   useEffect(() => {
     if (FREINDHOMEPAGE) navigate("/friends");
@@ -38,16 +43,29 @@ function FriendSideBarMenu({
       >
         {FREINDHOMEPAGE ? (
           <>
-            <div className="friendsLeftHead">
+            <div className="friendsLeftHead" style={{ color: FONTCOLOR }}>
               <h2>Friends</h2>
             </div>
-            <div className="Friendshomeee">
+            <div
+              className="Friendshomeee"
+              style={{
+                backgroundColor: BACKGROUNDCOLOR_SUB_FANT,
+                color: FONTCOLOR,
+              }}
+            >
               <div className="homeIcon">
                 <PeopleAltIcon sx={{ color: "white" }} />
               </div>
               <p>home</p>
             </div>
-            <div className="friendsLefOptions">
+            <div
+              className={
+                ISDARK == "on"
+                  ? "friendsLefOptions" + ISDARK
+                  : "friendsLefOptions"
+              }
+              style={{ color: FONTCOLOR }}
+            >
               <div
                 className="friends_friendRequest"
                 onClick={() => {

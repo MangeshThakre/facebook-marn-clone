@@ -32,13 +32,22 @@ function Info() {
   const HOMETOWN = useSelector((state) => state.user.homeTown);
   const CURRENTCITY = useSelector((state) => state.user.currentCity);
   const RELSTIONSHIP = useSelector((state) => state.user.relationship);
+
   const JOINEDAT = useSelector((state) => state.user.created_at);
   const joiningDate = new Date(JOINEDAT.joined_at).toLocaleDateString("en-us", {
     day: "numeric",
     month: "long",
     year: "numeric",
   });
-  useEffect(() => {});
+  const BACKGROUNDCOLOR_SUB_FANT = useSelector(
+    (state) => state.darkLight.backgroundColor_sub_fant
+  );
+  const SUB_BACKGROUND_COLOR = useSelector(
+    (state) => state.darkLight.backgroundColor_sub
+  );
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
 
   useEffect(() => {
     setText_bio(BIO);
@@ -74,17 +83,23 @@ function Info() {
     <div className="info_component">
       <div className="info_component_upper">
         <input
+          style={{
+            color: ICONCOLOR,
+            backgroundColor: BACKGROUNDCOLOR_SUB_FANT,
+          }}
           value={text_bio}
           type="text"
           placeholder="Discribe who you are"
           onChange={(e) => setText_bio(e.target.value)}
         />
         <div>
-          <p>{101 - text_bio?.length} characters remaining</p>
+          <p style={{ color: ICONCOLOR }}>
+            {101 - text_bio?.length} characters remaining
+          </p>
         </div>
       </div>
       <div className="info_component_lower">
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", color: ICONCOLOR }}>
           <PublicOutlinedIcon />
           <p>Public</p>
         </div>
@@ -117,7 +132,7 @@ function Info() {
   ) : (
     <>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <p style={{ wordBreak: "break-all" }}>{BIO}</p>
+        <p style={{ wordBreak: "break-all", color: ICONCOLOR }}>{BIO}</p>
       </div>
       {USERID == USER.id ? (
         <button
@@ -209,9 +224,11 @@ function Info() {
 
   return (
     <div className="Intro">
-      <Card sx={{ borderRadius: "10px" }}>
+      <Card
+        sx={{ borderRadius: "10px", backgroundColor: SUB_BACKGROUND_COLOR }}
+      >
         <CardContent>
-          <h2>Intro</h2>
+          <h2 style={{ color: FONTCOLOR }}>Intro</h2>
           <div className="InfoButtons">
             {info}
             {userDetail}

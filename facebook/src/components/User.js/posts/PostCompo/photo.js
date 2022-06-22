@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import "./photo.css";
 import { setPage } from "../../../../redux/userSplice.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -16,6 +16,12 @@ function Photo() {
   const URL = process.env.REACT_APP_API_URL;
   const { USERID } = useParams();
   const [isPhotoDataLoading, setIsPhotoDataLoading] = useState(false);
+
+  const SUB_BACKGROUND_COLOR = useSelector(
+    (state) => state.darkLight.backgroundColor_sub
+  );
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+
   useEffect(() => {
     fetchPhoto();
   }, [USERID]);
@@ -42,10 +48,12 @@ function Photo() {
   // console.log(photoData);
   return (
     <div className="photo">
-      <Card sx={{ borderRadius: "10px" }}>
+      <Card
+        sx={{ borderRadius: "10px", backgroundColor: SUB_BACKGROUND_COLOR }}
+      >
         <CardContent>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <h3>Photos</h3>
+            <h3 style={{ color: FONTCOLOR }}>Photos</h3>
 
             <div
               className="Photo_button"

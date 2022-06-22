@@ -20,17 +20,19 @@
     margin-right: 10px;
 }
 
-.NavbarRightOprionButtons{
+.NavbarRightOprionButtons , .NavbarRightOprionButtonson {
     margin: 10px 0 10px 0;
 }
 
 .NavbarRightOprionButtons :hover{
     background-color: #e4e6ebed;
 
+}.NavbarRightOprionButtonson :hover{
+    background-color: #3a3b3c;
+
 }
 
-
-.NavbarRightOprionButtons >div{
+.NavbarRightOprionButtonson >div,.NavbarRightOprionButtons >div{
     height: 45px;
     cursor: pointer;    
     border-radius: 5px;

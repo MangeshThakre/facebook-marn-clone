@@ -28,8 +28,45 @@ function Right() {
   const BACKGROUNDCOLOR_SUB_FANT = useSelector(
     (state) => state.darkLight.backgroundColor_sub_fant
   );
+
+
+
+
+  document.addEventListener("click", function (event) {
+    if (event.target.closest(".navebarRightMore")) return;
+    if (event.target.closest(".activeButton")) return;
+    if (event.target.closest(".DisplayAndAssibality")) return;
+    if (event.target.closest(".moreDisplayHeader")) return;
+    if (!toggleMore) return;
+    navRight.current.childNodes.forEach((e) => {
+      e.className = "";
+    });
+    setToggleMore(false);
+  });
+
+  function handleButton() {
+    setToggleMore(false);
+    navRight.current.childNodes.forEach((e) => {
+      e.className = "";
+    });
+  }
+
   return (
     <div className="navBarRight" ref={navRight}>
+      {/* {toggleMore ? (
+        <div
+          style={{
+            position: "absolute",
+            height: "100vh",
+            background: "transperent",
+            width: "100%",
+            top: "0",
+            left: "0",
+          }}
+          onClick={() => handleButton()}
+        />
+      ) : null} */}
+
       <div
         onClick={(e) => {
           navigate("/user/" + USER.id);
