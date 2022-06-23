@@ -53,3 +53,21 @@ display: flex;
     width: 18px;
     margin-right: 10px;
 }
+
+.DeleteEditPopupBodyon > div , .DeleteEditPopupBody > div {
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+    height: 36px;
+cursor: pointer
+}
+
+.DeleteEditPopupBody :hover{
+    background-color:  #f0f2f5;
+
+}.DeleteEditPopupBodyon :hover{
+    background-color:  #3a3b3c;
+
+}
+

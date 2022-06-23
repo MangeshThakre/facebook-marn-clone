@@ -4,7 +4,6 @@ position: fixed;
 display: flex;
 justify-content: center;
 align-items: center;
-background-color: rgba(250, 252, 252, 0.689);
 z-index: 5;
 width: 100%;
 }
@@ -31,7 +30,6 @@ width: 100%;
     cursor: pointer;
 
     border-radius: 50%;
-    background-color: #e4e6eb;
 display: flex;
 align-items: center;
 justify-content: center;

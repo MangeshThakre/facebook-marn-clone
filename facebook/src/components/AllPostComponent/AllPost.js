@@ -36,6 +36,8 @@ import {
 import axios from "axios";
 function AllPost({ postData }) {
   const dispatch = useDispatch();
+  const { USERID } = useParams();
+
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const URL = process.env.REACT_APP_API_URL;
   const TOKEN = localStorage.getItem("TOKEN");
@@ -43,16 +45,25 @@ function AllPost({ postData }) {
   const [togglelike, setToggleLike] = useState(false);
   const [toggleDeleteEdit, setToggleDeleteEdit] = useState(false);
   const profilePic = postData.profilePic ? URL + "/" + postData.profilePic : "";
-  const BACKGROUNDCOLOR_SUB_FANT = useSelector(
-    (state) => state.darkLight.backgroundColor_sub_fant
-  );
+
+  /// dark mode ///
   const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
-
   const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
-
+  const ISDARK = useSelector((state) => state.darkLight.isDarkMode);
   const SUB_BACKGROUND_COLOR = useSelector(
     (state) => state.darkLight.backgroundColor_sub
   );
+
+  ////xx dark mode xx//
+
+  // delete edit pupup//
+  document.addEventListener("click", (e) => {
+    if (e.target.closest(".DeleteEditPopup")) return;
+    if (e.target.closest(".poseDeleteEditPopup")) return;
+    setToggleDeleteEdit(false);
+  });
+
+  // xx delete edit popupxx
 
   const text = postData.text;
   const photo = postData.photo;
@@ -72,8 +83,6 @@ function AllPost({ postData }) {
   const send = () => {
     setCommentText("");
   };
-
-  const { USERID } = useParams();
 
   useEffect(() => {
     const user_id = USER?.id;
@@ -203,7 +212,14 @@ function AllPost({ postData }) {
       <div className="DeleteEditPopup">
         <Card sx={{ backgroundColor: SUB_BACKGROUND_COLOR }}>
           <CardContent>
-            <div className="DeleteEditPopupBody">
+            <div
+              className={
+                ISDARK == "on"
+                  ? "DeleteEditPopupBody" + ISDARK
+                  : "DeleteEditPopupBody"
+              }
+              style={{ color: ICONCOLOR }}
+            >
               <div
                 onClick={() => {
                   dispatch(postUpdate(postData));
@@ -264,6 +280,8 @@ function AllPost({ postData }) {
               {USERID && USERID === USER.id ? (
                 <>
                   <IconButton
+                    className="poseDeleteEditPopup"
+                    sx={{ color: ICONCOLOR }}
                     onClick={() => setToggleDeleteEdit(!toggleDeleteEdit)}
                   >
                     <MoreHorizOutlinedIcon />

@@ -91,6 +91,7 @@ function User({ type }) {
     (state) => state.globle.toggleCreatePost
   );
 
+  /// dark mode
   const backgroundColor = useSelector(
     (state) => state.darkLight.backgroundColor
   );
@@ -99,6 +100,8 @@ function User({ type }) {
   const backgroundColor_sub = useSelector(
     (state) => state.darkLight.backgroundColor_sub
   );
+  const ISDARK = useSelector((state) => state.darkLight.isDarkMode);
+  ////
 
   const toggleAboutPopUp = useSelector(
     (state) => state.globle.toggleAboutPopUp
@@ -121,13 +124,22 @@ function User({ type }) {
     for (const li of options) {
       const [className, isActive] = li.className.split(" ");
       li.className = "";
-      if (className == page) {
-        li.className = className + " activePage";
+
+      if (ISDARK == "on") {
+        if (className == page) {
+          li.className = className + " activePage";
+        } else {
+          li.className = className + " inactivePageon";
+        }
       } else {
-        li.className = className + " inactivePage";
+        if (className == page) {
+          li.className = className + " activePage";
+        } else {
+          li.className = className + " inactivePage";
+        }
       }
     }
-  }, [page]);
+  }, [page, ISDARK]);
 
   useEffect(() => {
     getAboutInfo();

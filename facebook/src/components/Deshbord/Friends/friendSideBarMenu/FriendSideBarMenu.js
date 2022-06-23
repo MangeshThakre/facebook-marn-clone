@@ -25,12 +25,13 @@ function FriendSideBarMenu({
   );
   const [allFriends, setAllFriends] = useState(false);
   const FREINDHOMEPAGE = useSelector((state) => state.friend.FriendHomePage);
+  // dark mode
   const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
   const BACKGROUNDCOLOR_SUB_FANT = useSelector(
     (state) => state.darkLight.backgroundColor_sub_fant
   );
   const ISDARK = useSelector((state) => state.darkLight.isDarkMode);
-
+  //
   useEffect(() => {
     if (FREINDHOMEPAGE) navigate("/friends");
   }, [FREINDHOMEPAGE]);

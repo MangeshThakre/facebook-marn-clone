@@ -18,40 +18,7 @@ cursor: pointer;
 
 
 
-.photo{
-    margin: 0.938rem;
-}
 
-.friend{
-    margin: 0.938rem;
-}
-
-
-.Freind_button > div{
-    border-radius: 5px;
-    padding: 7px; 
-}
-.Photo_button  :hover{
-background-color: #e4e6ebed;
-cursor: pointer;    
-}
-.Freind_button >div > p{
-    color:#0570e7;
-    height:1.75rem;
-}
-.Photo_button >div > p {
-    color:#0570e7;
-    height:1.75rem;
-}
-.Freind_button  :hover{
-    background-color: #e4e6ebed;
-cursor: pointer;  
-}
-
-.Photo_button>div{
-    border-radius: 5px;
-    padding: 7px; 
-}
 .showePosts_upper{
     display: flex;
     justify-content: space-between;

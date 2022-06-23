@@ -17,10 +17,14 @@ function Photo() {
   const { USERID } = useParams();
   const [isPhotoDataLoading, setIsPhotoDataLoading] = useState(false);
 
+  // dark mode
   const SUB_BACKGROUND_COLOR = useSelector(
     (state) => state.darkLight.backgroundColor_sub
   );
+  const ISDARK = useSelector((state) => state.darkLight.isDarkMode);
   const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  //
 
   useEffect(() => {
     fetchPhoto();
@@ -56,7 +60,9 @@ function Photo() {
             <h3 style={{ color: FONTCOLOR }}>Photos</h3>
 
             <div
-              className="Photo_button"
+              className={
+                ISDARK == "on" ? "Photo_button" + ISDARK : "Photo_button"
+              }
               onClick={() => dispatch(setPage("PHOTOS"))}
             >
               <div>

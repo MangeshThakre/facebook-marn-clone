@@ -103,8 +103,18 @@
 
 
 
+.inactivePageon   :hover{
+    background-color: #3a3b3c;
+    cursor: pointer;
+    border-radius: 5px;
+   width: 100%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
 .inactivePage   :hover{
-    background-color: #dcdada54;
+    background-color: #f0f2f5;
     cursor: pointer;
     border-radius: 5px;
    width: 100%;

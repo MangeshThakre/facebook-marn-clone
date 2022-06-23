@@ -57,8 +57,16 @@ export function AboutPopUp() {
   const SUB_BACKGROUND_COLOR = useSelector(
     (state) => state.darkLight.backgroundColor_sub
   );
+  const BACKGROUNDCOLOR_SUB_FANT = useSelector(
+    (state) => state.darkLight.backgroundColor_sub_fant
+  );
   const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
   const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const POPUPBACKGROUND = useSelector(
+    (state) => state.darkLight.popupBackground
+  );
+  //
+
   const joiningDate = new Date(JOINEDAT.joined_at).toLocaleDateString("en-us", {
     day: "numeric",
     month: "long",
@@ -388,7 +396,8 @@ export function AboutPopUp() {
   return (
     <div
       className="aboutComponentBody"
-      style={{ backgroundColor: "rgba(250, 252, 252, 0.689)" }}
+      onClick={(e) => {}}
+      style={{ backgroundColor: POPUPBACKGROUND }}
     >
       <div className="aboutpopupBox">
         <Card
@@ -405,7 +414,10 @@ export function AboutPopUp() {
             >
               <h3>Create Post</h3>
             </div>
-            <div className="aboutpopup_close">
+            <div
+              className="aboutpopup_close"
+              style={{ backgroundColor: BACKGROUNDCOLOR_SUB_FANT }}
+            >
               <IconButton
                 onClick={() => {
                   dispatch(toggleAboutPopUp(false));
@@ -532,7 +544,20 @@ export function ConfirmDeletPopup() {
   const SCHOOL = useSelector((state) => state.user.school);
   const FAMILYMEMBER = useSelector((state) => state.user.familyMember);
 
-  console.log(type);
+  ///   dark light mode
+  const SUB_BACKGROUND_COLOR = useSelector(
+    (state) => state.darkLight.backgroundColor_sub
+  );
+  const BACKGROUNDCOLOR_SUB_FANT = useSelector(
+    (state) => state.darkLight.backgroundColor_sub_fant
+  );
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const POPUPBACKGROUND = useSelector(
+    (state) => state.darkLight.popupBackground
+  );
+  //
+
   async function remove() {
     try {
       const response = await axios({
@@ -587,15 +612,26 @@ export function ConfirmDeletPopup() {
   return (
     <div
       className="aboutComponentBody"
-      style={{ backgroundColor: "rgba(250, 252, 252, 0.689)" }}
+      style={{ backgroundColor: POPUPBACKGROUND }}
     >
       <div className="aboutpopupBox">
-        <Card sx={{ borderRadius: "7px" }}>
+        <Card
+          sx={{ borderRadius: "7px", backgroundColor: SUB_BACKGROUND_COLOR }}
+        >
           <div className="aboutpopup_head">
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                color: FONTCOLOR,
+              }}
+            >
               <h3>Are you Sure?</h3>
             </div>
-            <div className="aboutpopup_close">
+            <div
+              className="aboutpopup_close"
+              style={{ backgroundColor: BACKGROUNDCOLOR_SUB_FANT }}
+            >
               <IconButton
                 onClick={() => {
                   dispatch(deleteItem(""));
@@ -603,14 +639,14 @@ export function ConfirmDeletPopup() {
                   dispatch(togglseConformDeletePopup(false));
                 }}
               >
-                <CloseIcon />
+                <CloseIcon sx={{ color: ICONCOLOR }} />
               </IconButton>
             </div>
           </div>
 
           <Divider />
           <CardContent>
-            <div>
+            <div style={{ color: ICONCOLOR }}>
               <p>Are you sure you want to remove this from your profile?</p>
             </div>
           </CardContent>

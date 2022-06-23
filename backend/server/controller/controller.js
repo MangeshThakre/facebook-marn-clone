@@ -267,25 +267,27 @@ class controller {
     const endIndex = page * limit;
 
     try {
-      let photoDataLength = await postModel.find({ user_id: user_id, photo: { $ne: null }}).count()
+      let photoDataLength = await postModel
+        .find({ user_id: user_id, photo: { $ne: null } })
+        .count();
       const userResp = await userModel.findById(user_id, { password: 0 });
-      
+
       var arr = [];
       var newLimit = limit;
 
       if (userResp.profilePic) {
         newLimit -= 1;
         arr.push({ _id: userResp._id, photo: userResp.profilePic });
-        photoDataLength += 1
+        photoDataLength += 1;
       }
       if (userResp.profileBg) {
         arr.push({ _id: userResp._id, photo: userResp.profileBg });
         newLimit -= 1;
-        photoDataLength += 1
+        photoDataLength += 1;
       }
-     
-   let photosArr=[]
-      if (newLimit >= 1){
+
+      let photosArr = [];
+      if (newLimit >= 1) {
         const userPost = await postModel
           .aggregate([
             { $match: { user_id: user_id, photo: { $ne: null } } },
@@ -293,28 +295,27 @@ class controller {
           ])
           .skip(startIndex)
           .limit(newLimit);
-           photosArr = [ ...arr, ...userPost]
-      }else  photosArr = arr.slice(startIndex,endIndex)  
-   
-        const result ={}
-        if (endIndex <  photoDataLength){
-          result.next={
-         page : page+1,
-         limit: limit
-          }
-        }
-           if( startIndex > 0  ){
-             result.previous={
-              page :page -1,
-              limit : limit
-             }
-           }
-           result.data= photosArr
-          //  console.log(newLimit)
-          //  console.log(photoDataLength)
-           console.log(result)
-      await res.json(result);
+        photosArr = [...arr, ...userPost];
+      } else photosArr = arr.slice(startIndex, endIndex);
 
+      const result = {};
+      if (endIndex < photoDataLength) {
+        result.next = {
+          page: page + 1,
+          limit: limit,
+        };
+      }
+      if (startIndex > 0) {
+        result.previous = {
+          page: page - 1,
+          limit: limit,
+        };
+      }
+      result.data = photosArr;
+      //  console.log(newLimit)
+      //  console.log(photoDataLength)
+      //  console.log(result)
+      await res.json(result);
     } catch (error) {
       res.json({ staus: 500 });
       console.log("getohoto Error", error);

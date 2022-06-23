@@ -4,7 +4,7 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { useState, createRef } from "react";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { togglePhotoVideo } from "../../../../redux/globleSplice.js";
 import Button from "@mui/material/Button";
 function AddPhoto({
@@ -17,10 +17,20 @@ function AddPhoto({
   const dispatch = useDispatch();
   const tergetInputRef = createRef(null);
   const viewPhoto = useState(null);
+
+  ///   dark light mode
+  const BACKGROUNDCOLOR_SUB_FANT = useSelector(
+    (state) => state.darkLight.backgroundColor_sub_fant
+  );
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  //
+
   const handleFile = async (e) => {
     const reader = new FileReader();
     setPhotoFile(e.target.files[0]);
     reader.readAsDataURL(e.target.files[0]);
+
     reader.addEventListener(
       "load",
       () => {
@@ -32,9 +42,12 @@ function AddPhoto({
 
   return (
     <div className="AddPhoto">
-      <div style={{ backgroundColor: "#f7f8fa" }}>
+      <div style={{ backgroundColor: BACKGROUNDCOLOR_SUB_FANT }}>
         <div className="photoClose">
-          <IconButton onClick={() => dispatch(togglePhotoVideo(false))}>
+          <IconButton
+            onClick={() => dispatch(togglePhotoVideo(false))}
+            sx={{ color: ICONCOLOR }}
+          >
             <CloseIcon />
           </IconButton>
         </div>
@@ -44,8 +57,8 @@ function AddPhoto({
             onClick={() => tergetInputRef.current.click()}
           >
             <div>
-              <AddPhotoAlternateIcon />
-              <p>Add Photos/Videos</p>
+              <AddPhotoAlternateIcon sx={{ color: ICONCOLOR }} />
+              <p style={{ color: FONTCOLOR }}>Add Photos/Videos</p>
             </div>
           </div>
         ) : (

@@ -105,7 +105,7 @@ function FriendsuggesstionSidebarMenu({ setHome, setFriendSuggesstion }) {
             dispatch(FriendHomePage(true));
           }}
         >
-          <ArrowBackIcon />
+          <ArrowBackIcon sx={{ color: ICONCOLOR }} />
         </IconButton>
         <div>
           <p

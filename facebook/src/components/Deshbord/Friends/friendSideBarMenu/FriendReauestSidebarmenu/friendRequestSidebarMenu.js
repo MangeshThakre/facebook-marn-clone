@@ -73,7 +73,7 @@ function FriendRequestSidebarMenu({ setFriendRequest }) {
             dispatch(FriendHomePage(true));
           }}
         >
-          <ArrowBackIcon />
+          <ArrowBackIcon sx={{ color: ICONCOLOR }} />
         </IconButton>
         <div>
           <p

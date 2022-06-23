@@ -23,8 +23,11 @@ function Friends({ setPage }) {
   const SUB_BACKGROUND_COLOR = useSelector(
     (state) => state.darkLight.backgroundColor_sub
   );
+  // dark mode
+  const ISDARK = useSelector((state) => state.darkLight.isDarkMode);
   const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
   const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  //
 
   useEffect(() => {
     fetchFriends(USERID);
@@ -88,7 +91,9 @@ function Friends({ setPage }) {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <h3 style={{ color: FONTCOLOR }}>Friends</h3>
             <div
-              className="Freind_button"
+              className={
+                ISDARK == "on" ? "Freind_button" + ISDARK : "Freind_button"
+              }
               onClick={() => dispatch(setPage("FRIENDS"))}
             >
               <div>

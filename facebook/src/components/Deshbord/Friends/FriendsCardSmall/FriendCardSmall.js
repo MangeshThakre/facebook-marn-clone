@@ -29,12 +29,15 @@ function FriendCardSmall({ user, type, friend_requests }) {
   const [isAddFriendLoading, setIsAddfriendLoading] = useState(false);
   const [isConfirmedLoading, setIsConfirmedLoading] = useState(false);
   const [IsrejectLoading, setIsrejectLoading] = useState(false);
+
+  // dark mode
   const ISDARK = useSelector((state) => state.darkLight.isDarkMode);
   const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
-
+  //
   const SENT_FREINDREQUEST = useSelector(
     (state) => state.friend.send_freindRequest
   );
+
   const CONFORM_FREINDREQUEST = useSelector(
     (state) => state.friend.confirm_freindRequest
   );
@@ -238,7 +241,12 @@ function FriendCardSmall({ user, type, friend_requests }) {
   );
 
   const freindRequest = (
-    <div className="FriendCardSmall" ref={removeFriendCardSmall}>
+    <div
+      className={
+        ISDARK == "on" ? "FriendCardSmall" + ISDARK : "FriendCardSmall"
+      }
+      ref={removeFriendCardSmall}
+    >
       <div className="card">
         <div>
           <img
@@ -250,7 +258,7 @@ function FriendCardSmall({ user, type, friend_requests }) {
         </div>
         <div className="FriendCardSmalright">
           <b>
-            <p>{userName}</p>
+            <p style={{ color: FONTCOLOR }}>{userName}</p>
           </b>
           <div>
             <Button
@@ -292,7 +300,12 @@ function FriendCardSmall({ user, type, friend_requests }) {
         <>{type == "SUGGESTION" ? Suggestions : freindRequest}</>
       ) : (
         <>
-          <div className="FriendCardSm all" ref={removeFriendCardSmall}>
+          <div
+            className={
+              ISDARK == "on" ? "FriendCardSmall" + ISDARK : "FriendCardSmall"
+            }
+            ref={removeFriendCardSmall}
+          >
             <div
               className="card"
               style={{ cursor: "pointer" }}
@@ -307,7 +320,7 @@ function FriendCardSmall({ user, type, friend_requests }) {
               </div>
               <div className="FriendCardSmalright"></div>
               <b>
-                <p>{userName}</p>
+                <p style={{ color: FONTCOLOR }}>{userName}</p>
               </b>
             </div>
           </div>

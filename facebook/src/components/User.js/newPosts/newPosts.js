@@ -58,6 +58,20 @@ function NewPosts() {
   );
   const POSTUPDATE = useSelector((state) => state.globle.postUpdate);
 
+  ///   dark light mode
+  const SUB_BACKGROUND_COLOR = useSelector(
+    (state) => state.darkLight.backgroundColor_sub
+  );
+  const BACKGROUNDCOLOR_SUB_FANT = useSelector(
+    (state) => state.darkLight.backgroundColor_sub_fant
+  );
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const POPUPBACKGROUND = useSelector(
+    (state) => state.darkLight.popupBackground
+  );
+  //
+
   useEffect(() => {
     if (Object.keys(POSTUPDATE).length != 0) {
       setInputText(POSTUPDATE.text);
@@ -322,14 +336,35 @@ function NewPosts() {
   };
 
   return (
-    <div className="createPosts">
-      <div className="createPostBox" style={{ backgroundColor: "white" }}>
+    <div
+      className="createPosts"
+      style={{ backgroundColor: POPUPBACKGROUND }}
+      // onClick={() => {
+      //   dispatch(toggleCreatePost(false));
+      //   dispatch(togglePhotoVideo(false));
+      //   dispatch(postUpdate({}));
+      //   setUpdatePost(false);
+      // }}
+    >
+      <div
+        className="createPostBox"
+        style={{ backgroundColor: SUB_BACKGROUND_COLOR }}
+      >
         <div className="createPosts_head">
           <div></div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              color: FONTCOLOR,
+            }}
+          >
             <h3>Create Post</h3>
           </div>
-          <div className="createPost_close">
+          <div
+            className="createPost_close"
+            style={{ backgroundColor: BACKGROUNDCOLOR_SUB_FANT }}
+          >
             <IconButton
               onClick={() => {
                 dispatch(toggleCreatePost(false));
@@ -338,7 +373,7 @@ function NewPosts() {
                 setUpdatePost(false);
               }}
             >
-              <CloseIcon />
+              <CloseIcon sx={{ color: ICONCOLOR }} />
             </IconButton>
           </div>
         </div>
@@ -349,13 +384,16 @@ function NewPosts() {
               <img src={contact} alt="pic" />
             </div>
             <div>
-              <h5>{USER?.firstName + " " + USER?.lastName}</h5>
-              <h4>public</h4>
+              <h5 style={{ color: FONTCOLOR }}>
+                {USER?.firstName + " " + USER?.lastName}
+              </h5>
+              <h4 style={{ color: ICONCOLOR }}>public</h4>
             </div>
           </div>
           <div className="createPosts_body_body">
             <div className="postBody" ref={postBody}>
               <textarea
+                style={{ color: ICONCOLOR }}
                 type="text"
                 rows="4"
                 value={input_text}
@@ -403,8 +441,13 @@ function NewPosts() {
                 photoUrl={photoUrl}
               />
             </div>
-            <div className="createPosts_body_options">
-              <p style={{ cursor: "pointer" }}>Add to yor post</p>
+            <div
+              className="createPosts_body_options"
+              style={{ backgroundColor: BACKGROUNDCOLOR_SUB_FANT }}
+            >
+              <p style={{ cursor: "pointer", color: ICONCOLOR }}>
+                Add to yor post
+              </p>
               <div>
                 <IconButton
                   disabled={Bg !== "none" && Bg !== "" ? true : false}

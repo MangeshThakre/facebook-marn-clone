@@ -30,6 +30,21 @@ function PostDeleteComponent() {
   const URL = process.env.REACT_APP_API_URL;
   const POSTS = useSelector((state) => state.globle.posts);
   const [isLoading, setLoading] = useState(false);
+
+  ///   dark light mode
+  const SUB_BACKGROUND_COLOR = useSelector(
+    (state) => state.darkLight.backgroundColor_sub
+  );
+  const BACKGROUNDCOLOR_SUB_FANT = useSelector(
+    (state) => state.darkLight.backgroundColor_sub_fant
+  );
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const POPUPBACKGROUND = useSelector(
+    (state) => state.darkLight.popupBackground
+  );
+  //
+
   async function remove() {
     setLoading(true);
     try {
@@ -53,29 +68,44 @@ function PostDeleteComponent() {
   return (
     <div
       className="PostDeleteComponentBody"
-      style={{ backgroundColor: "rgba(250, 252, 252, 0.689)" }}
+      style={{ backgroundColor: POPUPBACKGROUND }}
+      onClick={() => {
+        dispatch(togglePostDelete(false));
+        dispatch(deletePostId(""));
+      }}
     >
       <div className="postDeletepopupBox">
-        <Card sx={{ borderRadius: "7px" }}>
+        <Card
+          sx={{ borderRadius: "7px", backgroundColor: SUB_BACKGROUND_COLOR }}
+        >
           <div className="postDeletepopup_head">
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                color: FONTCOLOR,
+              }}
+            >
               <h3>Are you Sure?</h3>
             </div>
-            <div className="postDeletepopup_close">
+            <div
+              className="postDeletepopup_close"
+              style={{ backgroundColor: BACKGROUNDCOLOR_SUB_FANT }}
+            >
               <IconButton
                 onClick={() => {
                   dispatch(togglePostDelete(false));
                   dispatch(deletePostId(""));
                 }}
               >
-                <CloseIcon />
+                <CloseIcon sx={{ color: ICONCOLOR }} />
               </IconButton>
             </div>
           </div>
 
           <Divider />
           <CardContent>
-            <div>
+            <div style={{ color: ICONCOLOR }}>
               <p>
                 Are you sure you want to remove this post from your profile?
               </p>

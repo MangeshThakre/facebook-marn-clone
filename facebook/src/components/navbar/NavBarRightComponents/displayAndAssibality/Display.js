@@ -29,12 +29,12 @@ function Display({ setToggleDisplayAndAssibality }) {
   function darkmodefun(mode) {
     if (mode === "on") {
       dispatch(isDarkMode("on"));
-      document.cookie = "isDarkMode=on";
+      document.cookie = "isDarkMode=on ; SameSite=None; Secure";
     } else if (mode === "off") {
       dispatch(isDarkMode("off"));
-      document.cookie = "isDarkMode=off";
+      document.cookie = "isDarkMode=off; SameSite=None; Secure";
     } else if (mode === "automatic") {
-      document.cookie = "isDarkMode=automatic";
+      document.cookie = "isDarkMode=automatic ; SameSite=None; Secure";
       const now = new Date().getHours();
       if (now >= 5 && now <= 18) {
         dispatch(isDarkMode("off"));

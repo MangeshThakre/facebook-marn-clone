@@ -51,6 +51,10 @@ export function PlaceLived({ close, type }) {
   const HOMETOWN = useSelector((state) => state.user.homeTown);
   var [place, setPlace] = useState("");
 
+  // dark mode
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  //
+
   useEffect(() => {
     if (Object.keys(CURRENTCITY).length != 0 && type == "CurrentCity") {
       const { city, type } = CURRENTCITY;
@@ -88,6 +92,7 @@ export function PlaceLived({ close, type }) {
     <div className="Editordiv">
       <div id="PlaceLivedTop">
         <TextField
+          sx={{ input: { color: ICONCOLOR } }}
           label={type}
           value={place}
           onChange={(e) => setPlace(e.target.value)}
@@ -127,6 +132,19 @@ export function RelationShipEditor({ close, type }) {
   const TOGGLEDROPDOWN = useSelector((state) => state.about.toggleDropdown);
   const RELSTIONSHIP = useSelector((state) => state.user.relationship);
   const [isRelationLoading, setIsRelationLoading] = useState(false);
+
+  // dark mode
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);  
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const BACKGROUNDCOLOR_SUB_FANT = useSelector(
+    (state) => state.darkLight.backgroundColor_sub_fant
+  );
+  const BACKGROUNDCOLOR = useSelector(
+    (state) => state.darkLight.backgroundColor
+  );
+  const ISDARK = useSelector((state) => state.darkLight.isDarkMode);
+  //
+
   useEffect(() => {
     setRelationStatus(
       RELSTIONSHIP.relation == "" ? "Status" : RELSTIONSHIP.relation
@@ -138,8 +156,9 @@ export function RelationShipEditor({ close, type }) {
     for (const li of options) {
       const className = li.className;
       li.id = "";
+
       if (className == relationStatus.replace(/ /g, "_")) {
-        li.id = "activee";
+        li.id = ISDARK == "on" ? "activeeon" : "activee";
       } else {
         li.id = "inActive";
       }
@@ -179,19 +198,29 @@ export function RelationShipEditor({ close, type }) {
         <div className="selector">
           <div
             className="DropDownSelector"
-            style={{ backgroundColor: "#e4e6eb" }}
+            style={{ backgroundColor: BACKGROUNDCOLOR_SUB_FANT }}
             onClick={() => dispatch(toggleDropdown(!TOGGLEDROPDOWN))}
           >
-            <p style={{ marginLeft: "20px", fontWeight: "bold" }}>
+            <p
+              style={{
+                marginLeft: "20px",
+                fontWeight: "bold",
+                color: FONTCOLOR,
+              }}
+            >
               {relationStatus}
             </p>
-            <ArrowDropDownIcon />
+            <ArrowDropDownIcon sx={{ color: ICONCOLOR }} />
           </div>
         </div>
         {TOGGLEDROPDOWN ? (
-          <div className="dropDownOption">
-            <Card>
-              <ul ref={optionsRef}>
+          <div
+            className={
+              ISDARK == "on" ? "dropDownOption" + ISDARK : "dropDownOption"
+            }
+          >
+            <Card sx={{ backgroundColor: BACKGROUNDCOLOR }}>
+              <ul ref={optionsRef} style={{ color: ICONCOLOR }}>
                 <li
                   className="Status"
                   onClick={() => {
@@ -346,6 +375,9 @@ export function Familymembers({ setTogglefamilyMember, type }) {
   const SELECTEDITEM = useSelector((state) => state.about.deleteItem);
   const [update, setUpdate] = useState(false);
   var familyMemberObj = {};
+  // dark mode
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  //
   useEffect(() => {
     if (SELECTEDITEM == "familyMember") {
       familyMemberObj = FAMILYMEMBER[INDEXNO];
@@ -374,7 +406,7 @@ export function Familymembers({ setTogglefamilyMember, type }) {
       newdata = [...FAMILYMEMBER, obj];
     }
 
-    console.log(newdata);
+    // console.log(newdata);
 
     try {
       const response = await axios({
@@ -403,6 +435,7 @@ export function Familymembers({ setTogglefamilyMember, type }) {
       <div id="PlaceLivedTop">
         <TextField
           label="family Member"
+          sx={{ input: { color: ICONCOLOR } }}
           value={member}
           onChange={(e) => setMamber(e.target.value)}
           name="numberformat"
@@ -411,6 +444,7 @@ export function Familymembers({ setTogglefamilyMember, type }) {
         />
         <TextField
           label="Relation"
+          sx={{ input: { color: ICONCOLOR } }}
           value={relation}
           onChange={(e) => setRelation(e.target.value)}
           name="numberformat"
@@ -454,13 +488,28 @@ export function ShowList({ obj, itemType, indexNo, open }) {
   const { USERID } = useParams();
   const { member, relation } = obj;
 
+  // delete edit pupup//
+  // document.addEventListener("click", (e) => {
+  //   if (e.target.closest(".DeleteEditPopup")) return;
+  //   if (e.target.closest(".poseDeleteEditPopup")) return;
+  //   setToggleDeleteEdit(false);
+  // });
+  // xx delete edit popupxx
+
+  // dark mode
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  //
+
   return (
     <>
       <div className="list" style={{ margin: "5px 0 20px 0px" }}>
         <div className="listLeft">
-          <FamilyRestroomIcon />
+          <FamilyRestroomIcon sx={{ color: ICONCOLOR }} />
           <div>
-            <p className="pHeading">{member}</p>
+            <p style={{ color: FONTCOLOR }} className="pHeading">
+              {member}
+            </p>
             <p className="subStaticP">
               <b>{relation}</b>
             </p>
@@ -501,6 +550,10 @@ export function AddWorkPlace({ setTogglseWorkPlace, type }) {
   const [update, setUpdate] = useState(false);
   var workPlaceObj = {};
 
+  // dark mode
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  //
   useEffect(() => {
     if (SELECTEDITEM == "workPlace") {
       setUpdate(true);
@@ -607,6 +660,7 @@ export function AddWorkPlace({ setTogglseWorkPlace, type }) {
     <div className="Editordiv">
       <div id="PlaceLivedTop">
         <TextField
+          sx={{ input: { color: ICONCOLOR } }}
           label="company"
           value={company}
           onChange={(e) => setCompany(e.target.value)}
@@ -615,6 +669,7 @@ export function AddWorkPlace({ setTogglseWorkPlace, type }) {
           variant="outlined"
         />
         <TextField
+          sx={{ input: { color: ICONCOLOR } }}
           id="formatted-numberformat-input"
           value={position}
           label="positiion"
@@ -622,9 +677,10 @@ export function AddWorkPlace({ setTogglseWorkPlace, type }) {
           onChange={(e) => setPosition(e.target.value)}
         />
       </div>
-      <div className="timePeriod">
+      <div className="timePeriod" style={{ color: FONTCOLOR }}>
         <p>Time Period</p>
         <FormControlLabel
+          sx={{ color: ICONCOLOR }}
           control={<Checkbox checked={currentlyWorking} />}
           label="I currently work here"
           onChange={() => toggleCurrentlyWorking(!currentlyWorking)}
@@ -633,7 +689,11 @@ export function AddWorkPlace({ setTogglseWorkPlace, type }) {
         {currentlyWorking ? (
           <div className="from">
             <p>from</p>
-            <DatePicker onChange={setFrom} value={from} />
+            <DatePicker
+              style={{ color: ICONCOLOR }}
+              onChange={setFrom}
+              value={from}
+            />
           </div>
         ) : (
           <div className="to">
@@ -688,8 +748,12 @@ export function AddStudiedAt({ close, type }) {
   const COLLEGELISTARR = useSelector((state) => state.user.college);
   const SCHOOLLISTARR = useSelector((state) => state.user.school);
   const [update, setUpdate] = useState(false);
-
+  // dark mode
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  //
   var School_collegeObj = {};
+
   useEffect(() => {
     if (SELECTEDITEM == "college") {
       setUpdate(true);
@@ -839,6 +903,7 @@ export function AddStudiedAt({ close, type }) {
       <div id="PlaceLivedTop">
         <TextField
           label={type}
+          sx={{ input: { color: ICONCOLOR } }}
           value={school_college_name}
           onChange={(e) => setSchoole_college_name(e.target.value)}
           name="numberformat"
@@ -846,6 +911,7 @@ export function AddStudiedAt({ close, type }) {
           variant="outlined"
         />
         <TextField
+          sx={{ input: { color: ICONCOLOR } }}
           label="Description"
           value={Description}
           onChange={(e) => setDescription(e.target.value)}
@@ -854,9 +920,10 @@ export function AddStudiedAt({ close, type }) {
           variant="outlined"
         />
       </div>
-      <div className="timePeriod">
+      <div className="timePeriod" style={{ color: FONTCOLOR }}>
         <p>Time Period</p>
         <FormControlLabel
+          sx={{ color: ICONCOLOR }}
           control={<Checkbox checked={pursuing} />}
           label="Pursuing"
           onChange={() => togglepursuing(!pursuing)}
@@ -909,29 +976,41 @@ export function AddStudiedAt({ close, type }) {
   );
 }
 
+// show city list
+
 export function ShowCity({ obj, Citytype, open }) {
   const [toggleDeleteEdit, setToggleDeleteEdit] = useState(false);
   const { USERID } = useParams();
   const { city, type } = obj;
 
+  // dark mode
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  //
   return (
     <>
       <div className="list">
         <div className="listLeft">
-          {Citytype == "homeTown" ? <HomeIcon /> : <LocationOnIcon />}
+          {Citytype == "homeTown" ? (
+            <HomeIcon sx={{ color: ICONCOLOR }} />
+          ) : (
+            <LocationOnIcon sx={{ color: ICONCOLOR }} />
+          )}
           <div>
-            <p className="pHeading">{city}</p>
+            <p className="pHeading" style={{ color: FONTCOLOR }}>
+              {city}
+            </p>
             <p className="subStaticP">{Citytype}</p>
           </div>
         </div>
         <div className="listRight">
           {USER.id == USERID ? (
             <>
-              <PublicIcon />
+              <PublicIcon sx={{ color: FONTCOLOR }} />
               <IconButton
                 onClick={() => setToggleDeleteEdit(!toggleDeleteEdit)}
               >
-                <MoreHorizIcon />
+                <MoreHorizIcon sx={{ color: FONTCOLOR }} />
               </IconButton>
               {toggleDeleteEdit ? DeleteEditPopup(open, Citytype) : null}
             </>
@@ -942,15 +1021,22 @@ export function ShowCity({ obj, Citytype, open }) {
   );
 }
 
+// show relation
+
 export function ShowRelation({ obj, open }) {
   const { USERID } = useParams();
   const { relation, showIntro } = obj;
+
+  // dark mode
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  //
   return (
     <>
       <div className="list">
         <div className="listLeft">
-          <FavoriteIcon />
-          <div>
+          <FavoriteIcon sx={{ color: ICONCOLOR }} />
+          <div style={{ color: FONTCOLOR }}>
             <p className="pHeading">{relation}</p>
           </div>
         </div>
@@ -958,7 +1044,7 @@ export function ShowRelation({ obj, open }) {
           {USER.id == USERID ? (
             <>
               <IconButton onClick={() => open(true)}>
-                <EditIcon />
+                <EditIcon sx={{ color: FONTCOLOR }} />
               </IconButton>
             </>
           ) : null}
@@ -968,10 +1054,7 @@ export function ShowRelation({ obj, open }) {
   );
 }
 
-
-
-
-
+// delete pop - up
 
 function DeleteEditPopup(Toggle, type, indexNO = "") {
   const dispatch = useDispatch();
@@ -1015,7 +1098,14 @@ function DeleteEditPopup(Toggle, type, indexNO = "") {
   );
 }
 
+// show work and education list
+
 export function ShowWorkEduList({ obj, itemType, indexNo, open }) {
+  // dark mode
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  //
+
   var NAME;
   var FROM;
   var TO;
@@ -1051,9 +1141,9 @@ export function ShowWorkEduList({ obj, itemType, indexNo, open }) {
     <>
       <div className="list" style={{ margin: "5px 0 20px 0px" }}>
         <div className="listLeft">
-          <WorkIcon />
+          <WorkIcon sx={{ color: ICONCOLOR }} />
           <div>
-            <p className="pHeading">
+            <p className="pHeading" style={{ color: FONTCOLOR }}>
               {DES_POSI} at {NAME}
             </p>
             <p className="subStaticP">
@@ -1065,11 +1155,12 @@ export function ShowWorkEduList({ obj, itemType, indexNo, open }) {
         <div className="listRight">
           {USER.id == USERID ? (
             <>
-              <PublicIcon />
+              <PublicIcon sx={{ color: ICONCOLOR }} />
               <IconButton
+                className="ButtonDeleteEditPopup"
                 onClick={() => setToggleDeleteEdit(!toggleDeleteEdit)}
               >
-                <MoreHorizIcon />
+                <MoreHorizIcon sx={{ color: FONTCOLOR }} />
               </IconButton>
               {toggleDeleteEdit
                 ? DeleteEditPopup(open, itemType, indexNo)
@@ -1083,9 +1174,12 @@ export function ShowWorkEduList({ obj, itemType, indexNo, open }) {
 }
 
 export function ShowCollegeSchoollist({ obj, itemType, indexNo, open }) {
+  // dark mode
+  const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
+  const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
+  //
   const { school_college_name, Description, to, from, type } = obj;
-
-  console.log(school_college_name);
+  // console.log(school_college_name);
 
   const [toggleDeleteEdit, setToggleDeleteEdit] = useState(false);
   const { USERID } = useParams();
@@ -1107,12 +1201,16 @@ export function ShowCollegeSchoollist({ obj, itemType, indexNo, open }) {
     <>
       <div className="list" style={{ margin: "5px 0 20px 0px" }}>
         <div className="listLeft">
-          <SchoolIcon />
+          <SchoolIcon style={{ color: ICONCOLOR }} />
           <div>
             {itemType == "college" ? (
-              <p className="pHeading">Studied at {school_college_name}</p>
+              <p className="pHeading" style={{ color: FONTCOLOR }}>
+                Studied at {school_college_name}
+              </p>
             ) : (
-              <p className="pHeading">Went to {school_college_name}</p>
+              <p className="pHeading" style={{ color: FONTCOLOR }}>
+                Went to {school_college_name}
+              </p>
             )}
             <p className="subStaticP">
               <b> {Description}</b>
@@ -1126,11 +1224,11 @@ export function ShowCollegeSchoollist({ obj, itemType, indexNo, open }) {
         <div className="listRight">
           {USER.id == USERID ? (
             <>
-              <PublicIcon />
+              <PublicIcon style={{ color: ICONCOLOR }} />
               <IconButton
                 onClick={() => setToggleDeleteEdit(!toggleDeleteEdit)}
               >
-                <MoreHorizIcon />
+                <MoreHorizIcon style={{ color: ICONCOLOR }} />
               </IconButton>
               {toggleDeleteEdit
                 ? DeleteEditPopup(open, itemType, indexNo)

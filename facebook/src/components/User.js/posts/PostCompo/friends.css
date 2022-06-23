@@ -43,3 +43,26 @@ right: 9px;
 bottom: 33px;
 font-weight: bold;
     }
+
+    .Freind_button  :hover{
+        background-color: #e4e6ebed;
+    cursor: pointer;  
+    }
+    .Freind_buttonon  :hover{
+        background-color: #3a3b3c;
+    cursor: pointer;  
+    }    
+    .Freind_button >div > p  , .Freind_buttonon >div > p{
+        color:#0570e7;
+        height:1.75rem;
+    }
+
+    .friend{
+        margin: 0.938rem;
+    }
+    
+    
+    .Freind_button > div  , .Freind_buttonon > div{
+        border-radius: 5px;
+        padding: 7px; 
+    }

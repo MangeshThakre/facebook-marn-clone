@@ -9,6 +9,7 @@ export const darkLightMode = createSlice({
     iconColor: "#65676b",
     fontColor: "#242526",
     backgroundColor_sub_fant: "#f0f2f5",
+    popupBackground: "rgba(250, 252, 252, 0.69)",
 
     // backgroundColor_sub: "#242526",
     // backgroundColor: "#18191a",
@@ -25,6 +26,7 @@ export const darkLightMode = createSlice({
         state.iconColor = "#b0b3b8";
         state.backgroundColor_sub_fant = "#3a3b3c";
         state.fontColor = "#E4E6EB";
+        state.popupBackground = "rgba(6, 7, 7, 0.64)";
       } else {
         state.isDarkMode = "off";
         state.backgroundColor = "#f0f2f5";
@@ -32,6 +34,7 @@ export const darkLightMode = createSlice({
         state.iconColor = "#65676b";
         state.fontColor = "#242526";
         state.backgroundColor_sub_fant = "#f0f2f5";
+        state.popupBackground = "rgba(6, 7, 7, 0.64)";
       }
     },
 

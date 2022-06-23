@@ -75,6 +75,8 @@ function About() {
   });
   // console.log(PROFILEUSER);
 
+ 
+
   const p = {
     color: FONTCOLOR,
   };
@@ -594,10 +596,14 @@ function About() {
           <Grid xs={12} md={4}>
             <CardContent>
               <div className="about_left">
-                <div>
+                <div style={{ color: FONTCOLOR }}>
                   <h3>About</h3>
                 </div>
-                <ul className="aboutLeftOptions" ref={aboutLeftOptionsRef}>
+                <ul
+                  className="aboutLeftOptions"
+                  style={{ color: FONTCOLOR }}
+                  ref={aboutLeftOptionsRef}
+                >
                   <li
                     className="Overview activeOption"
                     onClick={() => activeOption("Overview")}

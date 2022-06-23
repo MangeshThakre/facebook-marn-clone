@@ -39,6 +39,8 @@ function Info() {
     month: "long",
     year: "numeric",
   });
+
+  ///// dark mode
   const BACKGROUNDCOLOR_SUB_FANT = useSelector(
     (state) => state.darkLight.backgroundColor_sub_fant
   );
@@ -46,9 +48,8 @@ function Info() {
     (state) => state.darkLight.backgroundColor_sub
   );
   const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
-
   const FONTCOLOR = useSelector((state) => state.darkLight.fontColor);
-
+  //
   useEffect(() => {
     setText_bio(BIO);
     setInfo_button(false);
@@ -152,8 +153,13 @@ function Info() {
         {WORKPLACE.map((e, i) => {
           if (e.showIntro)
             return (
-              <div key={i} style={{ display: "flex", marginTop: "15px" }}>
-                <WorkOutlinedIcon sx={{ marginRight: "10px" }} />
+              <div
+                key={i}
+                style={{ display: "flex", marginTop: "15px", color: FONTCOLOR }}
+              >
+                <WorkOutlinedIcon
+                  sx={{ marginRight: "10px", color: ICONCOLOR }}
+                />
                 <p>
                   Works at <b> {e.company}</b>
                 </p>
@@ -163,8 +169,11 @@ function Info() {
         {COLLEGE.map((e, i) => {
           if (e.showIntro)
             return (
-              <div key={i} style={{ display: "flex", marginTop: "15px" }}>
-                <SchoolIcon sx={{ marginRight: "10px" }} />
+              <div
+                key={i}
+                style={{ display: "flex", marginTop: "15px", color: FONTCOLOR }}
+              >
+                <SchoolIcon sx={{ marginRight: "10px", color: ICONCOLOR }} />
                 <p>
                   went to <b> {e.school_college_name}</b>
                 </p>
@@ -174,8 +183,11 @@ function Info() {
         {SCHOOL.map((e, i) => {
           if (e.showIntro)
             return (
-              <div key={i} style={{ display: "flex", marginTop: "15px" }}>
-                <SchoolIcon sx={{ marginRight: "10px" }} />
+              <div
+                key={i}
+                style={{ display: "flex", marginTop: "15px", color: FONTCOLOR }}
+              >
+                <SchoolIcon sx={{ marginRight: "10px", color: ICONCOLOR }} />
                 <p>
                   studied at <b> {e.school_college_name}</b>
                 </p>
@@ -183,32 +195,32 @@ function Info() {
             );
         })}
         {CURRENTCITY.showIntro ? (
-          <div style={{ display: "flex", marginTop: "15px" }}>
-            <HomeIcon sx={{ marginRight: "10px" }} />
+          <div style={{ display: "flex", marginTop: "15px", color: FONTCOLOR }}>
+            <HomeIcon sx={{ marginRight: "10px", color: ICONCOLOR }} />
             <p>
               Lives in <b> {CURRENTCITY.city}</b>
             </p>
           </div>
         ) : null}
         {HOMETOWN.showIntro ? (
-          <div style={{ display: "flex", marginTop: "15px" }}>
-            <LocationOnIcon sx={{ marginRight: "10px" }} />
+          <div style={{ display: "flex", marginTop: "15px", color: FONTCOLOR }}>
+            <LocationOnIcon sx={{ marginRight: "10px", color: ICONCOLOR }} />
             <p>
               From <b> {HOMETOWN.city}</b>
             </p>
           </div>
         ) : null}
         {RELSTIONSHIP.showIntro ? (
-          <div style={{ display: "flex", marginTop: "15px" }}>
-            <FavoriteIcon sx={{ marginRight: "10px" }} />
+          <div style={{ display: "flex", marginTop: "15px", color: FONTCOLOR }}>
+            <FavoriteIcon sx={{ marginRight: "10px", color: ICONCOLOR }} />
             <p>
               <b> {RELSTIONSHIP.relation}</b>
             </p>
           </div>
         ) : null}
         {JOINEDAT.showIntro ? (
-          <div style={{ display: "flex", marginTop: "15px" }}>
-            <FavoriteIcon sx={{ marginRight: "10px" }} />
+          <div style={{ display: "flex", marginTop: "15px", color: FONTCOLOR }}>
+            <FavoriteIcon sx={{ marginRight: "10px", color: ICONCOLOR }} />
             <p>joined {joiningDate}</p>
           </div>
         ) : null}

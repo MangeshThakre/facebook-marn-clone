@@ -80,7 +80,7 @@ function AllFriendSideBarMenu({ setAllFriends }) {
             dispatch(FriendHomePage(true));
           }}
         >
-          <ArrowBackIcon />
+          <ArrowBackIcon sx={{ color: ICONCOLOR }} />
         </IconButton>
         <div>
           <p

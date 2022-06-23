@@ -16,20 +16,24 @@ import AllPostSkeleton from "../../AllPostComponent/AllPostSkeleton";
 import axios from "axios";
 function HomePageMiddle() {
   const homePageMiddleRef = useRef(null);
-  const [toggleStory, setToggleStory] = useState(false);
   const [postDetail, setPostDetails] = useState([]);
   const [isFetchPostLoading, setIsFetchPostLoading] = useState(false);
   const [nextPage, setNextPage] = useState(false);
   const [page, setPage] = useState(1);
   const URL = process.env.REACT_APP_API_URL;
+  const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const TOKEN = localStorage.getItem("TOKEN");
+  const prifilePic = USER.profilePic ? URL + "/" + USER.profilePic : contact;
 
+  /// dark mode
   const SUB_BACKGROUND_COLOR = useSelector(
     (state) => state.darkLight.backgroundColor_sub
   );
-
+  const BACKGROUNDCOLOR = useSelector(
+    (state) => state.darkLight.backgroundColor
+  );
   const ICONCOLOR = useSelector((state) => state.darkLight.iconColor);
-
+  ////
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -77,15 +81,18 @@ function HomePageMiddle() {
   }, [page]);
 
   function storyComponent() {
-    return toggleStory ? (
+    return (
       <>
         <div className="story">
-          <Card className="addStoryComponent">
+          <Card
+            className="addStoryComponent"
+            sx={{ backgroundColor: BACKGROUNDCOLOR }}
+          >
             <div className="addStoryComponentImage">
-              <img src={contact} alt="" />
+              <img src={prifilePic} alt="" />
             </div>
             <div className="createStory">
-              <p style={{ fontSize: "13px" }}>create story</p>
+              <p style={{ fontSize: "13px", color: ICONCOLOR }}>create story</p>
               <div className="addButton">
                 <AddIcon sx={{ color: "white" }} />
               </div>
@@ -107,7 +114,7 @@ function HomePageMiddle() {
           </div>
         </div>
       </>
-    ) : null;
+    );
   }
 
   return (
@@ -124,15 +131,7 @@ function HomePageMiddle() {
           >
             <CardContent>
               <div className="StoryComponentNav">
-                <div onClick={() => setToggleStory(true)}>
-                  <p>Story</p>
-                </div>
-                <div>
-                  <p>Reels</p>
-                </div>
-                <div>
-                  <p>Room</p>
-                </div>
+                <h2>Story</h2>
               </div>
               <Divider />
               <div>{storyComponent()}</div>

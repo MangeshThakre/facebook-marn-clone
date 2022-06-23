@@ -136,7 +136,7 @@ font: 14px
 
 
 
-.dropDownOption {
+.dropDownOption  , .dropDownOptionon {
     position: absolute;
     z-index: 1;
     overflow-y: auto;
@@ -144,7 +144,7 @@ font: 14px
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-.dropDownOption >div  >  ul >li   {
+.dropDownOption >div  >  ul >li  , .dropDownOptionon >div  >  ul >li  {
      height: 34px;
      cursor: pointer;
      width : 328px;
@@ -154,12 +154,18 @@ font: 14px
      border-radius: 5px;
      }
      .dropDownOption > div> ul :hover{
-          background-color: #e4e6eb;
-     }
+        background-color: #e4e6eb;
+   } .dropDownOptionon > div> ul :hover{
+    background-color: #3a3b3c;
+}
 
 
 #activee{
     background-color: #e4e6eb;
+ border: 2px solid #2d82f3;
+  border-radius:  5px;
+}#activeeon{
+    background-color: #3a3b3c;
  border: 2px solid #2d82f3;
   border-radius:  5px;
 }
