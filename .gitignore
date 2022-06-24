@@ -12,7 +12,7 @@ dist/
 *.class
 
 # env file
-.env
+.env/
 
 
 # Compiled Python bytecode
