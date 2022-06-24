@@ -1,0 +1,3 @@
+"PORT" =  "[server port example:  8081  ]"
+"MONGODB_URL" = "[MONGODB_URL]"
+"ACCESS_TOKEN_SECRET"='[ramdom 64bit access token:   b98a86d2cc7ef1167d308a69b2771f2967993afc0c1b08c89963e279d96cc67946d122c460aa0acc97f3d662d8cf56ce7137a25e9c85a88d745d559a5973e273]'
