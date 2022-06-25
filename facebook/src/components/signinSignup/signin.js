@@ -10,6 +10,7 @@ import Divider from "@mui/material/Divider";
 import { useState } from "react";
 import Signup from "./signup";
 import md5 from "md5";
+import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
@@ -25,10 +26,10 @@ function Signin() {
   const [passWarnint, setPasswarning] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [warning, setWarning] = useState(false);
-
-
+  const [passErr, setPasswordErr] = useState("");
 
   const signin = async (useremail_phone, userpass) => {
+    setIsLoading(true);
     var data;
     if (useremail_phone.includes(".com")) {
       data = {
@@ -151,8 +152,20 @@ function Signin() {
                       onChange={(e) => {
                         setPassword(e.target.value);
                         setWarning(false);
+                        setPasswordErr("");
                       }}
                     />
+
+                    {warning ? (
+                      <p style={{ color: "red" }}>
+                        There was a problem with your login.
+                      </p>
+                    ) : null}
+                    {passErr ? (
+                      <p style={{ color: "red" }}>
+                        password must have minimum 6 characters
+                      </p>
+                    ) : null}
 
                     <Button
                       sx={{ width: "275px", marginTop: "7px" }}
@@ -162,19 +175,29 @@ function Signin() {
                       }
                       onClick={() => {
                         if (password.length < 6) {
-                          alert("password must have minimum 6 characters");
+                          setPasswordErr(
+                            "password must have minimum 6 characters"
+                          );
                         } else {
                           signin(phoneNo, password);
                         }
                       }}
                     >
-                      Log In
+                      {isLoading ? (
+                        <CircularProgress
+                          sx={{ color: "#1976d2" }}
+                          size="1.6rem"
+                        />
+                      ) : (
+                        "Log In"
+                      )}
                     </Button>
                     <Link
                       style={{
                         fontSize: "13px",
                         margin: "7px 0 20px 0",
                         color: "#3588f3",
+                        textDecoration: "none",
                       }}
                       to="/reset"
                     >

@@ -108,6 +108,32 @@ class controller {
     }
   };
 
+  static otp = async (req, res) => {
+    const email = req.query.email;
+    try {
+      const isResponse = await userModel.findOne({ email });
+      if (!isResponse) return res.status(404).send("Email not found");
+      res.send({ otp: 1111 });
+    } catch (e) {
+      console.log("error", error);
+    }
+  };
+  static reset = async (req, res) => {
+    const email = req.query.email;
+    const password = req.query.password;
+    try {
+      const response = await userModel.findOneAndUpdate(
+        { email },
+        { $set: { password } },
+        { returnDocument: "after" }
+      );
+      console.log(response);
+      await res.json("update successfuly");
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
+
   static verify = async (req, res) => {
     try {
       const user_id = req.user.id;

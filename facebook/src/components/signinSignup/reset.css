@@ -1,0 +1,47 @@
+.reset{
+    height: 100vh;
+    background-color: #e9ebee;
+}
+
+
+.resetHeader{
+    height:   50px;
+    display: flex;
+    align-items: center;
+    background-color:  #ffffff;
+}
+
+.resetHeader > h2 {
+    color :#1876f2;
+    margin-left:  20px;
+}
+
+.resetCard{
+    display:flex ;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.resetBottom{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.resetBottom > div  {
+display: flex;
+}
+.resetBottom > div> button {
+text-transform: none;
+}
+.resetBottom > div >  div > button {
+    margin-right: 10px;
+    text-transform: none;
+    color :#4b4f56;
+    background-color: #e4e6eb;
+    }
+
+    .resetBottom > div >  div  :hover{
+        background-color: #c6c7cb;
+        }

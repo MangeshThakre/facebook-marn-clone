@@ -151,7 +151,7 @@ function Info() {
     <>
       <div className="introUserDetail">
         {WORKPLACE.map((e, i) => {
-          if (e.showIntro)
+          if (e?.showIntro)
             return (
               <div
                 key={i}
@@ -167,7 +167,7 @@ function Info() {
             );
         })}
         {COLLEGE.map((e, i) => {
-          if (e.showIntro)
+          if (e?.showIntro)
             return (
               <div
                 key={i}
@@ -181,7 +181,7 @@ function Info() {
             );
         })}
         {SCHOOL.map((e, i) => {
-          if (e.showIntro)
+          if (e?.showIntro)
             return (
               <div
                 key={i}
@@ -194,7 +194,7 @@ function Info() {
               </div>
             );
         })}
-        {CURRENTCITY.showIntro ? (
+        {CURRENTCITY?.showIntro ? (
           <div style={{ display: "flex", marginTop: "15px", color: FONTCOLOR }}>
             <HomeIcon sx={{ marginRight: "10px", color: ICONCOLOR }} />
             <p>
@@ -202,7 +202,7 @@ function Info() {
             </p>
           </div>
         ) : null}
-        {HOMETOWN.showIntro ? (
+        {HOMETOWN?.showIntro ? (
           <div style={{ display: "flex", marginTop: "15px", color: FONTCOLOR }}>
             <LocationOnIcon sx={{ marginRight: "10px", color: ICONCOLOR }} />
             <p>
@@ -210,7 +210,7 @@ function Info() {
             </p>
           </div>
         ) : null}
-        {RELSTIONSHIP.showIntro ? (
+        {RELSTIONSHIP?.showIntro ? (
           <div style={{ display: "flex", marginTop: "15px", color: FONTCOLOR }}>
             <FavoriteIcon sx={{ marginRight: "10px", color: ICONCOLOR }} />
             <p>
@@ -218,7 +218,7 @@ function Info() {
             </p>
           </div>
         ) : null}
-        {JOINEDAT.showIntro ? (
+        {JOINEDAT?.showIntro ? (
           <div style={{ display: "flex", marginTop: "15px", color: FONTCOLOR }}>
             <FavoriteIcon sx={{ marginRight: "10px", color: ICONCOLOR }} />
             <p>joined {joiningDate}</p>

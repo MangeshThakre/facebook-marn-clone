@@ -23,7 +23,7 @@ function HomePageMiddle() {
   const URL = process.env.REACT_APP_API_URL;
   const USER = JSON.parse(localStorage.getItem("LOCALUSER"));
   const TOKEN = localStorage.getItem("TOKEN");
-  const prifilePic = USER.profilePic ? URL + "/" + USER.profilePic : contact;
+  const prifilePic = USER?.profilePic ? URL + "/" + USER?.profilePic : contact;
 
   /// dark mode
   const SUB_BACKGROUND_COLOR = useSelector(
