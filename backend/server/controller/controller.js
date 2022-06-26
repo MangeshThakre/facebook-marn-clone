@@ -5,11 +5,11 @@ import frendRequestModel from "../schema/friendRequestSchema.js";
 import friendsModel from "../schema/friendsSchema.js";
 import jsonwebtoken from "jsonwebtoken";
 import dotenv from "dotenv";
+import md5 from "md5";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import { Console } from "console";
 const __filenamee = fileURLToPath(import.meta.url);
 const __dirnamee = dirname(__filenamee);
 
@@ -113,7 +113,39 @@ class controller {
     try {
       const isResponse = await userModel.findOne({ email });
       if (!isResponse) return res.status(404).send("Email not found");
-      res.send({ otp: 1111 });
+
+      const email = req.body.email;
+      var otp = Math.floor(1000 + Math.random() * 9000);
+      console.log(otp);
+      var transporter = nodemailer.createTransport({
+        service: "gmail",
+        port: 465,
+        secure: true,
+        secureConnection: false,
+        auth: {
+          user: "chatappofficial70@gmail.com", // generated ethereal user
+          pass: "chatapp.123", // generated ethereal password
+        },
+      });
+      // send email
+      var mailOptions = {
+        from: "chatappofficial70@gmail.com",
+        to: email,
+        subject: "Reset password",
+        html: `Hello <b>${isResponse.firstName}  ${isResponse.lastName}<b>,
+                   <p>dear <b>user<b/></p>
+                   ${otp} is your Facebook-clone OTP, Pleas do not shere OTP as it is confidential.
+                <br>Regards,<br>
+                <br>chatapp Team<br>`,
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return console.log("sendEmail:- " + error);
+          res.send({ otp: "send One more" });
+        }
+        console.log("sendEmail:- Message sent: %s", info.messageId);
+        res.send({ otp: md5(otp) });
+      });
     } catch (e) {
       console.log("error", error);
     }

@@ -1,6 +1,6 @@
 import React from "react";
 import "./reset.css";
-import OTPInput from "otp-input-react";
+import OTPInput, { ResendOTP } from "otp-input-react";
 
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -55,11 +55,15 @@ function Reset() {
           headers: { "Content-type": "application/json" },
         });
         const data = await response.data;
-        if (data.otp) {
+        if (data.otp == "send One more") {
+          setOpen(true);
+        } else if (data.otp) {
           setServerOTP(data.otp);
-          setResetBody("OTPPAGE");
+          setTimeout(() => {
+            setResetBody("OTPPAGE");
+            setIsSendLoading(false);
+          }, 1000);
         }
-        setIsSendLoading(false);
       } catch (error) {
         setIsSendLoading(false);
         const responseText = await error.response.data;
@@ -74,8 +78,8 @@ function Reset() {
 
   function verify() {
     console.log(OTP, " ", serverOTP);
-    if (OTP != serverOTP) return setWarning("invalid OTP");
-    if (OTP == serverOTP) return setResetBody("NEWPASSWORDPAGE");
+    if (md5(Number(OTP)) != serverOTP) return setWarning("invalid OTP");
+    if (md5(Number(OTP)) == serverOTP) return setResetBody("NEWPASSWORDPAGE");
   }
 
   async function Reset() {
@@ -98,7 +102,8 @@ function Reset() {
       });
       const data = await response.data;
       if (data == "update successfuly") {
-        setOpen(true);
+        setResetBody("UPDATEDPAGE");
+        setResetLoading(false);
       }
     } catch (error) {
       setResetLoading(false);
@@ -142,7 +147,7 @@ function Reset() {
               onClick={() => send()}
             >
               {isSendLoading ? (
-                <CircularProgress sx={{ color: "#1976d2" }} size="1.6rem" />
+                <CircularProgress sx={{ color: "white" }} size="1.6rem" />
               ) : (
                 "Send"
               )}
@@ -171,6 +176,7 @@ function Reset() {
         <div style={{ height: "30px", color: "red" }}>
           {warning ? <p>{warning}</p> : null}
         </div>
+        <ResendOTP onResendClick={() => console.log("Resend clicked")} />
       </CardContent>
 
       <Divider />
@@ -265,7 +271,31 @@ function Reset() {
               }
               onClick={() => Reset()}
             >
-              reset
+              {resetLoading ? (
+                <CircularProgress sx={{ color: "white" }} size="1.6rem" />
+              ) : (
+                "reset"
+              )}
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </>
+  );
+
+  const updatedPage = (
+    <>
+      <CardContent>
+        <div style={{ height: "150px", display: "flex", alignItems: "center" }}>
+          <h2>Successfuly updated password</h2>
+        </div>
+      </CardContent>
+      <Divider />
+      <CardContent>
+        <div className="resetBottom">
+          <div>
+            <Button variant="contained" onClick={() => navigate("/signin")}>
+              Signin
             </Button>
           </div>
         </div>
@@ -279,7 +309,13 @@ function Reset() {
         <h2>facebook</h2>
       </div>
       <div className="resetCard">
-        <Card sx={{ width: "500px" }}>
+        <Card
+          sx={{
+            width: "500px",
+            boxShadow:
+              "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
+          }}
+        >
           <CardContent>
             <h3>Find Your Account</h3>
           </CardContent>
@@ -287,12 +323,13 @@ function Reset() {
           {resetBody == "EMAILPAGE" ? emailPage : null}
           {resetBody == "OTPPAGE" ? otpPage : null}
           {resetBody == "NEWPASSWORDPAGE" ? newPAsswordPage : null}
+          {resetBody == "UPDATEDPAGE" ? updatedPage : null}
         </Card>
       </div>
 
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          password Updated Successfuly
+        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+          Network error Send one more time
         </Alert>
       </Snackbar>
     </div>

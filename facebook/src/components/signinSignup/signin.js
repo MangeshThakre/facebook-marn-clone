@@ -107,7 +107,14 @@ function Signin() {
               </div>
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
-              <Card sx={{ width: "350px", borderRadius: "7px" }}>
+              <Card
+                sx={{
+                  width: "350px",
+                  borderRadius: "7px",
+                  boxShadow:
+                    "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
+                }}
+              >
                 <CardContent>
                   <div
                     style={{
@@ -206,18 +213,19 @@ function Signin() {
                     <div>
                       <Divider variant="middle" sx={{ width: "250px" }} />
                     </div>
-
-                    <Button
-                      sx={{
-                        width: "210px",
-                        margin: "20px 0 7px 0 ",
-                        backgroundColor: "#42b72a",
-                      }}
-                      onClick={() => setToggleCreateAccountComponent(true)}
-                      variant="contained"
-                    >
-                      Create New Account
-                    </Button>
+                    <div className="loginButton">
+                      <Button
+                        sx={{
+                          width: "210px",
+                          margin: "20px 0 7px 0 ",
+                          backgroundColor: "#42b72a",
+                        }}
+                        onClick={() => setToggleCreateAccountComponent(true)}
+                        variant="contained"
+                      >
+                        Create New Account
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
