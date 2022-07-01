@@ -15,3 +15,36 @@ line-height: 32px;
 .loginButton > button:hover{
     background-color: #39a224;
 }
+.profileSignup{
+    height: 160px;
+    width: 160px;
+}
+
+.singUpHeader{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.resentLoginBox{
+    height: 206px;
+    width: 160px;
+background-color:#ffffff ;
+border-radius: 7px;
+}
+
+.resentLoginBox > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.cards{
+margin-left: 20px ;
+}
+
+.cards >  :hover{
+cursor : pointer;
+box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

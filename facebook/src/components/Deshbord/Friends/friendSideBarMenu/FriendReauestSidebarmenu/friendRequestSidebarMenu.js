@@ -90,6 +90,7 @@ function FriendRequestSidebarMenu({ setFriendRequest }) {
       </div>
       <Divider variant="middle" />
       <div
+        className="freindRequestList"
         style={{ marginTop: "10px", overflowY: "scroll", maxHeight: "80vh" }}
         ref={requestListRef}
       >

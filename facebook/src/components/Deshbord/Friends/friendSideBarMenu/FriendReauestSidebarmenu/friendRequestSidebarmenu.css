@@ -14,3 +14,14 @@
    cursor: pointer;
    text-decoration: underline;
 }
+
+
+.freindRequestList::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .freindRequestList {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }

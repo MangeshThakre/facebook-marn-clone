@@ -6,18 +6,20 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import "./sign.css";
 import { Link } from "react-router-dom";
-import Divider from "@mui/material/Divider";
-import { useState } from "react";
+import { Divider, Alert, Snackbar } from "@mui/material";
+import { useState, useEffect } from "react";
 import Signup from "./signup";
 import md5 from "md5";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
+import contact from "../../image/contact.png";
 function Signin() {
   const dispatch = useDispatch();
   const URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
+  const [resentLogin, setResentLogin] = useState([]);
   const [toggleCreateAccountComponent, setToggleCreateAccountComponent] =
     useState(false);
   const [phoneNo, setphoneNo] = useState("");
@@ -27,6 +29,31 @@ function Signin() {
   const [isLoading, setIsLoading] = useState(false);
   const [warning, setWarning] = useState(false);
   const [passErr, setPasswordErr] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios({
+          method: "get",
+          url: URL + "/api/resentLogin/?id=6289347534f3105e02986fa0",
+          headers: { "content-type": "application/json" },
+        });
+        const data = await response.data;
+        setResentLogin([...resentLogin, data]);
+      } catch (error) {
+        console.log(error);
+        setOpen(true);
+      }
+    })();
+  }, []);
 
   const signin = async (useremail_phone, userpass) => {
     setIsLoading(true);
@@ -34,12 +61,12 @@ function Signin() {
     if (useremail_phone.includes(".com")) {
       data = {
         email: useremail_phone.toLowerCase(),
-        password: md5(userpass),
+        password: userpass,
       };
     } else {
       data = {
         phoneNo: Number(useremail_phone.toLowerCase()),
-        password: md5(userpass),
+        password: userpass,
       };
     }
 
@@ -63,6 +90,8 @@ function Signin() {
         navigate("/");
       }
     } catch (error) {
+      setIsLoading(false);
+      setOpen(true);
       console.log(error);
     }
   };
@@ -92,18 +121,48 @@ function Signin() {
           >
             <Grid item xs={12} sm={6} md={6}>
               <div style={{ margin: "10px 20px 30px 0" }}>
-                <div className="facebook-Image">
-                  <img
-                    src="https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg"
-                    alt="Facebook"
-                  />
-                </div>
-                <div className="content">
-                  <p>
-                    Facebook helps you connect and share with the people in your
-                    life.
-                  </p>
-                </div>
+                {resentLogin.length !== 0 ? (
+                  <>
+                    <div className="facebook-Image">
+                      <img
+                        src="https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg"
+                        alt="Facebook"
+                      />
+                    </div>
+                    <div style={{ margin: " 0  0   20px 20px " }}>
+                      <h2>Recent logins</h2>
+                      <p style={{ color: "#636a72" }}>
+                        Click your picture or add an account.
+                      </p>
+                    </div>
+                    <div className="cards">
+                      {resentLogin.map((e, i) => {
+                        return (
+                          <div
+                            className="resentLoginBox"
+                            key={i}
+                            onClick={() => signin(e.email, e.password)}
+                          >
+                            <img
+                              className="profileSignup"
+                              src={
+                                e.profilePic
+                                  ? URL + "/" + e.profilePic
+                                  : contact
+                              }
+                              alt="profile"
+                            />
+                            <div>
+                              <p>{e.firstName}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
@@ -186,7 +245,7 @@ function Signin() {
                             "password must have minimum 6 characters"
                           );
                         } else {
-                          signin(phoneNo, password);
+                          signin(phoneNo, md5(password));
                         }
                       }}
                     >
@@ -232,6 +291,11 @@ function Signin() {
             </Grid>
           </Grid>
         </div>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+            Network error
+          </Alert>
+        </Snackbar>
       </div>
     </>
   );

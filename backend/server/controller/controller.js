@@ -6,6 +6,7 @@ import friendsModel from "../schema/friendsSchema.js";
 import jsonwebtoken from "jsonwebtoken";
 import dotenv from "dotenv";
 import md5 from "md5";
+import nodemailer from "nodemailer";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -61,7 +62,7 @@ class controller {
     } catch (error) {
       console.log(error);
       res.send({
-        status: 200,
+        status: 403,
         Error: error,
       });
     }
@@ -89,6 +90,7 @@ class controller {
       try {
         console.table({ email: req.body.email, password: req.body.password });
         const response = await userModel.findOne({
+          // email: req.body.email,
           email: req.body.email,
           password: req.body.password,
         });
@@ -103,7 +105,7 @@ class controller {
         }
       } catch (error) {
         console.log("error", error);
-        res.json({ error });
+        res.status(505).json({ error });
       }
     }
   };
@@ -114,19 +116,19 @@ class controller {
       const isResponse = await userModel.findOne({ email });
       if (!isResponse) return res.status(404).send("Email not found");
 
-      const email = req.body.email;
       var otp = Math.floor(1000 + Math.random() * 9000);
-      console.log(otp);
+      // console.log(otp);
       var transporter = nodemailer.createTransport({
         service: "gmail",
         port: 465,
-        secure: true,
+        secure: false,
         secureConnection: false,
         auth: {
-          user: "chatappofficial70@gmail.com", // generated ethereal user
-          pass: "chatapp.123", // generated ethereal password
+          user: process.env.EMAIL_ID, // generated ethereal user
+          pass: process.env.EMAIL_PASS, // generated ethereal password
         },
       });
+      // var transporter = nodemailer.createTransport('smtps://user%myDomain.com:pass@smtp.chatappofficial70@gmail.com')
       // send email
       var mailOptions = {
         from: "chatappofficial70@gmail.com",
@@ -140,14 +142,16 @@ class controller {
       };
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          return console.log("sendEmail:- " + error);
-          res.send({ otp: "send One more" });
+          console.log("sendEmail:- " + error);
+          return res.send({ otp: "send One more" });
         }
         console.log("sendEmail:- Message sent: %s", info.messageId);
         res.send({ otp: md5(otp) });
       });
+      // res.send({ otp: md5(otp) });
+      // console.log(otp);
     } catch (e) {
-      console.log("error", error);
+      console.log("error", e);
     }
   };
   static reset = async (req, res) => {
@@ -163,6 +167,22 @@ class controller {
       await res.json("update successfuly");
     } catch (e) {
       console.log("error", e);
+    }
+  };
+
+  static resentLogin = async (req, res) => {
+    const user_id = req.query.id;
+    try {
+      const response = await userModel
+        .findById(user_id)
+        .select("firstName")
+        .select("email")
+        .select("password")
+        .select("profilePic");
+      res.status(200).send(response);
+    } catch (error) {
+      console.log("resentLogin Error:", error);
+      res.status(500).send("network Error");
     }
   };
 

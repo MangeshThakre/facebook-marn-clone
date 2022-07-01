@@ -13,3 +13,13 @@
    cursor: pointer;
    text-decoration: underline;
 }
+
+.allfreindlist::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .allfreindlist {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }

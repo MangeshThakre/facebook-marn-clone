@@ -1,10 +1,10 @@
 import React from "react";
 import "./reset.css";
-import OTPInput, { ResendOTP } from "otp-input-react";
-
+import OTPInput from "otp-input-react";
+// import useSetInterval from "use-set-interval";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Divider,
@@ -34,7 +34,7 @@ function Reset() {
   const [passAlert, setpassAlert] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [open, setOpen] = useState(false);
-
+  const [totalTime, setTotalTime] = useState(0);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -51,17 +51,19 @@ function Reset() {
       try {
         const response = await axios({
           method: "get",
-          url: URL + "/api/otp?email=" + email.toLowerCase() + "&reset=false",
+          url: URL + "/api/otp?email=" + email.toLowerCase(),
           headers: { "Content-type": "application/json" },
         });
         const data = await response.data;
         if (data.otp == "send One more") {
           setOpen(true);
+          setIsSendLoading(false);
         } else if (data.otp) {
           setServerOTP(data.otp);
           setTimeout(() => {
             setResetBody("OTPPAGE");
             setIsSendLoading(false);
+            setTotalTime(30);
           }, 1000);
         }
       } catch (error) {
@@ -158,55 +160,94 @@ function Reset() {
     </>
   );
 
-  const otpPage = (
-    <>
-      <CardContent>
-        <p style={{ margin: "10px 0 20px" }}>
-          Enter otp sent on <b>{email}</b>
-        </p>
-        <OTPInput
-          value={OTP}
-          onChange={setOTP}
-          autoFocus
-          OTPLength={4}
-          otpType="number"
-          disabled={false}
-          secure
-        />
-        <div style={{ height: "30px", color: "red" }}>
-          {warning ? <p>{warning}</p> : null}
-        </div>
-        <ResendOTP onResendClick={() => console.log("Resend clicked")} />
-      </CardContent>
+  useEffect(() => {
+    if (totalTime < 0) {
+      return;
+    }
+    const id = setInterval(() => setTotalTime(totalTime - 1), 1000);
+    if (totalTime === 0) {
+      setServerOTP("");
+      setOTP("");
+      clearInterval(id);
+    }
+    return () => clearInterval(id);
+  }, [totalTime]);
 
-      <Divider />
-      <CardContent>
-        <div className="resetBottom">
-          <div>
-            <div>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  setResetBody("EMAILPAGE");
-                  setOTP("");
-                  setWarning("");
-                }}
-              >
-                Cancle
-              </Button>
-            </div>
+  function otpPage() {
+    return (
+      <>
+        <CardContent>
+          {warning ? (
+            <Alert variant="outlined" severity="error" sx={{ width: "100%" }}>
+              invalid OTP
+            </Alert>
+          ) : null}
+
+          <p style={{ margin: "10px 0 20px" }}>
+            Enter otp sent on <b>{email}</b>
+          </p>
+          <div style={{ display: "flex" }}>
+            <OTPInput
+              value={OTP}
+              onChange={setOTP}
+              autoFocus
+              OTPLength={4}
+              otpType="number"
+              disabled={false}
+              secure
+            />
             <Button
-              variant="contained"
-              disabled={OTP.length < 4}
-              onClick={() => verify()}
+              onClick={() => {
+                // setTotalTime(30);
+                send();
+              }}
+              disabled={totalTime != 0}
+              sx={{ marginLeft: "20px" }}
             >
-              Varify
+              {isSendLoading ? (
+                <CircularProgress sx={{ color: "#2f83d6" }} size="1.6rem" />
+              ) : (
+                "resend"
+              )}
             </Button>
           </div>
-        </div>
-      </CardContent>
-    </>
-  );
+
+          <div>
+            <p>{totalTime}</p>
+          </div>
+
+          <div style={{ height: "30px", color: "red" }}></div>
+        </CardContent>
+
+        <Divider />
+        <CardContent>
+          <div className="resetBottom">
+            <div>
+              <div>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setResetBody("EMAILPAGE");
+                    setOTP("");
+                    setWarning("");
+                  }}
+                >
+                  Cancle
+                </Button>
+              </div>
+              <Button
+                variant="contained"
+                disabled={OTP.length < 4}
+                onClick={() => verify()}
+              >
+                Varify
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </>
+    );
+  }
   const newPAsswordPage = (
     <>
       {passAlert ? (
@@ -259,6 +300,8 @@ function Reset() {
                   setResetBody("EMAILPAGE");
                   setOTP("");
                   setWarning("");
+                  setPasswordError(false);
+                  setpassAlert(false);
                 }}
               >
                 Cancle
@@ -321,7 +364,7 @@ function Reset() {
           </CardContent>
           <Divider />
           {resetBody == "EMAILPAGE" ? emailPage : null}
-          {resetBody == "OTPPAGE" ? otpPage : null}
+          {resetBody == "OTPPAGE" ? otpPage() : null}
           {resetBody == "NEWPASSWORDPAGE" ? newPAsswordPage : null}
           {resetBody == "UPDATEDPAGE" ? updatedPage : null}
         </Card>

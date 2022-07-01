@@ -31,7 +31,7 @@ router.post("/signin", controller.signin);
 router.get("/otp", controller.otp);
 router.get("/reset", controller.reset);
 
-
+router.get("/resentLogin", controller.resentLogin);
 router.get("/verify", Authorization, controller.verify);
 
 router.post(
